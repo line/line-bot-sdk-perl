@@ -1,0 +1,5 @@
+Welcome to memo mode!
+
+During 60 seconds, you can make a memo now.
+
+If you want this mode to stop, please send '@end' text message to me.

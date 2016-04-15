@@ -1,0 +1,6 @@
+line-bot-framework ([% app_name %])
+
+commands
+
+memo   stat memo mode
+help   this content

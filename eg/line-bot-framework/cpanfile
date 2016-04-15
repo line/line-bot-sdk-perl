@@ -1,0 +1,3 @@
+requires 'LINE::Bot::API';
+requires 'Module::Load';
+requires 'Text::Xslate';

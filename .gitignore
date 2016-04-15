@@ -1,0 +1,8 @@
+/LINE-Bot-API-*
+/.build
+/_build*
+/Build
+MYMETA.*
+!META.json
+blib
+*.swp
