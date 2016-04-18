@@ -187,6 +187,8 @@ __END__
 
 LINE::Bot::API - SDK of the LINE BOT API Trial for Perl
 
+=for html <a href="https://travis-ci.org/line/line-bot-sdk-perl"><img src="https://travis-ci.org/line/line-bot-sdk-perl.svg?branch=master"></a>
+
 =head1 SYNOPSIS
 
     # in the synopsis.psgi

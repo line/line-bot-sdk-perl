@@ -2,6 +2,10 @@
 
 LINE::Bot::API - SDK of the LINE BOT API Trial for Perl
 
+<div>
+    <a href="https://travis-ci.org/line/line-bot-sdk-perl"><img src="https://travis-ci.org/line/line-bot-sdk-perl.svg?branch=master"></a>
+</div>
+
 # SYNOPSIS
 
     # in the synopsis.psgi
