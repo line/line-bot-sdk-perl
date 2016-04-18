@@ -3,8 +3,9 @@ use strict;
 use warnings;
 
 use Carp 'croak';
-use Digest::SHA 'hmac_sha256_base64';
+use Digest::SHA 'hmac_sha256';
 use JSON::XS;
+use MIME::Base64 'decode_base64';
 
 use LINE::Bot::API::Receive::Message;
 use LINE::Bot::API::Receive::Operation;
@@ -44,8 +45,7 @@ sub new_from_plack {
 
 sub signature_validation {
     my($class, $json, $channel_secret, $signature) = @_;
-    $signature =~ s/=+\z//;
-    $signature eq hmac_sha256_base64($json, $channel_secret);
+    decode_base64($signature) eq hmac_sha256($json, $channel_secret);
 }
 
 sub is_message   { 0 }
