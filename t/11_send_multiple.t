@@ -25,7 +25,7 @@ send_request {
         audio_url => 'http://example.com/image.au',
         duration  => 3601,
     )->add_location(
-        text       => '位置ラベル',
+        text       => 'location label',
         address    => 'tokyo shibuya-ku',
         latitude   => '35.61823286112982',
         longitude  => '139.72824096679688',
@@ -79,8 +79,8 @@ send_request {
     subtest 'location' => sub {
         my $content = $data->{content}{messages}[4];
         is_deeply $data->{to}, ['DUMMY_MID'];
-        is_deeply $content->{location}, { title => '位置ラベル', address => 'tokyo shibuya-ku', latitude => '35.61823286112982', longitude => '139.72824096679688' };
-        is $content->{text}, '位置ラベル';
+        is_deeply $content->{location}, { title => 'location label', address => 'tokyo shibuya-ku', latitude => '35.61823286112982', longitude => '139.72824096679688' };
+        is $content->{text}, 'location label';
         is $content->{contentType}, CONTENT_LOCATION;
     };
     subtest 'sticker' => sub {

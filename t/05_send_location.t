@@ -14,7 +14,7 @@ my $bot = LINE::Bot::API->new(
 send_request {
     my $res = $bot->send_location(
         to_mid     => 'DUMMY_MID',
-        text       => '位置ラベル',
+        text       => 'location label',
         address    => 'tokyo shibuya-ku',
         latitude   => '35.61823286112982',
         longitude  => '139.72824096679688',
@@ -29,8 +29,8 @@ send_request {
 
     my $data = decode_json $args{content};
     is_deeply $data->{to}, ['DUMMY_MID'];
-    is_deeply $data->{content}{location}, { title => '位置ラベル', address => 'tokyo shibuya-ku', latitude => '35.61823286112982', longitude => '139.72824096679688' };
-    is $data->{content}{text}, '位置ラベル';
+    is_deeply $data->{content}{location}, { title => 'location label', address => 'tokyo shibuya-ku', latitude => '35.61823286112982', longitude => '139.72824096679688' };
+    is $data->{content}{text}, 'location label';
 
     is $data->{content}{contentType}, CONTENT_LOCATION;
     is $data->{content}{toType}, TO_USER;
