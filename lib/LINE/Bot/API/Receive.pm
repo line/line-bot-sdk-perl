@@ -45,7 +45,9 @@ sub new_from_plack {
 
 sub signature_validation {
     my($class, $json, $channel_secret, $signature) = @_;
-    decode_base64($signature) eq hmac_sha256($json, $channel_secret);
+    return unless $signature && $json && $channel_secret;
+    my $json_signature = hmac_sha256($json, $channel_secret);
+    decode_base64($signature) eq $json_signature;
 }
 
 sub is_message   { 0 }
