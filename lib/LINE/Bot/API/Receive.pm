@@ -47,7 +47,20 @@ sub signature_validation {
     my($class, $json, $channel_secret, $signature) = @_;
     return unless $signature && $json && $channel_secret;
     my $json_signature = hmac_sha256($json, $channel_secret);
-    decode_base64($signature) eq $json_signature;
+    _secure_compare(decode_base64($signature), $json_signature);
+}
+
+# Constant time string comparison for timing attacks.
+sub _secure_compare {
+    my($x, $y) = @_;
+    return unless length $x == length $y;
+    my @a = unpack 'C*', $x;
+    my @b = unpack 'C*', $y;
+    my $compare = 0;
+    for my $i (0..(scalar(@a) - 1)) {
+        $compare |= $a[$i] ^ $b[$i];
+    }
+    return !$compare;
 }
 
 sub is_message   { 0 }
