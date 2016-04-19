@@ -21,6 +21,7 @@ my %WriteMakefileArgs = (
     "Furl" => 0,
     "IO::Socket::SSL" => 0,
     "JSON::XS" => 0,
+    "MIME::Base64" => 0,
     "URI" => 0,
     "parent" => 0
   },
@@ -39,6 +40,7 @@ my %FallbackPrereqs = (
   "Furl" => 0,
   "IO::Socket::SSL" => 0,
   "JSON::XS" => 0,
+  "MIME::Base64" => 0,
   "Test::More" => 0,
   "URI" => 0,
   "parent" => 0

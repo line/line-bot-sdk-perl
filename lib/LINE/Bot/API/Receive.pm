@@ -3,8 +3,9 @@ use strict;
 use warnings;
 
 use Carp 'croak';
-use Digest::SHA 'hmac_sha256_base64';
+use Digest::SHA 'hmac_sha256';
 use JSON::XS;
+use MIME::Base64 'decode_base64';
 
 use LINE::Bot::API::Receive::Message;
 use LINE::Bot::API::Receive::Operation;
@@ -44,8 +45,22 @@ sub new_from_plack {
 
 sub signature_validation {
     my($class, $json, $channel_secret, $signature) = @_;
-    $signature =~ s/=+\z//;
-    $signature eq hmac_sha256_base64($json, $channel_secret);
+    return unless $signature && $json && $channel_secret;
+    my $json_signature = hmac_sha256($json, $channel_secret);
+    _secure_compare(decode_base64($signature), $json_signature);
+}
+
+# Constant time string comparison for timing attacks.
+sub _secure_compare {
+    my($x, $y) = @_;
+    return unless length $x == length $y;
+    my @a = unpack 'C*', $x;
+    my @b = unpack 'C*', $y;
+    my $compare = 0;
+    for my $i (0..(scalar(@a) - 1)) {
+        $compare |= $a[$i] ^ $b[$i];
+    }
+    return !$compare;
 }
 
 sub is_message   { 0 }
