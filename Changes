@@ -2,6 +2,8 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
-0.01  2016-04-18 13:01:28 JST
+0.02  2016-04-19 16:13:24 JST
+        - Use secure string comparisons for channel signature #1
 
+0.01  2016-04-18 13:01:28 JST
         - Initial release

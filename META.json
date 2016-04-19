@@ -65,7 +65,7 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "0.01",
+   "version" : "0.02",
    "x_contributors" : [
       "Kazuhiro Osawa <yappo@shibuya.pl>"
    ]
