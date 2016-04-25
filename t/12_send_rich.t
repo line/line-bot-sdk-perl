@@ -52,7 +52,7 @@ send_request {
 
     my $json = $data->{content}{contentMetadata}{MARKUP_JSON};
     like $json, qr!"linkUri":"https://example.com/family/manga/en"!;
-    like $json, qr!"MANGA":{!;
+    like $json, qr!"MANGA":\{!;
     like $json, qr!"action":"MANGA"!;
 
     is_deeply(decode_json($json), {
