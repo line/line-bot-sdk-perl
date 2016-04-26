@@ -214,7 +214,7 @@ LINE::Bot::API - SDK of the LINE BOT API Trial for Perl
         }
 
         unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
-            return [470, [], ['failed to signature validation']];
+            return [470, [], ['failed to validate signature']];
         }
 
         my $receives = $bot->create_receives_from_json($req->content);
