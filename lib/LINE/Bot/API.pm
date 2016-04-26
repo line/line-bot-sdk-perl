@@ -56,7 +56,7 @@ sub send_text {
     $self->_message_post(+{
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_text(%args) ),
         },
     });
@@ -67,7 +67,7 @@ sub send_image {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_image(%args) ),
         },
     });
@@ -78,7 +78,7 @@ sub send_video {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_video(%args) ),
         },
     });
@@ -89,7 +89,7 @@ sub send_audio {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_audio(%args) ),
         },
     });
@@ -100,7 +100,7 @@ sub send_location {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_location(%args) ),
         },
     });
@@ -111,7 +111,7 @@ sub send_sticker {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             ( LINE::Bot::API::Builder::SendMessage->build_sticker(%args) ),
         },
     });
@@ -122,7 +122,7 @@ sub send_rich_message {
     $self->_message_post({
         to      => $args{to_mid},
         content => {
-            toType => ($args{to_type} || TO_USER),
+            toType => ($args{to_type} || RECIPIENT_USER),
             contentType        => CONTENT_RICH_MESSAGE,
             contentMetadata    => {
                 SPEC_REV     => '1',

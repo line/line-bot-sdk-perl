@@ -31,7 +31,7 @@ send_request {
     is $data->{content}{previewImageUrl}, 'http://example.com/image_preview.jpg';
 
     is $data->{content}{contentType}, CONTENT_VIDEO;
-    is $data->{content}{toType}, TO_USER;
+    is $data->{content}{toType}, RECIPIENT_USER;
 
     +{
         timestamp    => 1347940533207,
