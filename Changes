@@ -2,6 +2,16 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
+0.03  2016-04-26 17:11:26 JST
+        - Follow the Java SDK naming conventions for some names #4
+         - Changed some constant names
+         - Changed some method names (these have backward compatibility)
+             signature_validation -> validate_signature
+             get_profile_information -> get_user_profile
+             get_message_content_preview -> get_preview_message_content
+        - Fix deprecation warning #3
+        - Event type constants should be string #2
+
 0.02  2016-04-19 16:13:24 JST
         - Use secure string comparisons for channel signature #1
 

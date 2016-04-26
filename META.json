@@ -4,13 +4,13 @@
       "LINE Corporation"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.044, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Dist::Zilla version 5.047, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150001",
    "license" : [
       "artistic_2"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : "2"
+      "version" : 2
    },
    "name" : "LINE-Bot-API",
    "no_index" : {
@@ -65,9 +65,10 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "0.02",
+   "version" : "0.03",
    "x_contributors" : [
-      "Kazuhiro Osawa <yappo@shibuya.pl>"
+      "Kazuhiro Osawa <yappo@shibuya.pl>",
+      "Syohei YOSHIDA <syohex@gmail.com>"
    ]
 }
 
