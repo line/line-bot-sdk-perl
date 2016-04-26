@@ -24,7 +24,7 @@ sub {
         return [404, [], ['Not Found']];
     }
 
-    unless ($bot->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+    unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
         return [500, [], ['bad request']];
     }
 
@@ -35,7 +35,7 @@ sub {
 
             if ($receive->is_text) {
                 if ($receive->text eq 'me') {
-                    my $res = $bot->get_profile_information($receive->from_mid);
+                    my $res = $bot->get_user_profile($receive->from_mid);
                     my $contact = $res->{contacts}[0];
 
                     $bot->multiple_message->add_text(

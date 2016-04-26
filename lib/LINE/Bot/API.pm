@@ -153,12 +153,14 @@ sub get_message_content {
     $self->{client}->contents_download($self->{bot_api_endpoint} . "bot/message/$message_id/content", %options);
 }
 
-sub get_message_content_preview {
+sub get_message_content_preview { goto \&get_preview_message_content; } # backward compatibility
+sub get_preview_message_content {
     my($self, $message_id, %options) = @_;
     $self->{client}->contents_download($self->{bot_api_endpoint} . "bot/message/$message_id/content/preview", %options);
 }
 
-sub get_profile_information {
+sub get_profile_information { goto \&get_user_profile; } # backward compatibility
+sub get_user_profile {
     my($self, @mids) = @_;
     my $uri = URI->new($self->{bot_api_endpoint} . 'profiles');
     $uri->query_form( mids => join(',', @mids) );
@@ -166,9 +168,10 @@ sub get_profile_information {
 }
 
 # request class wrapper
-sub signature_validation {
+sub signature_validation { goto \&validate_signature; } # backward compatibility
+sub validate_signature {
     my($self, $json, $signature) = @_;
-    LINE::Bot::API::Receive->signature_validation($json, $self->{channel_secret}, $signature);
+    LINE::Bot::API::Receive->validate_signature($json, $self->{channel_secret}, $signature);
 }
 
 sub create_receives_from_json {
@@ -210,7 +213,7 @@ LINE::Bot::API - SDK of the LINE BOT API Trial for Perl
             return [404, [], ['Not Found']];
         }
 
-        unless ($bot->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+        unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
             return [470, [], ['failed to signature validation']];
         }
 
@@ -428,10 +431,10 @@ L<https://developers.line.me/bot-api/api-reference#sending_multiple_messages>
 
 The following utility methods allow you to easily process messages sent from the BOT API platform via a Callback URL.
 
-=head3 signature_validation()
+=head3 validate_signature()
 
     my $req = Plack::Request->new( ... );
-    unless ($bot->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+    unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
         die 'failed to signature validation';
     }
 
@@ -456,7 +459,7 @@ You can retreive the binary contents (image files and video files) which was sen
             my($temp) = $bot->get_message_content($receive->content_id);
             my $original_video = $temp->filename;
         }
-        my($temp) = $bot->get_message_content_preview($receive->content_id);
+        my($temp) = $bot->get_preview_message_content($receive->content_id);
         my $preview_image = $temp->filename;
     }
 
@@ -467,7 +470,7 @@ L<https://developers.line.me/bot-api/api-reference#getting_message_content>
 
 Get the original file which was sent by user.
 
-=head3 get_message_content_preview()
+=head3 get_preview_message_content()
 
 Get the preview image file which was sent by user.
 
@@ -478,7 +481,7 @@ You can retrieve the user profile information by specifying the mid.
 See also a online document.
 L<https://developers.line.me/bot-api/api-reference#getting_user_profile_information>
 
-    my $res = $bot->get_profile_information(@mids);
+    my $res = $bot->get_user_profile(@mids);
     say $res->{contacts}[0]{displayName};
     say $res->{contacts}[0]{mid};
     say $res->{contacts}[0]{pictureUrl};

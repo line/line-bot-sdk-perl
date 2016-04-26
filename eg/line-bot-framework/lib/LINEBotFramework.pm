@@ -39,9 +39,9 @@ sub load_class {
     };
 }
 
-sub signature_validation {
+sub validate_signature {
     my($self, $json, $signature) = @_;
-    $self->{bot}->signature_validation($json, $signature);
+    $self->{bot}->validate_signature($json, $signature);
 }
 
 sub dispatcher {

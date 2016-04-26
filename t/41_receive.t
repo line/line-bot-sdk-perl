@@ -54,13 +54,13 @@ my $json = <<JSON;
 JSON
 
 
-subtest 'signature_validation' => sub {
+subtest 'validate_signature' => sub {
     subtest 'failed' => sub {
-        ok(! LINE::Bot::API::Receive->signature_validation($json, $config->{channel_secret}, ''));
+        ok(! LINE::Bot::API::Receive->validate_signature($json, $config->{channel_secret}, ''));
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Receive->signature_validation($json, $config->{channel_secret}, 'YdUyzEMBcQwsneRE8RkWm9/3AF+Zms+Mj1sh7d/biuc'));
+        ok(LINE::Bot::API::Receive->validate_signature($json, $config->{channel_secret}, 'YdUyzEMBcQwsneRE8RkWm9/3AF+Zms+Mj1sh7d/biuc'));
     };
 };
 

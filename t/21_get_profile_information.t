@@ -12,7 +12,7 @@ my $bot = LINE::Bot::API->new(
     channel_mid    => 'TEST_MID',
 );
 send_request {
-    my $res = $bot->get_profile_information(
+    my $res = $bot->get_user_profile(
         'DUMMY_MID_GET_DISPLAY_NAME',
     );
     is $res->{count}, 1;

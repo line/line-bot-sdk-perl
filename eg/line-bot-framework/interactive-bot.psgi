@@ -33,7 +33,7 @@ sub {
         return [404, [], ['Not Found']];
     }
 
-    unless ($framework->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+    unless ($framework->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
         return [470, [], ['bad request']];
     }
 
