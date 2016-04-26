@@ -31,7 +31,7 @@ send_request {
     is $data->{content}{contentMetadata}{AUDLEN}, 3601;
 
     is $data->{content}{contentType}, CONTENT_AUDIO;
-    is $data->{content}{toType}, TO_USER;
+    is $data->{content}{toType}, RECIPIENT_USER;
 
     +{
         timestamp    => 1347940533207,

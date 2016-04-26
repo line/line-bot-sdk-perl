@@ -56,13 +56,13 @@ JSON
 my $bot = LINE::Bot::API->new(%{ $config });
 
 
-subtest 'signature_validation' => sub {
+subtest 'validate_signature' => sub {
     subtest 'failed' => sub {
-        ok(! $bot->signature_validation($json, ''));
+        ok(! $bot->validate_signature($json, ''));
     };
 
     subtest 'successful' => sub {
-        ok($bot->signature_validation($json, 'YdUyzEMBcQwsneRE8RkWm9/3AF+Zms+Mj1sh7d/biuc'));
+        ok($bot->validate_signature($json, 'YdUyzEMBcQwsneRE8RkWm9/3AF+Zms+Mj1sh7d/biuc'));
     };
 };
 

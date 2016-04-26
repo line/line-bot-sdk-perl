@@ -33,7 +33,7 @@ send_request {
     is $data->{content}{text}, 'hello!';
 
     is $data->{content}{contentType}, CONTENT_TEXT;
-    is $data->{content}{toType}, TO_USER;
+    is $data->{content}{toType}, RECIPIENT_USER;
 
     my $has_header = 0;
     my @headers = @{ $args{headers} };

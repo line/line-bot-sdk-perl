@@ -9,9 +9,9 @@ sub new {
     my($class, $config, $result) = @_;
 
     my $op_type = $result->{content}{opType};
-    if ($op_type eq OP_NOTIFIED_ADD_CONTACT) {
+    if ($op_type eq OP_ADDED_AS_FRIEND) {
         $class .= '::AddContact';
-    } elsif ($op_type eq OP_NOTIFIED_BLOCK_CONTACT) {
+    } elsif ($op_type eq OP_BLOCKED) {
         $class .= '::BlockContact';
     }
 

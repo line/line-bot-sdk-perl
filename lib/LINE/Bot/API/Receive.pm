@@ -43,7 +43,7 @@ sub new_from_plack {
     my($class, $json) = @_;
 }
 
-sub signature_validation {
+sub validate_signature {
     my($class, $json, $channel_secret, $signature) = @_;
     return unless $signature && $json && $channel_secret;
     my $json_signature = hmac_sha256($json, $channel_secret);

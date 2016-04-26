@@ -27,7 +27,7 @@ LINE::Bot::API - SDK of the LINE BOT API Trial for Perl
             return [404, [], ['Not Found']];
         }
 
-        unless ($bot->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+        unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
             return [470, [], ['failed to signature validation']];
         }
 
@@ -245,10 +245,10 @@ See also a online documentation.
 
 The following utility methods allow you to easily process messages sent from the BOT API platform via a Callback URL.
 
-### signature\_validation()
+### validate\_signature()
 
     my $req = Plack::Request->new( ... );
-    unless ($bot->signature_validation($req->content, $req->header('X-LINE-ChannelSignature'))) {
+    unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
         die 'failed to signature validation';
     }
 
@@ -273,7 +273,7 @@ You can retreive the binary contents (image files and video files) which was sen
             my($temp) = $bot->get_message_content($receive->content_id);
             my $original_video = $temp->filename;
         }
-        my($temp) = $bot->get_message_content_preview($receive->content_id);
+        my($temp) = $bot->get_preview_message_content($receive->content_id);
         my $preview_image = $temp->filename;
     }
 
@@ -284,7 +284,7 @@ See also a online documentation.
 
 Get the original file which was sent by user.
 
-### get\_message\_content\_preview()
+### get\_preview\_message\_content()
 
 Get the preview image file which was sent by user.
 
@@ -295,7 +295,7 @@ You can retrieve the user profile information by specifying the mid.
 See also a online document.
 [https://developers.line.me/bot-api/api-reference#getting\_user\_profile\_information](https://developers.line.me/bot-api/api-reference#getting_user_profile_information)
 
-    my $res = $bot->get_profile_information(@mids);
+    my $res = $bot->get_user_profile(@mids);
     say $res->{contacts}[0]{displayName};
     say $res->{contacts}[0]{mid};
     say $res->{contacts}[0]{pictureUrl};
