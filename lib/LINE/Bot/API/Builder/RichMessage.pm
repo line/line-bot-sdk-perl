@@ -7,6 +7,8 @@ use overload '""' => \&build;
 use Carp 'croak';
 use JSON::XS;
 
+my $JSON = JSON::XS->new->ascii;
+
 sub new {
     my($class, %args) = @_;
 
@@ -63,7 +65,7 @@ sub send_message {
 
 sub build {
     my $self = shift;
-    encode_json $self->{markup};
+    $JSON->encode($self->{markup});
 }
 
 sub set_action {
