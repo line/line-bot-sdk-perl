@@ -2,6 +2,8 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
+use LINE::Bot::API::Builder::Imagemap;
+
 sub new {
     my($class, %args) = @_;
     bless {
@@ -86,6 +88,20 @@ sub add_sticker {
         stickerId => $args{sticker_id},
     };
     $self;
+}
+
+sub add_imagemap {
+    my($self, %imagemap) = @_;
+    push @{ $self->{messages} }, +{
+        %imagemap,
+        type => 'imagemap',
+    };
+    $self;
+}
+
+sub imagemap_builder {
+    my($self, ) = @_;
+    LINE::Bot::API::Builder::Imagemap->new($self);
 }
 
 1;
