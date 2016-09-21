@@ -75,6 +75,7 @@ sub get_content {
 
 sub get_profile {
     my($self, $user_id) = @_;
+    $self->{client}->get($self->{bot_api_endpoint} . "profile/$user_id");
 }
 
 sub leave_room {
