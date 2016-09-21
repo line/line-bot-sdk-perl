@@ -76,19 +76,8 @@ sub add_sticker {
 }
 
 sub add_imagemap {
-    my $self = shift;
-
-    my %args;
-    if (ref($_[0]) eq 'HASH') {
-        %args = %{ $_[0] };
-    } else {
-        %args = LINE::Bot::API::Builder::ImagemapMessage->new(@_)->build;
-    }
-
-    $self->add(+{
-        type => 'imagemap',
-        %args,
-    });
+    my($self, $imagemap) = @_;
+    $self->add($imagemap);
 }
 
 sub add_template {
