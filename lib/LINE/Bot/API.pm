@@ -7,6 +7,8 @@ use Carp 'croak';
 use JSON::XS;
 use URI;
 
+use LINE::Bot::API::Builder::SendMessage;
+
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Constants;
 use LINE::Bot::API::Receive;
@@ -28,15 +30,67 @@ sub new {
     my $client = LINE::Bot::API::Client->new(%args);
 
     bless {
-        client             => $client,
-        channel_id         => $args{channel_id},
-        channel_secret     => $args{channel_secret},
-        channel_mid        => $args{channel_mid},
-        event_api_endpoint => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
-        bot_api_endpoint   => $args{bot_api_endpoint}   // 'https://trialbot-api.line.me/v1/',
+        client               => $client,
+        channel_id           => $args{channel_id},
+        channel_secret       => $args{channel_secret},
+        channel_mid          => $args{channel_mid},
+        channel_access_token => $args{channel_access_token},
+        event_api_endpoint   => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
+        bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/',
     }, $class;
 }
 
+# for v2
+sub reply_message_builder {
+    my($self, ) = @_;
+    LINE::Bot::API::Builder::SendMessage->new(
+        bot  => $self,
+        type => 'reply',
+    );
+}
+
+sub push_message_builder {
+    my($self, ) = @_;
+    LINE::Bot::API::Builder::SendMessage->new(
+        bot  => $self,
+        type => 'push',
+    );
+}
+
+sub reply_message {
+    my($self, $reply_token, $messages) = @_;
+}
+
+sub push_message {
+    my($self, $to_mid, $messages) = @_;
+}
+
+sub get_content {
+    my($self, $message_id) = @_;
+}
+
+sub get_profile {
+    my($self, $user_id) = @_;
+}
+
+sub leave_room {
+    my($self, $room_id) = @_;
+}
+
+sub leave_group {
+    my($self, $group_id) = @_;
+}
+
+sub validate_signature {
+    my($self, $json, $signature) = @_;
+    LINE::Bot::API::Receive->validate_signature($json, $self->{channel_secret}, $signature);
+}
+
+sub parse_events_from_json {
+    my($self, $json) = @_;
+}
+
+# for v1
 
 # post to sending messages API https://developers.line.me/bot-api/api-reference#sending_message
 sub _message_post {
@@ -169,10 +223,6 @@ sub get_user_profile {
 
 # request class wrapper
 sub signature_validation { goto \&validate_signature; } # backward compatibility
-sub validate_signature {
-    my($self, $json, $signature) = @_;
-    LINE::Bot::API::Receive->validate_signature($json, $self->{channel_secret}, $signature);
-}
 
 sub create_receives_from_json {
     my($self, $json) = @_;

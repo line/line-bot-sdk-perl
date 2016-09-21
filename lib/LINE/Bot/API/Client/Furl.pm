@@ -20,10 +20,11 @@ sub new {
     $args{http_client}{agent}   ||= "LINE::Bot::API/$LINE::Bot::API::VERSION";
     $args{http_client}{timeout} ||= 3;
     bless {
-        channel_id     => $args{channel_id},
-        channel_secret => $args{channel_secret},
-        channel_mid    => $args{channel_mid},
-        furl           => Furl::HTTP->new(
+        channel_id           => $args{channel_id},
+        channel_secret       => $args{channel_secret},
+        channel_mid          => $args{channel_mid},
+        channel_access_token => $args{channel_access_token},
+        furl                 => Furl::HTTP->new(
             %{ $args{http_client} }
         ),
     }, $class;
@@ -32,9 +33,7 @@ sub new {
 sub credentials {
     my $self = shift;
     (
-        'X-Line-ChannelID'             => $self->{channel_id},
-        'X-Line-ChannelSecret'         => $self->{channel_secret},
-        'X-Line-Trusted-User-With-ACL' => $self->{channel_mid},
+        'Authorization', "Bearer $self->{channel_access_token}"
     );
 }
 
@@ -62,7 +61,7 @@ sub post {
         $url,
         [
             $self->credentials,
-            'Content-Type'   => 'application/json; charset=UTF-8',
+            'Content-Type'   => 'application/json',
             'Content-Length' => length($json),
         ],
         $json,
