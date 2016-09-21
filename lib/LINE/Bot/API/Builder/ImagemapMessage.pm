@@ -1,4 +1,4 @@
-package LINE::Bot::API::Builder::Imagemap;
+package LINE::Bot::API::Builder::ImagemapMessage;
 use strict;
 use warnings;
 
