@@ -2,8 +2,6 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
-use LINE::Bot::API::Builder::ImagemapMessage;
-
 sub new {
     my($class, ) = @_;
     bless [], $class;
