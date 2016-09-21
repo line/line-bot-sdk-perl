@@ -45,7 +45,7 @@ sub reply_message {
     my($self, $reply_token, $messages) = @_;
 
     $self->{client}->post(
-        $self->{event_api_endpoint} . 'message/reply',
+        $self->{bot_api_endpoint} . 'message/reply',
         +{
             replyToken => $reply_token,
             messages   => $messages,
@@ -57,7 +57,7 @@ sub push_message {
     my($self, $to_mid, $messages) = @_;
 
     $self->{client}->post(
-        $self->{event_api_endpoint} . 'message/push',
+        $self->{bot_api_endpoint} . 'message/push',
         +{
             to       => $to_mid,
             messages => $messages,
