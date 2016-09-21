@@ -5,103 +5,90 @@ use warnings;
 use LINE::Bot::API::Builder::Imagemap;
 
 sub new {
-    my($class, %args) = @_;
-    bless {
-        bot      => $args{bot},
-        type     => $args{type},
-        messages => [],
-    }, $class;
+    my($class, ) = @_;
+    bless [], $class;
 }
 
-sub send {
-    my($self, $target_id) = @_;
-    if ($self->{type} eq 'reply') {
-        $self->{bot}->reply_message(
-            replyToken => $target_id,
-            messages   => $self->{messages},
-        );
-    } else {
-        # push message
-        $self->{bot}->push_message(
-            to       => $target_id,
-            messages => $self->{messages},
-        );
-    }
+sub build {
+    my($self, ) = @_;
+    +[ @{ $self->{messages} } ];
+}
+
+sub add {
+    my($self, $message) = @_;
+    push @{ $self }, $message;
+    $self;
 }
 
 sub add_text {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type => 'text',
         text => $args{text},
-    };
-    $self;
+    });
 }
 
 sub add_image {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type               => 'image',
         originalContentUrl => $args{image_url},
         previewImageUrl    => $args{preview_url},
-    };
-    $self;
+    });
 }
 
 sub add_video {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type               => 'video',
         originalContentUrl => $args{video_url},
         previewImageUrl    => $args{preview_url},
-    };
-    $self;
+    });
 }
 
 sub add_audio {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type               => 'audio',
         originalContentUrl => $args{audio_url},
         duration           => $args{duration},
-    };
-    $self;
+    });
 }
 
 sub add_location {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type      => 'location',
         title     => $args{text},
         address   => $args{address},
         latitude  => $args{latitude},
         longitude => $args{longitude},
-    };
-    $self;
+    });
 }
 
 sub add_sticker {
     my($self, %args) = @_;
-    push @{ $self->{messages} }, +{
+    $self->add(+{
         type      => 'sticker',
         packageId => $args{package_id},
         stickerId => $args{sticker_id},
-    };
-    $self;
+    });
 }
 
 sub add_imagemap {
-    my($self, %imagemap) = @_;
-    push @{ $self->{messages} }, +{
-        %imagemap,
-        type => 'imagemap',
-    };
-    $self;
-}
+    my $self = shift;
 
-sub imagemap_builder {
-    my($self, ) = @_;
-    LINE::Bot::API::Builder::Imagemap->new($self);
+    my %args;
+    if (ref($_[0]) eq 'HASH') {
+        %args = %{ $_[0] };
+    } else {
+        %args = @_;
+    }
+
+    $self->add(+{
+        type => 'sticker',
+        %args,
+    });
 }
 
 1;

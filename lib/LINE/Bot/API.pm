@@ -41,22 +41,6 @@ sub new {
 }
 
 # for v2
-sub reply_message_builder {
-    my($self, ) = @_;
-    LINE::Bot::API::Builder::SendMessage->new(
-        bot  => $self,
-        type => 'reply',
-    );
-}
-
-sub push_message_builder {
-    my($self, ) = @_;
-    LINE::Bot::API::Builder::SendMessage->new(
-        bot  => $self,
-        type => 'push',
-    );
-}
-
 sub reply_message {
     my($self, $reply_token, $messages) = @_;
 

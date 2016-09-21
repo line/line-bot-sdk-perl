@@ -3,28 +3,30 @@ use strict;
 use warnings;
 
 sub new {
-    my($class, $send_message) = @_;
+    my($class, %args) = @_;
     bless {
-        send_message => $send_message,
-        actions      => +[],
-    }, $class;
-}
-
-sub add_imagemap {
-    my($self, %args) = @_;
-    my %obj = (
         baseUrl           => $args{base_url},
         altText           => $args{alt_text},
         'baseSize.width'  => $args{base_width},
         'baseSize.height' => $args{base_height},
-        actions           => $self->{actions},
-    );
-    $self->{send_message}->add_imagemap(%obj);
+        actions           => $args{actions} // [],
+    }, $class;
+}
+
+sub build {
+    my($self, ) = @_;
+    +{ %{ $self } };
+}
+
+sub add_action {
+    my($self, $action) = @_;
+    push @{ $self->{actions} }, $action;
+    $self;
 }
 
 sub add_uri_action {
     my($self, %args) = @_;
-    push @{ $self->{actions} }, +{
+    $self->add_action(+{
         type    => 'uri',
         linkUri => $args{uri},
         area    => +{
@@ -33,12 +35,12 @@ sub add_uri_action {
             width  => $args{area_width},
             height => $args{area_height},
         },
-    };
+    });
 }
 
 sub add_message_action {
     my($self, %args) = @_;
-    push @{ $self->{actions} }, +{
+    $self->add_action(+{
         type => 'message',
         text => $args{text},
         area => +{
@@ -47,7 +49,7 @@ sub add_message_action {
             width  => $args{area_width},
             height => $args{area_height},
         },
-    };
+    });
 }
 
 1;
