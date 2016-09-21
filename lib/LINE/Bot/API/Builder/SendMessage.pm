@@ -75,11 +75,13 @@ sub add_sticker {
     });
 }
 
+# If you want this method to use, I recommend using LINE::Bot::API::Builder::ImagemapMessage class for you.
 sub add_imagemap {
     my($self, $imagemap) = @_;
     $self->add($imagemap);
 }
 
+# If you want this method to use, I recommend using LINE::Bot::API::Builder::TemplateMessage class for you.
 sub add_template {
     my($self, $template) = @_;
     $self->add($template);
