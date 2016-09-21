@@ -67,6 +67,10 @@ sub push_message {
 
 sub get_content {
     my($self, $message_id) = @_;
+    $self->{client}->contents_download(
+        $self->{bot_api_endpoint} . "message/$message_id/content",
+        %options
+    );
 }
 
 sub get_profile {
