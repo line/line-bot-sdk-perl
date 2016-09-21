@@ -80,10 +80,12 @@ sub get_profile {
 
 sub leave_room {
     my($self, $room_id) = @_;
+    $self->{client}->post($self->{bot_api_endpoint} . "room/$room_id/leave", +{});
 }
 
 sub leave_group {
     my($self, $group_id) = @_;
+    $self->{client}->post($self->{bot_api_endpoint} . "group/$group_id/leave", +{});
 }
 
 sub validate_signature {
