@@ -86,7 +86,7 @@ sub add_imagemap {
     }
 
     $self->add(+{
-        type => 'sticker',
+        type => 'imagemap',
         %args,
     });
 }
