@@ -2,6 +2,8 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
+use LINE::Bot::API::Builder::ImagemapMessage;
+
 sub new {
     my($class, ) = @_;
     bless [], $class;
@@ -80,7 +82,7 @@ sub add_imagemap {
     if (ref($_[0]) eq 'HASH') {
         %args = %{ $_[0] };
     } else {
-        %args = @_;
+        %args = LINE::Bot::API::Builder::ImagemapMessage->new(@_)->build;
     }
 
     $self->add(+{
