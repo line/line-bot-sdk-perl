@@ -36,7 +36,7 @@ sub new {
         channel_mid          => $args{channel_mid},
         channel_access_token => $args{channel_access_token},
         event_api_endpoint   => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
-        bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/',
+        bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/bot/',
     }, $class;
 }
 
@@ -59,10 +59,26 @@ sub push_message_builder {
 
 sub reply_message {
     my($self, $reply_token, $messages) = @_;
+
+    $self->{client}->post(
+        $self->{event_api_endpoint} . 'message/reply',
+        +{
+            replyToken => $reply_token,
+            messages   => $messages,
+        }
+    );
 }
 
 sub push_message {
     my($self, $to_mid, $messages) = @_;
+
+    $self->{client}->post(
+        $self->{event_api_endpoint} . 'message/push',
+        +{
+            to       => $to_mid,
+            messages => $messages,
+        }
+    );
 }
 
 sub get_content {
