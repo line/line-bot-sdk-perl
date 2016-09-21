@@ -2,72 +2,90 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
-use LINE::Bot::API::Constants;
-
-sub build_text {
-    my($self, %args) = @_;
-    +(
-        contentType => CONTENT_TEXT,
-        text        => $args{text},
-    );
+sub new {
+    my($class, %args) = @_;
+    bless {
+        bot      => $args{bot},
+        type     => $args{type},
+        messages => [],
+    }, $class;
 }
 
-sub build_image {
+sub send {
+    my($self, $target_id) = @_;
+    if ($self->{type} eq 'reply') {
+        $self->{bot}->reply_message(
+            replyToken => $target_id,
+            messages   => $self->{messages},
+        );
+    } else {
+        # push message
+        $self->{bot}->push_message(
+            to       => $target_id,
+            messages => $self->{messages},
+        );
+    }
+}
+
+sub add_text {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_IMAGE,
-        text               => $args{text},
+    push @{ $self->{messages} }, +{
+        type => 'text',
+        text => $args{text},
+    };
+    $self;
+}
+
+sub add_image {
+    my($self, %args) = @_;
+    push @{ $self->{messages} }, +{
+        type               => 'image',
         originalContentUrl => $args{image_url},
         previewImageUrl    => $args{preview_url},
-    );
+    };
+    $self;
 }
 
-sub build_video {
+sub add_video {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_VIDEO,
-        text               => $args{text},
+    push @{ $self->{messages} }, +{
+        type               => 'video',
         originalContentUrl => $args{video_url},
         previewImageUrl    => $args{preview_url},
-    );
+    };
+    $self;
 }
 
-sub build_audio {
+sub add_audio {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_AUDIO,
-        text               => $args{text},
+    push @{ $self->{messages} }, +{
+        type               => 'audio',
         originalContentUrl => $args{audio_url},
-        contentMetadata    => {
-            AUDLEN => $args{duration},
-        },
-    );
+        duration           => $args{duration},
+    };
+    $self;
 }
 
-sub build_location {
+sub add_location {
     my($self, %args) = @_;
-    +(
-        contentType => CONTENT_LOCATION,
-        text        => $args{text},
-        location    => {
-            title     => $args{text},
-            address   => $args{address},
-            latitude  => $args{latitude},
-            longitude => $args{longitude},
-        },
-    );
+    push @{ $self->{messages} }, +{
+        type      => 'location',
+        title     => $args{text},
+        address   => $args{address},
+        latitude  => $args{latitude},
+        longitude => $args{longitude},
+    };
+    $self;
 }
 
-sub build_sticker {
+sub add_sticker {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_STICKER,
-        contentMetadata    => {
-            STKID    => $args{stkid},
-            STKPKGID => $args{stkpkgid},
-            STKVER   => $args{stkver},
-        },
-    );
+    push @{ $self->{messages} }, +{
+        type      => 'sticker',
+        packageId => $args{package_id},
+        stickerId => $args{sticker_id},
+    };
+    $self;
 }
 
 1;
