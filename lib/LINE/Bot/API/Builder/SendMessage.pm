@@ -2,8 +2,6 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
-use LINE::Bot::API::Builder::Imagemap;
-
 sub new {
     my($class, ) = @_;
     bless [], $class;
@@ -11,7 +9,7 @@ sub new {
 
 sub build {
     my($self, ) = @_;
-    +[ @{ $self->{messages} } ];
+    +[ @$self ];
 }
 
 sub add {
