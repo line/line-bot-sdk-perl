@@ -91,4 +91,9 @@ sub add_imagemap {
     });
 }
 
+sub add_template {
+    my($self, $template) = @_;
+    $self->add($template);
+}
+
 1;
