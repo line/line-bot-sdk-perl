@@ -126,7 +126,7 @@ package LINE::Bot::API::Builder::TemplateMessage::Carousel {
 
     sub add_column {
         my($self, $column) = @_;
-        push @{ $self->{columns} }, $column;
+        push @{ $self->{template}{columns} }, $column;
         $self;
     }
 }
