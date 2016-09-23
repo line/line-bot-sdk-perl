@@ -3,6 +3,31 @@ use strict;
 use warnings;
 use parent 'LINE::Bot::API::Event::Base';
 
+use Carp qw/ carp /;
+our @CARP_NOT = qw( LINE::Bot::API::Event::Message LINE::Bot::API::Event LINE::Bot::API);
+
+my %TYPE2CLASS = (
+    text     => 'LINE::Bot::API::Event::Message::Text',
+    image    => 'LINE::Bot::API::Event::Message::Image',
+    video    => 'LINE::Bot::API::Event::Message::Video',
+    audio    => 'LINE::Bot::API::Event::Message::Audio',
+    location => 'LINE::Bot::API::Event::Message::Location',
+    sticker  => 'LINE::Bot::API::Event::Message::Sticker',
+);
+
+sub new {
+    my($class, %args) = @_;
+
+    my $type = $args{message}{type};
+    my $message_class = $TYPE2CLASS{$type};
+    unless ($message_class) {
+        carp 'Unsupported message type: ' . $type;
+        $message_class = $class;
+    }
+
+    bless { %args }, $message_class;
+}
+
 sub is_message_event { 1 }
 
 sub message_id  { $_[0]->{message}{id} }

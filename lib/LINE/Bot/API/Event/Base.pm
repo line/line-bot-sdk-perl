@@ -2,6 +2,11 @@ package LINE::Bot::API::Event::Base;
 use strict;
 use warnings;
 
+sub new {
+    my($class, %args) = @_;
+    bless { %args }, $class;
+}
+
 sub type      { $_[0]->{type} }
 sub timestamp { $_[0]->{timestamp} }
 sub type      { $_[0]->{type} }

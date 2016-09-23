@@ -8,6 +8,7 @@ use JSON::XS;
 use URI;
 
 use LINE::Bot::API::Builder::SendMessage;
+use LINE::Bot::API::Event;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Constants;
@@ -90,11 +91,12 @@ sub leave_group {
 
 sub validate_signature {
     my($self, $json, $signature) = @_;
-    LINE::Bot::API::Receive->validate_signature($json, $self->{channel_secret}, $signature);
+    LINE::Bot::API::Event->validate_signature($json, $self->{channel_secret}, $signature);
 }
 
 sub parse_events_from_json {
     my($self, $json) = @_;
+    LINE::Bot::API::Event->parse_events_json($json);
 }
 
 # for v1
