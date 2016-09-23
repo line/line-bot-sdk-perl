@@ -1,0 +1,266 @@
+use strict;
+use warnings;
+use Test::More;
+use t::Util;
+
+use LINE::Bot::API::Event;
+
+my $config = +{
+    channel_id           => 1000000000,
+    channel_secret       => 'testsecret',
+    channel_access_token => 'ACCESS_TOKEN',
+};
+
+my $json = <<JSON;
+{
+ "events":[
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"text",
+    "text":"message"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"image"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"room",
+    "roomId":"roomid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"video"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"room",
+    "roomId":"roomid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"audio"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"location",
+    "title":"label",
+    "address":"tokyo",
+    "latitude":-34.12,
+    "longitude":134.23
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"sticker",
+    "packageId":"1",
+    "stickerId":"2"
+   }
+  },
+  {
+   "type":"follow",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken"
+  },
+  {
+   "type":"unfollow",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   }
+  },
+  {
+   "type":"join",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken"
+  },
+  {
+   "type":"leave",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   }
+  },
+  {
+   "type":"postback",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "postback.data":"postback"
+  },
+  {
+   "type":"beacon",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "beacon.hwid":"bid",
+   "beacon.type":"enter"
+  }
+ ]
+}
+JSON
+
+
+subtest 'validate_signature' => sub {
+    subtest 'failed' => sub {
+        ok(! LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, ''));
+    };
+
+    subtest 'successful' => sub {
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'QHWgy4GThTN7vK1Nh7fRzNVCAIptZuEFm4V1x6mQFp4='));
+    };
+};
+
+subtest 'parse_events_json' => sub {
+    my $events = LINE::Bot::API::Event->parse_events_json($json);
+
+    is scalar(@{ $events }), 12;
+
+    subtest 'message' => sub {
+        subtest 'text' => sub {
+            my $event = $events->[0];
+            is $event->timestamp, 12345678901234;
+            ok $event->is_user_event;
+            is $event->user_id, 'userid';
+            ok $event->is_message_event;
+            ok $event->is_text_message;
+            is $event->reply_token, 'replytoken';
+            is $event->message_id, 'contentid';
+            is $event->text, 'message';
+        };
+        subtest 'image' => sub {
+            my $event = $events->[1];
+            ok $event->is_group_event;
+            is $event->group_id, 'groupid';
+            ok $event->is_image_message;
+            is $event->reply_token, 'replytoken';
+        };
+        subtest 'video' => sub {
+            my $event = $events->[2];
+            ok $event->is_room_event;
+            is $event->room_id, 'roomid';
+            ok $event->is_video_message;
+            is $event->reply_token, 'replytoken';
+        };
+        subtest 'audio' => sub {
+            my $event = $events->[3];
+            ok $event->is_audio_message;
+            is $event->reply_token, 'replytoken';
+        };
+        subtest 'location' => sub {
+            my $event = $events->[4];
+            ok $event->is_location_message;
+            is $event->reply_token, 'replytoken';
+            is $event->title, 'label';
+            is $event->address, 'tokyo';
+            is $event->latitude, -34.12;
+            is $event->longitude, 134.23;
+        };
+        subtest 'sticker' => sub {
+            my $event = $events->[5];
+            ok $event->is_sticker_message;
+            is $event->reply_token, 'replytoken';
+            is $event->package_id, '1';
+            is $event->sticker_id, '2';
+        };
+    };
+
+    subtest 'follow' => sub {
+        my $event = $events->[6];
+        ok $event->is_follow_event;
+        is $event->reply_token, 'replytoken';
+    };
+
+    subtest 'unfollow' => sub {
+        my $event = $events->[7];
+        ok $event->is_unfollow_event;
+        is $event->reply_token, undef;
+    };
+
+    subtest 'join' => sub {
+        my $event = $events->[8];
+        ok $event->is_join_event;
+        is $event->reply_token, 'replytoken';
+    };
+
+    subtest 'leave' => sub {
+        my $event = $events->[9];
+        ok $event->is_leave_event;
+        is $event->reply_token, undef;
+    };
+
+    subtest 'postback' => sub {
+        my $event = $events->[10];
+        ok $event->is_postback_event;
+        is $event->reply_token, 'replytoken';
+        is $event->postback_data, 'postback';
+    };
+
+    subtest 'beacon' => sub {
+        my $event = $events->[11];
+        ok $event->is_beacon_detection_event;
+        is $event->reply_token, 'replytoken';
+        is $event->beacon_hwid, 'bid';
+        is $event->beacon_type, 'enter';
+    };
+};
+
+done_testing;
