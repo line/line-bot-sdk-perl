@@ -8,10 +8,12 @@ sub new_buttons {
 }
 
 sub new_confirm {
+    my($class, %args) = @_;
     LINE::Bot::API::Builder::TemplateMessage::Confirm->new(%args);
 }
 
 sub new_carousel {
+    my($class, %args) = @_;
     LINE::Bot::API::Builder::TemplateMessage::Carousel->new(%args);
 }
 
@@ -20,7 +22,7 @@ package LINE::Bot::API::Builder::TemplateMessage::ActionBase {
 
     sub add_action {
         my($self, $action) = @_;
-        push @{ $self->_action }, $action;
+        push @{ $self->_actions }, $action;
         $self;
     }
 
@@ -54,7 +56,7 @@ package LINE::Bot::API::Builder::TemplateMessage::ActionBase {
 }
 
 package LINE::Bot::API::Builder::TemplateMessage::Buttons {
-    use parent 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
+    use parent -norequire, 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
 
     sub new {
         my($class, %args) = @_;
@@ -80,7 +82,7 @@ package LINE::Bot::API::Builder::TemplateMessage::Buttons {
 }
 
 package LINE::Bot::API::Builder::TemplateMessage::Confirm {
-    use parent 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
+    use parent -norequire, 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
 
     sub new {
         my($class, %args) = @_;
@@ -130,7 +132,7 @@ package LINE::Bot::API::Builder::TemplateMessage::Carousel {
 }
 
 package LINE::Bot::API::Builder::TemplateMessage::Column {
-    use parent 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
+    use parent -norequire, 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
 
     sub new {
         my($class, %args) = @_;
