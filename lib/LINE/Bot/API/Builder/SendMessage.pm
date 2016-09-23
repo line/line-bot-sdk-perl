@@ -57,7 +57,7 @@ sub add_location {
     my($self, %args) = @_;
     $self->add(+{
         type      => 'location',
-        title     => $args{text},
+        title     => $args{title},
         address   => $args{address},
         latitude  => $args{latitude},
         longitude => $args{longitude},

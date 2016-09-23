@@ -5,51 +5,65 @@ use t::Util;
 
 use JSON::XS;
 use LINE::Bot::API;
+use LINE::Bot::API::Builder::SendMessage;
 
 my $bot = LINE::Bot::API->new(
-    channel_id     => 1000000000,
-    channel_secret => 'testsecret',
-    channel_mid    => 'TEST_MID',
+    channel_id           => 1000000000,
+    channel_secret       => 'testsecret',
+    channel_access_token => 'ACCESS_TOKEN',
 );
+
+my $builder = LINE::Bot::API::Builder::SendMessage->new;
+$builder->add_text( text => 'hello!' );
+
 send_request {
-    my $res = $bot->send_text(
-        to_mid     => 'DUMMY_MID',
-        text       => 'hello!',
-    );
-    is $res->http_status, 200;
-    is $res->version, 1;
-    is $res->message_id, '1347940533207';
-    is_deeply $res->failed, [];
-    is $res->timestamp, '1347940533207';
-    ok $res->is_success;
+    my $res = $bot->push_message('DUMMY_MID', $builder->build);
+    is $res->{http_status}, 200;
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
-    is $args{url},    'https://trialbot-api.line.me/v1/events';
+    is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is $data->{eventType}, '138311608800106203';
-    is_deeply $data->{to}, ['DUMMY_MID'];
-    is $data->{content}{text}, 'hello!';
-
-    is $data->{content}{contentType}, CONTENT_TEXT;
-    is $data->{content}{toType}, RECIPIENT_USER;
+    is_deeply $data->{to}, 'DUMMY_MID';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'text';
+    is $message->{text}, 'hello!';
 
     my $has_header = 0;
     my @headers = @{ $args{headers} };
     while (my($key, $value) = splice @headers, 0, 2) {
-        $has_header++ if $key eq 'X-Line-ChannelID'             && $value eq '1000000000';
-        $has_header++ if $key eq 'X-Line-ChannelSecret'         && $value eq 'testsecret';
-        $has_header++ if $key eq 'X-Line-Trusted-User-With-ACL' && $value eq 'TEST_MID';
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
     }
-    is $has_header, 3;
+    is $has_header, 1;
 
-    +{
-        version   => 1,
-        messageId => 1347940533207,
-        failed    => [],
-        timestamp => 1347940533207,
-    };
+    +{ status =>200 };
+};
+
+send_request {
+    my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
+    is $res->{http_status}, 200;
+} receive_request {
+    my %args = @_;
+    is $args{method}, 'POST';
+    is $args{url},    'https://api.line.me/v2/bot/message/reply';
+
+    my $data = decode_json $args{content};
+    is_deeply $data->{replyToken}, 'DUMMY_TOKEN';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'text';
+    is $message->{text}, 'hello!';
+
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
+
+    +{ status =>200 };
 };
 
 done_testing;

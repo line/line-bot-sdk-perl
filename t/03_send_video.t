@@ -5,37 +5,70 @@ use t::Util;
 
 use JSON::XS;
 use LINE::Bot::API;
+use LINE::Bot::API::Builder::SendMessage;
 
 my $bot = LINE::Bot::API->new(
-    channel_id     => 1000000000,
-    channel_secret => 'testsecret',
-    channel_mid    => 'TEST_MID',
+    channel_id           => 1000000000,
+    channel_secret       => 'testsecret',
+    channel_access_token => 'ACCESS_TOKEN',
 );
+
+my $builder = LINE::Bot::API::Builder::SendMessage->new;
+$builder->add_video(
+    video_url   => 'http://example.com/image.mp4',
+    preview_url => 'http://example.com/image_preview.jpg',
+);
+
 send_request {
-    my $res = $bot->send_video(
-        to_mid      => 'DUMMY_MID',
-        video_url   => 'http://example.com/image.mp4',
-        preview_url => 'http://example.com/image_preview.jpg',
-    );
-    is $res->http_status, 200;
-    is $res->timestamp, '1347940533207';
-    ok $res->is_success;
+    my $res = $bot->push_message('DUMMY_MID', $builder->build);
+    is $res->{http_status}, 200;
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
-    is $args{url},    'https://trialbot-api.line.me/v1/events';
+    is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is_deeply $data->{to}, ['DUMMY_MID'];
-    is $data->{content}{originalContentUrl}, 'http://example.com/image.mp4';
-    is $data->{content}{previewImageUrl}, 'http://example.com/image_preview.jpg';
+    is_deeply $data->{to}, 'DUMMY_MID';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'video';
+    is $message->{originalContentUrl}, 'http://example.com/image.mp4';
+    is $message->{previewImageUrl}, 'http://example.com/image_preview.jpg';
 
-    is $data->{content}{contentType}, CONTENT_VIDEO;
-    is $data->{content}{toType}, RECIPIENT_USER;
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
 
-    +{
-        timestamp    => 1347940533207,
-    };
+    +{ status =>200 };
+};
+
+send_request {
+    my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
+    is $res->{http_status}, 200;
+} receive_request {
+    my %args = @_;
+    is $args{method}, 'POST';
+    is $args{url},    'https://api.line.me/v2/bot/message/reply';
+
+    my $data = decode_json $args{content};
+    is_deeply $data->{replyToken}, 'DUMMY_TOKEN';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'video';
+    is $message->{originalContentUrl}, 'http://example.com/image.mp4';
+    is $message->{previewImageUrl}, 'http://example.com/image_preview.jpg';
+
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
+
+    +{ status =>200 };
 };
 
 done_testing;

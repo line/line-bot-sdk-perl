@@ -66,6 +66,7 @@ sub post {
         ],
         $json,
     );
+
     unless ($res_content && $res_content =~ /^\{.+\}$/) {
         croak 'LINE BOT API error: ' . $res_content;
     }
