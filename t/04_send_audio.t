@@ -8,7 +8,6 @@ use LINE::Bot::API;
 use LINE::Bot::API::Builder::SendMessage;
 
 my $bot = LINE::Bot::API->new(
-    channel_id           => 1000000000,
     channel_secret       => 'testsecret',
     channel_access_token => 'ACCESS_TOKEN',
 );
