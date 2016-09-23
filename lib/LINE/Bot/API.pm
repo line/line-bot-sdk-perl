@@ -20,7 +20,6 @@ sub new {
         client               => $client,
         channel_id           => $args{channel_id},
         channel_secret       => $args{channel_secret},
-        channel_mid          => $args{channel_mid},
         channel_access_token => $args{channel_access_token},
         event_api_endpoint   => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
         bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/bot/',
@@ -41,12 +40,12 @@ sub reply_message {
 }
 
 sub push_message {
-    my($self, $to_mid, $messages) = @_;
+    my($self, $to_id, $messages) = @_;
 
     $self->{client}->post(
         $self->{bot_api_endpoint} . 'message/push',
         +{
-            to       => $to_mid,
+            to       => $to_id,
             messages => $messages,
         }
     );

@@ -22,7 +22,6 @@ sub new {
     bless {
         channel_id           => $args{channel_id},
         channel_secret       => $args{channel_secret},
-        channel_mid          => $args{channel_mid},
         channel_access_token => $args{channel_access_token},
         furl                 => Furl::HTTP->new(
             %{ $args{http_client} }
