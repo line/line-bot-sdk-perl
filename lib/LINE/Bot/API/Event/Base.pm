@@ -9,7 +9,6 @@ sub new {
 
 sub type      { $_[0]->{type} }
 sub timestamp { $_[0]->{timestamp} }
-sub type      { $_[0]->{type} }
 
 # Unfollow and Leave events don't have this
 sub reply_token { $_[0]->{message}{replyToken} }
