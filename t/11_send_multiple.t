@@ -30,7 +30,7 @@ send_request {
     is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is_deeply $data->{to}, 'DUMMY_MID';
+    is $data->{to}, 'DUMMY_MID';
     is scalar(@{ $data->{messages} }), 5;
     {
         my $message = $data->{messages}[0];
@@ -77,7 +77,7 @@ send_request {
     is $args{url},    'https://api.line.me/v2/bot/message/reply';
 
     my $data = decode_json $args{content};
-    is_deeply $data->{replyToken}, 'DUMMY_TOKEN';
+    is $data->{replyToken}, 'DUMMY_TOKEN';
     is scalar(@{ $data->{messages} }), 5;
     {
         my $message = $data->{messages}[0];
