@@ -67,7 +67,7 @@ sub push_message {
 }
 
 sub get_content {
-    my($self, $message_id) = @_;
+    my($self, $message_id, %options) = @_;
     $self->{client}->contents_download(
         $self->{bot_api_endpoint} . "message/$message_id/content",
         %options
