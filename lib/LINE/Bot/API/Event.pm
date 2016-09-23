@@ -24,7 +24,7 @@ my %TYPE2CLASS = (
     join     => 'LINE::Bot::API::Event::Join',
     leave    => 'LINE::Bot::API::Event::Leave',
     postback => 'LINE::Bot::API::Event::Postback',
-    beacon   => 'LINE::Bot::API::Event::Beacon',
+    beacon   => 'LINE::Bot::API::Event::BeaconDetection',
 );
 
 sub parse_events_json {
