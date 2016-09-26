@@ -79,7 +79,7 @@ for my $type (qw/ image video audio sticker location imagemap template /) {
     };
     my $exec = sub {
         my($self, $messages, %args) = @_;
-        $self->{bot}->$add_method(%args);
+        $messages->$add_method(%args);
     };
 
     no strict 'refs';
