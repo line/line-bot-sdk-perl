@@ -140,7 +140,9 @@ my $json = <<JSON;
     "userId":"userid"
    },
    "replyToken":"replytoken",
-   "postback.data":"postback"
+   "postback":{
+    "data":"postback"
+   }
   },
   {
    "type":"beacon",
@@ -150,8 +152,10 @@ my $json = <<JSON;
     "userId":"userid"
    },
    "replyToken":"replytoken",
-   "beacon.hwid":"bid",
-   "beacon.type":"enter"
+   "beacon":{
+    "hwid":"bid",
+    "type":"enter"
+   }
   }
  ]
 }
@@ -164,7 +168,7 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'QHWgy4GThTN7vK1Nh7fRzNVCAIptZuEFm4V1x6mQFp4='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'UOg2VV1fQy1Ec7wvoZ25vhxWqYp7rvehbtOeIzGet4I='));
     };
 };
 

@@ -5,6 +5,6 @@ use parent 'LINE::Bot::API::Event::Base';
 
 sub is_postback_event { 1 }
 
-sub postback_data { $_[0]->{'postback.data'} }
+sub postback_data { $_[0]->{postback}{data} }
 
 1;
