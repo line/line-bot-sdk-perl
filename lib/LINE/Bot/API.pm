@@ -20,7 +20,6 @@ sub new {
         client               => $client,
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
-        event_api_endpoint   => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
         bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/bot/',
     }, $class;
 }
