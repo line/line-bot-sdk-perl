@@ -5,12 +5,14 @@ use warnings;
 sub new {
     my($class, %args) = @_;
     bless {
-        type              => 'imagemap',
-        baseUrl           => $args{base_url},
-        altText           => $args{alt_text},
-        'baseSize.width'  => $args{base_width},
-        'baseSize.height' => $args{base_height},
-        actions           => $args{actions} // [],
+        type     => 'imagemap',
+        baseUrl  => $args{base_url},
+        altText  => $args{alt_text},
+        baseSize => +{
+            width  => $args{base_width},
+            height => $args{base_height},
+        },
+        actions  => $args{actions} // [],
     }, $class;
 }
 
