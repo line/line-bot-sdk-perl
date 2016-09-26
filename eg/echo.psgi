@@ -62,7 +62,7 @@ sub {
                 }
             } elsif ($event->is_image_message || $event->is_video_message) {
                 my $size = do {
-                    my($temp) = $bot->get_content($event->message->id);
+                    my($temp) = $bot->get_content($event->message_id);
                     -s $temp;
                 };
 
