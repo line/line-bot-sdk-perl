@@ -6,13 +6,13 @@ use LINEBotFramework::Response;
 
 sub add {
     my($class, $req) = @_;
-    return unless $req->message->is_text;
+    return unless $req->event->is_text_message;
 
     my $res = LINEBotFramework::Response->new;
 
     my $session = $req->session;
     $session->{memo}{stack} ||= [];
-    push @{ $session->{memo}{stack} }, $req->message->text;
+    push @{ $session->{memo}{stack} }, $req->event->text;
 
     $res->next_context($req->context); # next context is not changed
 
@@ -39,9 +39,8 @@ sub finish {
     $session->{memo}{stack} = [];
 
     $res->send_sticker(
-        stkid    => int(rand(10))+1,
-        stkpkgid => 1,
-        stkver   => 100,
+        package_id => 1,
+        sticker_id => int(rand(10))+1,
     );
 
     $res;

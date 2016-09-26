@@ -16,9 +16,9 @@ sub new {
 my $CONTEXT = +{};
 
 sub get_context {
-    my($self, $mid) = @_;
+    my($self, $source_type, $from_id) = @_;
 
-    my $json = $CONTEXT->{$mid};
+    my $json = $CONTEXT->{"$source_type:$from_id"};
     return ('default', +{}) unless $json;
 
     my $data =  decode_json($json);
@@ -26,10 +26,10 @@ sub get_context {
 }
 
 sub set_context {
-    my($self, $mid, $context, $session) = @_;
+    my($self, $source_type, $from_id, $context, $session) = @_;
 
     $session->{context} = $context;
-    $CONTEXT->{$mid} = encode_json($session);
+    $CONTEXT->{"$source_type:$from_id"} = encode_json($session);
 }
 
 1;
