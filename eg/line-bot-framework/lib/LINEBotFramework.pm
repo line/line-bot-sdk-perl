@@ -163,7 +163,7 @@ sub exec_message_router {
 sub response_finalize {
     my($self, $req, $res) = @_;
     return unless $res;
-    my $event = $res->event;
+    my $event = $req->event;
 
     my $reply_token = $event->reply_token;
     if ($reply_token) {
