@@ -9,11 +9,13 @@ use LINE::Bot::API::Builder::SendMessage;
 
 my $channel_secret       = $ENV{CHANNEL_SECRET};
 my $channel_access_token = $ENV{CHANNEL_ACCESS_TOKEN};
+my $bot_api_endpoint     = $ENV{BOT_API_ENDPOINT};
 my $callback_url         = $ENV{CALLBACK_URL} // '/perl/callback';
 
 my $bot = LINE::Bot::API->new(
     channel_secret       => $channel_secret,
     channel_access_token => $channel_access_token,
+    bot_api_endpoint     => $bot_api_endpoint,
 );
 
 sub {
