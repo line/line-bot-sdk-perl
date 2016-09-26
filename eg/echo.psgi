@@ -30,7 +30,7 @@ sub {
 
     my $events = $bot->parse_events_from_json($req->content);
     for my $event (@{ $events }) {
-        my $messages => LINE::Bot::API::Builder::SendMessage->new;
+        my $messages = LINE::Bot::API::Builder::SendMessage->new;
 
         if ($event->is_message_event) {
             my $from_id;
