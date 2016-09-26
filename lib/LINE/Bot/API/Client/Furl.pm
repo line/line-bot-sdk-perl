@@ -20,7 +20,6 @@ sub new {
     $args{http_client}{agent}   ||= "LINE::Bot::API/$LINE::Bot::API::VERSION";
     $args{http_client}{timeout} ||= 3;
     bless {
-        channel_id           => $args{channel_id},
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
         furl                 => Furl::HTTP->new(

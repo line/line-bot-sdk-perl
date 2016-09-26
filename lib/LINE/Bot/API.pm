@@ -18,7 +18,6 @@ sub new {
 
     bless {
         client               => $client,
-        channel_id           => $args{channel_id},
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
         event_api_endpoint   => $args{event_api_endpoint} // 'https://trialbot-api.line.me/v1/events',
