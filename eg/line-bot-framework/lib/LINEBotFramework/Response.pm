@@ -36,10 +36,10 @@ sub finalize {
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
 
-    for my $args (@{ $self->{queues} }) {
-        my $type = delete $args->{type};
+    for my $queue (@{ $self->{queues} }) {
+        my $type = delete $queue->{type};
         my $method = "exec_$type";
-        $self->$method($messages, %args);
+        $self->$method($messages, %{ $queue });
     }
 
     $self->{bot}->reply_message($args{reply_token}, $messages->build);
