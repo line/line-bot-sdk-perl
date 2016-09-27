@@ -17,6 +17,7 @@ $builder->add_text( text => 'hello!' );
 
 send_request {
     my $res = $bot->push_message('DUMMY_MID', $builder->build);
+    isa_ok $res, 'LINE::Bot::API::Response::Common';
     ok $res->is_success;
     is $res->http_status, 200;
 } receive_request {
@@ -43,6 +44,7 @@ send_request {
 
 send_request {
     my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
+    isa_ok $res, 'LINE::Bot::API::Response::Common';
     ok $res->is_success;
     is $res->http_status, 200;
 } receive_request {

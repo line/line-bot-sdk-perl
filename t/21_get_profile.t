@@ -14,6 +14,7 @@ send_request {
     my $res = $bot->get_profile(
         'USER_ID',
     );
+    isa_ok $res, 'LINE::Bot::API::Response::Profile';
     ok $res->is_success;
     is $res->http_status, 200;
 
