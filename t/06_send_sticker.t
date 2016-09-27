@@ -20,7 +20,8 @@ $builder->add_sticker(
 
 send_request {
     my $res = $bot->push_message('DUMMY_MID', $builder->build);
-    is $res->{http_status}, 200;
+    ok $res->is_success;
+    is $res->http_status, 200;
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
@@ -41,12 +42,13 @@ send_request {
     }
     is $has_header, 1;
 
-    +{ status =>200 };
+    +{};
 };
 
 send_request {
     my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
-    is $res->{http_status}, 200;
+    ok $res->is_success;
+    is $res->http_status, 200;
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
@@ -67,7 +69,7 @@ send_request {
     }
     is $has_header, 1;
 
-    +{ status =>200 };
+    +{};
 };
 
 done_testing;
