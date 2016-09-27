@@ -17,7 +17,7 @@ $builder->add_text( text => 'hello!' );
 
 subtest 'success' => sub {
     send_request {
-        my $res = $bot->push_message('DUMMY_MID', $builder->build);
+        my $res = $bot->push_message('DUMMY_ID', $builder->build);
         isa_ok $res, 'LINE::Bot::API::Response::Common';
         ok $res->is_success;
         is $res->http_status, 200;
@@ -28,7 +28,7 @@ subtest 'success' => sub {
 
 subtest 'fail' => sub {
     send_request {
-        my $res = $bot->push_message('DUMMY_MID', $builder->build);
+        my $res = $bot->push_message('DUMMY_ID', $builder->build);
         isa_ok $res, 'LINE::Bot::API::Response::Error';
         ok !$res->is_success;
         is $res->http_status, 500;

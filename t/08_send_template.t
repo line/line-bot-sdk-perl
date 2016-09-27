@@ -150,7 +150,7 @@ sub run_messages {
 }
 
 send_request {
-    my $res = $bot->push_message('DUMMY_MID', $builder->build);
+    my $res = $bot->push_message('DUMMY_ID', $builder->build);
     ok $res->is_success;
     is $res->http_status, 200;
 } receive_request {
@@ -159,7 +159,7 @@ send_request {
     is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is $data->{to}, 'DUMMY_MID';
+    is $data->{to}, 'DUMMY_ID';
     run_messages $data->{messages};
 
     my $has_header = 0;

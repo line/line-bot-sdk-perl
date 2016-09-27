@@ -35,7 +35,7 @@ my $imagemap = LINE::Bot::API::Builder::ImagemapMessage->new(
 my $builder = LINE::Bot::API::Builder::SendMessage->new->add_imagemap($imagemap->build);
 
 send_request {
-    my $res = $bot->push_message('DUMMY_MID', $builder->build);
+    my $res = $bot->push_message('DUMMY_ID', $builder->build);
     ok $res->is_success;
     is $res->http_status, 200;
 } receive_request {
@@ -44,7 +44,7 @@ send_request {
     is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is $data->{to}, 'DUMMY_MID';
+    is $data->{to}, 'DUMMY_ID';
     is scalar(@{ $data->{messages} }), 1;
     my $message = $data->{messages}[0];
     is $message->{type}, 'imagemap';
