@@ -50,7 +50,7 @@ sub {
                     my $profile = $bot->get_profile($event->user_id);
 
                     $messages->add_text(
-                        text   => sprintf('Hello! %s san! Your status message is %s', $profile->{displayName}, $profile->{statusMessage}),
+                        text   => sprintf('Hello! %s san! Your status message is %s', $profile->{displayName}, ($profile->{statusMessage} // 'null')),
                     )->add_image(
                         image_url   => $profile->{pictureUrl},
                         preview_url => $profile->{pictureUrl},
