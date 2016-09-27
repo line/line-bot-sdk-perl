@@ -13,7 +13,7 @@ sub new {
     }
     my $klass   = join '::', __PACKAGE__, $backend;
     eval "use $klass;"; ## no critic
-    die $@ if $@;
+    croak $@ if $@;
     $klass->new(%args);
 }
 

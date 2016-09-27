@@ -2,6 +2,8 @@ package LINE::Bot::API::Event::Base;
 use strict;
 use warnings;
 
+use Carp 'croak';
+
 sub new {
     my($class, %args) = @_;
     bless { %args }, $class;
@@ -29,19 +31,19 @@ sub is_room_event  { $_[0]->{source}{type} eq 'room' }
 
 sub user_id {
     my $self = shift;
-    die 'This event source is not a user type.' unless $self->is_user_event;
+    croak 'This event source is not a user type.' unless $self->is_user_event;
     $self->{source}{userId};
 }
 
 sub group_id {
     my $self = shift;
-    die 'This event source is not a group type.' unless $self->is_group_event;
+    croak 'This event source is not a group type.' unless $self->is_group_event;
     $self->{source}{groupId};
 }
 
 sub room_id {
     my $self = shift;
-    die 'This event source is not a room type.' unless $self->is_room_event;
+    croak 'This event source is not a room type.' unless $self->is_room_event;
     $self->{source}{roomId};
 }
 
