@@ -27,7 +27,6 @@ sub new {
     }, $class;
 }
 
-# for v2
 sub reply_message {
     my($self, $reply_token, $messages) = @_;
 
