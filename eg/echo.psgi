@@ -23,11 +23,11 @@ sub {
     my $req = Plack::Request->new($env);
 
     unless ($req->method eq 'POST' && $req->path eq $callback_url) {
-        return [404, [], ['Not Found']];
+        return [200, [], ['Not Found']];
     }
 
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
-        return [500, [], ['bad request']];
+        return [200, [], ['bad request']];
     }
 
     my $events = $bot->parse_events_from_json($req->content);

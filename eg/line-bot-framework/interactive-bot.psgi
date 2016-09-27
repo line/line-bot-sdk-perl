@@ -31,11 +31,11 @@ sub {
     my $req = Plack::Request->new($env);
 
     unless ($req->method eq 'POST' && $req->path eq $callback_url) {
-        return [404, [], ['Not Found']];
+        return [200, [], ['Not Found']];
     }
 
     unless ($framework->validate_signature($req->content, $req->header('X-Line-Signature'))) {
-        return [470, [], ['bad request']];
+        return [200, [], ['bad request']];
     }
 
     $framework->dispatcher($req->content);
