@@ -23,7 +23,7 @@ sub new {
         client               => $client,
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
-        bot_api_endpoint     => $args{bot_api_endpoint}   // 'https://api.line.me/v2/bot/',
+        messaging_api_endpoint     => $args{messaging_api_endpoint}   // 'https://api.line.me/v2/bot/',
     }, $class;
 }
 
@@ -31,7 +31,7 @@ sub reply_message {
     my($self, $reply_token, $messages) = @_;
 
     my $res = $self->{client}->post(
-        $self->{bot_api_endpoint} . 'message/reply',
+        $self->{messaging_api_endpoint} . 'message/reply',
         +{
             replyToken => $reply_token,
             messages   => $messages,
@@ -44,7 +44,7 @@ sub push_message {
     my($self, $to_id, $messages) = @_;
 
     my $res = $self->{client}->post(
-        $self->{bot_api_endpoint} . 'message/push',
+        $self->{messaging_api_endpoint} . 'message/push',
         +{
             to       => $to_id,
             messages => $messages,
@@ -56,7 +56,7 @@ sub push_message {
 sub get_content {
     my($self, $message_id, %options) = @_;
     my $res = $self->{client}->contents_download(
-        $self->{bot_api_endpoint} . "message/$message_id/content",
+        $self->{messaging_api_endpoint} . "message/$message_id/content",
         %options
     );
     LINE::Bot::API::Response::Content->new(%{ $res });
@@ -64,19 +64,19 @@ sub get_content {
 
 sub get_profile {
     my($self, $user_id) = @_;
-    my $res = $self->{client}->get($self->{bot_api_endpoint} . "profile/$user_id");
+    my $res = $self->{client}->get($self->{messaging_api_endpoint} . "profile/$user_id");
     LINE::Bot::API::Response::Profile->new(%{ $res });
 }
 
 sub leave_room {
     my($self, $room_id) = @_;
-    my $res = $self->{client}->post($self->{bot_api_endpoint} . "room/$room_id/leave", +{});
+    my $res = $self->{client}->post($self->{messaging_api_endpoint} . "room/$room_id/leave", +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub leave_group {
     my($self, $group_id) = @_;
-    my $res = $self->{client}->post($self->{bot_api_endpoint} . "group/$group_id/leave", +{});
+    my $res = $self->{client}->post($self->{messaging_api_endpoint} . "group/$group_id/leave", +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 

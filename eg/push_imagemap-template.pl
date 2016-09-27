@@ -9,9 +9,9 @@ use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Builder::ImagemapMessage;
 use LINE::Bot::API::Builder::TemplateMessage;
 
-my $channel_secret       = $ENV{CHANNEL_SECRET};
-my $channel_access_token = $ENV{CHANNEL_ACCESS_TOKEN};
-my $bot_api_endpoint     = $ENV{BOT_API_ENDPOINT};
+my $channel_secret         = $ENV{CHANNEL_SECRET};
+my $channel_access_token   = $ENV{CHANNEL_ACCESS_TOKEN};
+my $messaging_api_endpoint = $ENV{MESSAGING_API_ENDPOINT};
 
 my $imagemap_image_url = $ENV{IMAGEMAP_IMAGE_URL};
 my $template_image_url = $ENV{TEMPLATE_IMAGE_URL};
@@ -19,9 +19,9 @@ my $template_image_url = $ENV{TEMPLATE_IMAGE_URL};
 my($to_id, $text) = @ARGV;
 
 my $bot = LINE::Bot::API->new(
-    channel_secret       => $channel_secret,
-    channel_access_token => $channel_access_token,
-    bot_api_endpoint     => $bot_api_endpoint,
+    channel_secret         => $channel_secret,
+    channel_access_token   => $channel_access_token,
+    messaging_api_endpoint => $messaging_api_endpoint,
 );
 
 my $messages = LINE::Bot::API::Builder::SendMessage->new->add_text( text => $text );
