@@ -1,16 +1,16 @@
 {
-   "abstract" : "SDK of the LINE BOT API Trial for Perl",
+   "abstract" : "SDK of the LINE Messaging API for Perl",
    "author" : [
       "LINE Corporation"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.047, Dist::Milla version v1.0.15, CPAN::Meta::Converter version 2.150001",
+   "generated_by" : "Dist::Milla version v1.0.16, Dist::Zilla version 6.007, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "artistic_2"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : 2
+      "version" : "2"
    },
    "name" : "LINE-Bot-API",
    "no_index" : {
@@ -31,7 +31,7 @@
       },
       "develop" : {
          "requires" : {
-            "Dist::Milla" : "v1.0.15",
+            "Dist::Milla" : "v1.0.16",
             "Test::Pod" : "1.41"
          }
       },
@@ -56,19 +56,20 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/line/line-bot-sdk-perl/issues"
+         "web" : "https://github.com/line/line-bot-sdk-perl-v2/issues"
       },
-      "homepage" : "https://github.com/line/line-bot-sdk-perl",
+      "homepage" : "https://github.com/line/line-bot-sdk-perl-v2",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/line/line-bot-sdk-perl.git",
-         "web" : "https://github.com/line/line-bot-sdk-perl"
+         "url" : "https://github.com/line/line-bot-sdk-perl-v2.git",
+         "web" : "https://github.com/line/line-bot-sdk-perl-v2"
       }
    },
    "version" : "0.04",
    "x_contributors" : [
       "Kazuhiro Osawa <yappo@shibuya.pl>",
       "Syohei YOSHIDA <syohex@gmail.com>"
-   ]
+   ],
+   "x_serialization_backend" : "JSON::XS version 3.02"
 }
 
