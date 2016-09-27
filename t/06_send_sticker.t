@@ -14,8 +14,8 @@ my $bot = LINE::Bot::API->new(
 
 my $builder = LINE::Bot::API::Builder::SendMessage->new;
 $builder->add_sticker(
-    package_id => 1,
-    sticker_id => 2,
+    package_id => '1',
+    sticker_id => '2',
 );
 
 send_request {
@@ -32,8 +32,8 @@ send_request {
     is scalar(@{ $data->{messages} }), 1;
     my $message = $data->{messages}[0];
     is $message->{type}, 'sticker';
-    is $message->{packageId}, 1;
-    is $message->{stickerId}, 2;
+    is $message->{packageId}, '1';
+    is $message->{stickerId}, '2';
 
     my $has_header = 0;
     my @headers = @{ $args{headers} };
@@ -59,8 +59,8 @@ send_request {
     is scalar(@{ $data->{messages} }), 1;
     my $message = $data->{messages}[0];
     is $message->{type}, 'sticker';
-    is $message->{packageId}, 1;
-    is $message->{stickerId}, 2;
+    is $message->{packageId}, '1';
+    is $message->{stickerId}, '2';
 
     my $has_header = 0;
     my @headers = @{ $args{headers} };

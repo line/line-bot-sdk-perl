@@ -39,8 +39,8 @@ sub finish {
     $session->{memo}{stack} = [];
 
     $res->send_sticker(
-        package_id => 1,
-        sticker_id => int(rand(10))+1,
+        package_id => '1',
+        sticker_id => int(rand(10))+1 + '',
     );
 
     $res;

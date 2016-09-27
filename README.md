@@ -266,8 +266,8 @@ Build a sticker type object.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_sticker(
-        package_id => 1,
-        sticker_id => 2,
+        package_id => '1',
+        sticker_id => '2',
     );
     $bot->reply_message($reply_token, $messages->build);
 

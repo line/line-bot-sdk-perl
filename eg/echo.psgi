@@ -55,8 +55,8 @@ sub {
 #                        image_url   => $profile->picture_url,
 #                        preview_url => $profile->picture_url,
                     )->add_sticker(
-                        package_id => 1,
-                        sticker_id => int(rand(10))+1,
+                        package_id => '1',
+                        sticker_id => int(rand(10))+1 + '',
                     );
 
                 } else {
