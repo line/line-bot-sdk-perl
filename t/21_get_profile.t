@@ -18,7 +18,7 @@ send_request {
     ok $res->is_success;
     is $res->http_status, 200;
 
-    is $res->display_name, 'BOT API';
+    is $res->display_name, 'Messaging API';
     is $res->user_id, 'userId';
     is $res->picture_url, 'http://example.com/abcdefghijklmn';
     is $res->status_message, 'Hello, LINE!';
@@ -28,7 +28,7 @@ send_request {
     is $args{url},    'https://api.line.me/v2/bot/profile/USER_ID';
 
     +{
-        displayName   => 'BOT API',
+        displayName   => 'Messaging API',
         userId        => 'userId',
         pictureUrl    => 'http://example.com/abcdefghijklmn',
         statusMessage => 'Hello, LINE!',

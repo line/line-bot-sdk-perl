@@ -45,7 +45,7 @@ sub get {
         ],
     );
     unless ($res_content && $res_content =~ /^\{.+\}$/) {
-        croak 'LINE BOT API error: ' . $res_content;
+        croak 'LINE Messaging API error: ' . $res_content;
     }
 
     my $ret = $JSON->decode($res_content);
@@ -68,7 +68,7 @@ sub post {
     );
 
     unless ($res_content && $res_content =~ /^\{.*\}$/) {
-        croak 'LINE BOT API error: ' . $res_content;
+        croak 'LINE Messaging API error: ' . $res_content;
     }
 
     my $ret = $JSON->decode($res_content);
@@ -90,7 +90,7 @@ sub contents_download {
         ],
     );
     unless ($res_status eq '200') {
-        carp "LINE BOT API contents_download error: $res_status $url\n\tcontent=$res_content";
+        carp "LINE Messaging API contents_download error: $res_status $url\n\tcontent=$res_content";
 
         my $ret = $JSON->decode($res_content);
         $ret->{http_status} = $res_status;

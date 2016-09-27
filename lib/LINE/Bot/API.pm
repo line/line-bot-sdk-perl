@@ -138,9 +138,9 @@ LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
 =head1 DESCRIPTION
 
-LINE::Bot::API is a client library to easily use the LINE BOT API.
+LINE::Bot::API is a client library to easily use the LINE Messaging API.
 You can create a bot which will run on the LINE App by registering your bot account.
-Your B<BOT API Trial> account can be created from L<LINE BUSINESS CENTER|https://business.line.me/>.
+Your B<Messaging API> account can be created from L<LINE BUSINESS CENTER|https://business.line.me/>.
 
 You can find the B<Channel Secret> and B<Channel Access Token> on the Basic information page at L<LINE BUSINESS CENTER|https://business.line.me/>.
 
