@@ -67,3 +67,95 @@ sub _secure_compare {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+LINE::Bot::API::Event - Handler for Webhook Event Objects
+
+=head1 SYNOPSIS
+
+    use strict;
+    use warnings;
+    use LINE::Bot::API;
+
+    my $bot = LINE::Bot::API->new(
+        channel_secret       => $channel_secret,
+        channel_access_token => $channel_access_token,
+    );
+
+    my $events = $bot->parse_events_from_json($json);
+    for my $event (@{ $events }) {
+        if ($event->is_user_event) {
+            say $event->user_id;
+        } elsif ($event->is_group_event) {
+            say $event->group_id;
+        } elsif ($event->is_room_event) {
+            say $event->room_id;
+        }
+
+        if ($event->is_message_event) {
+            say $event->message_id;
+            say $event->reply_token;
+            say $event->timestamp;
+
+            if ($event->is_text_message) {
+                say $event->text;
+            } elsif ($event->is_image_message) {
+                # LINE::Bot::API::Event::Message::Image has no getter method
+            } elsif ($event->is_video_message) {
+                # LINE::Bot::API::Event::Message::Video has no getter method
+            } elsif ($event->is_audio_message) {
+                # LINE::Bot::API::Event::Message::Audio has no getter method
+            } elsif ($event->is_location_message) {
+                say $event->title;
+                say $event->address;
+                say $event->latitude;
+                say $event->longitude;
+            } elsif ($event->is_sticker_message) {
+                say $event->package_id;
+                say $event->sticker_id;
+            }
+        } elsif ($event->is_follow_event) {
+            say $event->reply_token;
+        } elsif ($event->is_unfollow_event) {
+            # LINE::Bot::API::Event::Unfollow has no getter method
+        } elsif ($event->is_join_event) {
+            say $event->reply_token;
+        } elsif ($event->is_leave_event) {
+            # LINE::Bot::API::Event::Leave has no getter method
+        } elsif ($event->is_postback_event) {
+            say $event->reply_token;
+
+            say $event->postback_data;
+        } elsif ($event->is_beacon_detection_event) {
+            say $event->reply_token;
+
+            say $event->beacon_hwid;
+            say $event->beacon_type;
+        }
+    }
+
+=head1 DESCRIPTION
+
+LINE::Bot::API::Event is a handler to receive events from LINE Messaging API.
+Allows you to easily handle operatiion messages.
+
+Using instance method directly is not-recommended.
+Please use L<parse_events_from_json($json)|LINE::Bot::API/parse_events_from_json($json)> of LINE::Bot::API instead.
+
+See also L<https://devdocs.line.me/#webhook-event-object> for more deitals of these package's getter method.
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2016 LINE Corporation
+
+This Software Development Kit is licensed under The Artistic License 2.0.
+You may obtain a copy of the License at
+https://opensource.org/licenses/Artistic-2.0
+
+=head1 SEE ALSO
+
+L<https://devdocs.line.me/>
+
+=cut
