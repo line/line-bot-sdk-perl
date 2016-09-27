@@ -14,6 +14,9 @@ send_request {
     my $res = $bot->get_profile(
         'USER_ID',
     );
+    ok $res->is_success;
+    is $res->http_status, 200;
+
     is $res->display_name, 'BOT API';
     is $res->user_id, 'userId';
     is $res->picture_url, 'http://example.com/abcdefghijklmn';
