@@ -17,8 +17,9 @@ sub send_request (&@) {
     local *Furl::HTTP::request = sub {
         shift;
         my $ret = $mock->(@_);
+        my $http_status = delete $ret->{http_status} // 200;
         my $json = encode_json $ret;
-        return ('0', '200', 'OK', [
+        return ('0', $http_status, 'OK', [
             'Content-Type'   => 'application/json; charset=UTF-8',
             'Content-Length' => length($json),
         ], $json);

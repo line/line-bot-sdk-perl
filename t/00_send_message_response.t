@@ -26,4 +26,24 @@ subtest 'success' => sub {
     };
 };
 
+subtest 'fail' => sub {
+    send_request {
+        my $res = $bot->push_message('DUMMY_MID', $builder->build);
+        isa_ok $res, 'LINE::Bot::API::Response::Error';
+        ok !$res->is_success;
+        is $res->http_status, 500;
+
+        is $res->message, 'ISE';
+        is_deeply $res->details, [ +{ message => 'detail message' } ];
+    } receive_request {
+        +{
+            http_status => 500,
+            message     => 'ISE',
+            details     => [
+                +{ message => 'detail message' }
+            ],
+        };
+    };
+};
+
 done_testing;

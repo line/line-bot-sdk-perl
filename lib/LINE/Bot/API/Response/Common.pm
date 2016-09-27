@@ -2,9 +2,13 @@ package LINE::Bot::API::Response::Common;
 use strict;
 use warnings;
 
+use LINE::Bot::API::Response::Error;
+
 sub new {
     my($class, %args) = @_;
-    bless { %args }, $class;
+    my $self = bless { %args }, $class;
+    bless $self, 'LINE::Bot::API::Response::Error' unless $self->is_success;
+    $self;
 }
 
 sub is_success  { $_[0]->{http_status} == 200 }
