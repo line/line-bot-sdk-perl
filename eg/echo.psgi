@@ -50,10 +50,10 @@ sub {
                     my $profile = $bot->get_profile($event->user_id);
 
                     $messages->add_text(
-                        text   => sprintf('Hello! %s san! Your status message is %s', $profile->{displayName}, ($profile->{statusMessage} // 'null')),
+                        text   => sprintf('Hello! %s san! Your status message is %s', $profile->display_name, ($profile->status_message // 'null')),
 #                    )->add_image(
-#                        image_url   => $profile->{pictureUrl},
-#                        preview_url => $profile->{pictureUrl},
+#                        image_url   => $profile->picture_url,
+#                        preview_url => $profile->picture_url,
                     )->add_sticker(
                         package_id => 1,
                         sticker_id => int(rand(10))+1,
@@ -64,8 +64,8 @@ sub {
                 }
             } elsif ($event->is_image_message || $event->is_video_message) {
                 my $size = do {
-                    my($temp) = $bot->get_content($event->message_id);
-                    -s $temp;
+                    my $res = $bot->get_content($event->message_id);
+                    $res->is_success ? (-s $res->fh) : '-';
                 };
 
                 my $type = $event->is_image_message ? 'image' : 'video';
@@ -102,7 +102,17 @@ sub {
             $messages->add_text( text => sprintf('beacon_hwid=%s beacon_type=%s', $event->beacon_hwid, $event->beacon_type) );
         }
 
-        $bot->reply_message($event->reply_token, $messages->build);
+        my $res = $bot->reply_message($event->reply_token, $messages->build);
+
+        # error handling
+        unless ($res->is_success) {
+            warn $res->message;
+            for my $detail (@{ $res->details // []}) {
+                if ($detail && ref($detail) eq 'HASH') {
+                    warn "    detail: " . $detail->{message};
+                }
+            }
+        }
     }
 
     return [200, [], ["OK"]];

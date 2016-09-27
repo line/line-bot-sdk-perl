@@ -42,7 +42,17 @@ sub finalize {
         $self->$method($messages, %{ $queue });
     }
 
-    $self->{bot}->reply_message($args{reply_token}, $messages->build);
+    my $res = $self->{bot}->reply_message($args{reply_token}, $messages->build);
+
+    # error handling
+    unless ($res->is_success) {
+        warn $res->message;
+        for my $detail (@{ $res->details // []}) {
+                if ($detail && ref($detail) eq 'HASH') {
+                    warn "    detail: " . $detail->{message};
+                }
+            }
+    }
 
     return 1;
 }
