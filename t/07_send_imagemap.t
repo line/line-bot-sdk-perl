@@ -49,8 +49,8 @@ send_request {
     is $message->{type}, 'imagemap';
     is $message->{baseUrl}, 'http://example.com/imagemap_base';
     is $message->{altText}, 'test map';
-    is $message->{'baseSize.width'}, '1040';
-    is $message->{'baseSize.height'}, '1040';
+    is $message->{baseSize}{width}, '1040';
+    is $message->{baseSize}{height}, '1040';
     is scalar(@{ $message->{actions} }), 2;
     is_deeply $message->{actions}[0], +{
         type => 'uri',
@@ -88,8 +88,8 @@ send_request {
     is $message->{type}, 'imagemap';
     is $message->{baseUrl}, 'http://example.com/imagemap_base';
     is $message->{altText}, 'test map';
-    is $message->{'baseSize.width'}, '1040';
-    is $message->{'baseSize.height'}, '1040';
+    is $message->{baseSize}{width}, '1040';
+    is $message->{baseSize}{height}, '1040';
     is scalar(@{ $message->{actions} }), 2;
     is_deeply $message->{actions}[0], +{
         type => 'uri',
