@@ -48,7 +48,9 @@ sub get {
         croak 'LINE BOT API error: ' . $res_content;
     }
 
-    $JSON->decode($res_content);
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
 }
 
 sub post {

@@ -14,12 +14,10 @@ send_request {
     my $res = $bot->get_profile(
         'USER_ID',
     );
-    is_deeply $res, +{
-        displayName   => 'BOT API',
-        userId        => 'userId',
-        pictureUrl    => 'http://example.com/abcdefghijklmn',
-        statusMessage => 'Hello, LINE!',
-    };
+    is $res->display_name, 'BOT API';
+    is $res->user_id, 'userId';
+    is $res->picture_url, 'http://example.com/abcdefghijklmn';
+    is $res->status_message, 'Hello, LINE!';
 } receive_request {
     my %args = @_;
     is $args{method}, 'GET';
