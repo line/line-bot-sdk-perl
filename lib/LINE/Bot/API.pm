@@ -10,6 +10,9 @@ use URI;
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Event;
+use LINE::Bot::API::Response::Common;
+use LINE::Bot::API::Response::Content;
+use LINE::Bot::API::Response::Profile;
 
 sub new {
     my($class, %args) = @_;
@@ -28,48 +31,54 @@ sub new {
 sub reply_message {
     my($self, $reply_token, $messages) = @_;
 
-    $self->{client}->post(
+    my $res = $self->{client}->post(
         $self->{bot_api_endpoint} . 'message/reply',
         +{
             replyToken => $reply_token,
             messages   => $messages,
         }
     );
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub push_message {
     my($self, $to_id, $messages) = @_;
 
-    $self->{client}->post(
+    my $res = $self->{client}->post(
         $self->{bot_api_endpoint} . 'message/push',
         +{
             to       => $to_id,
             messages => $messages,
         }
     );
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub get_content {
     my($self, $message_id, %options) = @_;
-    $self->{client}->contents_download(
+    my $res = $self->{client}->contents_download(
         $self->{bot_api_endpoint} . "message/$message_id/content",
         %options
     );
+    LINE::Bot::API::Response::Content->new(%{ $res });
 }
 
 sub get_profile {
     my($self, $user_id) = @_;
-    $self->{client}->get($self->{bot_api_endpoint} . "profile/$user_id");
+    my $res = $self->{client}->get($self->{bot_api_endpoint} . "profile/$user_id");
+    LINE::Bot::API::Response::Profile->new(%{ $res });
 }
 
 sub leave_room {
     my($self, $room_id) = @_;
-    $self->{client}->post($self->{bot_api_endpoint} . "room/$room_id/leave", +{});
+    my $res = $self->{client}->post($self->{bot_api_endpoint} . "room/$room_id/leave", +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub leave_group {
     my($self, $group_id) = @_;
-    $self->{client}->post($self->{bot_api_endpoint} . "group/$group_id/leave", +{});
+    my $res = $self->{client}->post($self->{bot_api_endpoint} . "group/$group_id/leave", +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub validate_signature {

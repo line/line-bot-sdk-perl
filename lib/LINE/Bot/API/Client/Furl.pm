@@ -89,10 +89,17 @@ sub contents_download {
     );
     unless ($res_status eq '200') {
         carp "LINE BOT API contents_download error: $res_status $url\n\tcontent=$res_content";
-        return;
+
+        my $ret = $JSON->decode($res_content);
+        $ret->{http_status} = $res_status;
+        return $ret;
     }
 
-    ($fh, $res_headers);
+    +{
+        http_status => $res_status,
+        fh          => $fh,
+        headers     => $res_headers,
+    };
 }
 
 1;
