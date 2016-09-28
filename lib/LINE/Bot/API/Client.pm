@@ -18,6 +18,3 @@ sub new {
 }
 
 1;
-__END__
-
-TODO: LINE::Bot::API::Client::AnyEvent を作ったら、切り替えて使えれるようにする
