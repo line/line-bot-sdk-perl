@@ -2,7 +2,7 @@ package LINE::Bot::API::Client::Furl;
 use strict;
 use warnings;
 
-use Carp qw/ carp croak/;
+use Carp qw/ carp croak /;
 use File::Temp;
 use Furl::HTTP;
 use JSON::XS;

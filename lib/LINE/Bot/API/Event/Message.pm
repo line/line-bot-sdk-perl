@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use parent 'LINE::Bot::API::Event::Base';
 
-use Carp qw/ carp /;
+use Carp 'carp';
 our @CARP_NOT = qw( LINE::Bot::API::Event::Message LINE::Bot::API::Event LINE::Bot::API);
 
 my %TYPE2CLASS = (

@@ -2,7 +2,7 @@ package LINE::Bot::API::Event;
 use strict;
 use warnings;
 
-use Carp qw/ carp /;
+use Carp 'carp';
 our @CARP_NOT = qw( LINE::Bot::API::Event LINE::Bot::API);
 
 use Digest::SHA 'hmac_sha256';

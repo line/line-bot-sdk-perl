@@ -3,7 +3,6 @@ use strict;
 use warnings;
 our $VERSION = '0.04';
 
-use Carp 'croak';
 use JSON::XS;
 use URI;
 
