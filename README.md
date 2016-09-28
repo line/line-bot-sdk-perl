@@ -159,7 +159,7 @@ And see also `parse_events_from_json($json)` method's document.
 
 Get the original file which was sent by user.
 
-    my $ret = $bot->get_content($message_id);
+    my $ret = $bot->get_message_content($message_id);
     if ($ret->is_success) {
         my $filename = $ret->fh->filename;
         open my $fh, '<', $file or die "$!: $file";

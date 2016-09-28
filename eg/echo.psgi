@@ -64,7 +64,7 @@ sub {
                 }
             } elsif ($event->is_image_message || $event->is_video_message) {
                 my $size = do {
-                    my $res = $bot->get_content($event->message_id);
+                    my $res = $bot->get_message_content($event->message_id);
                     $res->is_success ? (-s $res->fh) : '-';
                 };
 

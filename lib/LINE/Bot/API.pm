@@ -53,7 +53,7 @@ sub push_message {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
-sub get_content {
+sub get_message_content {
     my($self, $message_id, %options) = @_;
     my $res = $self->{client}->contents_download(
         $self->{messaging_api_endpoint} . "message/$message_id/content",
@@ -248,11 +248,11 @@ Bot leaves a chat group.
 You can get a C<group_id> by a L<Webhook Event Object|https://devdocs.line.me/#webhook-event-object>.
 And see also C<parse_events_from_json($json)> method's document.
 
-=head2 get_content($message_id)
+=head2 get_message_content($message_id)
 
 Get the original file which was sent by user.
 
-    my $ret = $bot->get_content($message_id);
+    my $ret = $bot->get_message_content($message_id);
     if ($ret->is_success) {
         my $filename = $ret->fh->filename;
         open my $fh, '<', $file or die "$!: $file";
