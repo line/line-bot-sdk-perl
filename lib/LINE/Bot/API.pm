@@ -193,14 +193,14 @@ And see also C<parse_events_from_json($json)> method's document.
 See also a online documentation.
 L<https://devdocs.line.me/#push-message>
 
-=head3 validate_signature($json, $signature)
+=head2 validate_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
         die 'failed to signature validation';
     }
 
-=head3 parse_events_from_json($json)
+=head2 parse_events_from_json($json)
 
 Parse Webhook Event Objects and build L<LINE::Bot::API::Event> instances.
 
