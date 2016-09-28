@@ -51,9 +51,6 @@ sub {
 
                     $messages->add_text(
                         text   => sprintf('Hello! %s san! Your status message is %s', $profile->display_name, ($profile->status_message // 'null')),
-#                    )->add_image(
-#                        image_url   => $profile->picture_url,
-#                        preview_url => $profile->picture_url,
                     )->add_sticker(
                         package_id => '1',
                         sticker_id => int(rand(10))+1 + '',
