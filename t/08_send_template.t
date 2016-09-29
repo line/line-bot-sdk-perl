@@ -112,7 +112,7 @@ sub run_messages {
         is $template->{type}, 'confirm';
         is $template->{text}, 'description';
 
-        is scalar(@{ $template->{action} }), 0;
+        is scalar(@{ $template->{actions} }), 0;
     }
 
     {
