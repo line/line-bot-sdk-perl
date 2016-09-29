@@ -100,14 +100,14 @@ And see also `parse_events_from_json($json)` method's document.
 See also a online documentation.
 [https://devdocs.line.me/#push-message](https://devdocs.line.me/#push-message)
 
-### validate\_signature($json, $signature)
+## validate\_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
         die 'failed to signature validation';
     }
 
-### parse\_events\_from\_json($json)
+## parse\_events\_from\_json($json)
 
 Parse Webhook Event Objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event) instances.
 
@@ -155,7 +155,7 @@ Bot leaves a chat group.
 You can get a `group_id` by a [Webhook Event Object](https://devdocs.line.me/#webhook-event-object).
 And see also `parse_events_from_json($json)` method's document.
 
-## get\_content($message\_id)
+## get\_message\_content($message\_id)
 
 Get the original file which was sent by user.
 

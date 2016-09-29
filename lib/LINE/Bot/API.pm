@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '0.04';
+our $VERSION = '1.00';
 
 use JSON::XS;
 use URI;
