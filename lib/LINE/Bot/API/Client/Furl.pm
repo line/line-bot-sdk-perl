@@ -2,7 +2,7 @@ package LINE::Bot::API::Client::Furl;
 use strict;
 use warnings;
 
-use Carp qw/ carp croak/;
+use Carp qw/ carp croak /;
 use File::Temp;
 use Furl::HTTP;
 use JSON::XS;
@@ -20,10 +20,9 @@ sub new {
     $args{http_client}{agent}   ||= "LINE::Bot::API/$LINE::Bot::API::VERSION";
     $args{http_client}{timeout} ||= 3;
     bless {
-        channel_id     => $args{channel_id},
-        channel_secret => $args{channel_secret},
-        channel_mid    => $args{channel_mid},
-        furl           => Furl::HTTP->new(
+        channel_secret       => $args{channel_secret},
+        channel_access_token => $args{channel_access_token},
+        furl                 => Furl::HTTP->new(
             %{ $args{http_client} }
         ),
     }, $class;
@@ -32,9 +31,7 @@ sub new {
 sub credentials {
     my $self = shift;
     (
-        'X-Line-ChannelID'             => $self->{channel_id},
-        'X-Line-ChannelSecret'         => $self->{channel_secret},
-        'X-Line-Trusted-User-With-ACL' => $self->{channel_mid},
+        'Authorization', "Bearer $self->{channel_access_token}"
     );
 }
 
@@ -48,10 +45,12 @@ sub get {
         ],
     );
     unless ($res_content && $res_content =~ /^\{.+\}$/) {
-        croak 'LINE BOT API error: ' . $res_content;
+        croak 'LINE Messaging API error: ' . $res_content;
     }
 
-    $JSON->decode($res_content);
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
 }
 
 sub post {
@@ -62,13 +61,14 @@ sub post {
         $url,
         [
             $self->credentials,
-            'Content-Type'   => 'application/json; charset=UTF-8',
+            'Content-Type'   => 'application/json',
             'Content-Length' => length($json),
         ],
         $json,
     );
-    unless ($res_content && $res_content =~ /^\{.+\}$/) {
-        croak 'LINE BOT API error: ' . $res_content;
+
+    unless ($res_content && $res_content =~ /^\{.*\}$/) {
+        croak 'LINE Messaging API error: ' . $res_content;
     }
 
     my $ret = $JSON->decode($res_content);
@@ -90,11 +90,18 @@ sub contents_download {
         ],
     );
     unless ($res_status eq '200') {
-        carp "LINE BOT API contents_download error: $res_status $url\n\tcontent=$res_content";
-        return;
+        carp "LINE Messaging API contents_download error: $res_status $url\n\tcontent=$res_content";
+
+        my $ret = $JSON->decode($res_content);
+        $ret->{http_status} = $res_status;
+        return $ret;
     }
 
-    ($fh, $res_headers);
+    +{
+        http_status => $res_status,
+        fh          => $fh,
+        headers     => $res_headers,
+    };
 }
 
 1;

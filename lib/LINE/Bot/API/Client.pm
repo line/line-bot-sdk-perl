@@ -13,11 +13,8 @@ sub new {
     }
     my $klass   = join '::', __PACKAGE__, $backend;
     eval "use $klass;"; ## no critic
-    die $@ if $@;
+    croak $@ if $@;
     $klass->new(%args);
 }
 
 1;
-__END__
-
-TODO: LINE::Bot::API::Client::AnyEvent を作ったら、切り替えて使えれるようにする

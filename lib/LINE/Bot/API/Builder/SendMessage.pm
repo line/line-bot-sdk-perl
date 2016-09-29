@@ -2,72 +2,87 @@ package LINE::Bot::API::Builder::SendMessage;
 use strict;
 use warnings;
 
-use LINE::Bot::API::Constants;
-
-sub build_text {
-    my($self, %args) = @_;
-    +(
-        contentType => CONTENT_TEXT,
-        text        => $args{text},
-    );
+sub new {
+    my($class, ) = @_;
+    bless [], $class;
 }
 
-sub build_image {
+sub build {
+    my($self, ) = @_;
+    +[ @$self ];
+}
+
+sub add {
+    my($self, $message) = @_;
+    push @{ $self }, $message;
+    $self;
+}
+
+sub add_text {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_IMAGE,
-        text               => $args{text},
+    $self->add(+{
+        type => 'text',
+        text => $args{text},
+    });
+}
+
+sub add_image {
+    my($self, %args) = @_;
+    $self->add(+{
+        type               => 'image',
         originalContentUrl => $args{image_url},
         previewImageUrl    => $args{preview_url},
-    );
+    });
 }
 
-sub build_video {
+sub add_video {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_VIDEO,
-        text               => $args{text},
+    $self->add(+{
+        type               => 'video',
         originalContentUrl => $args{video_url},
         previewImageUrl    => $args{preview_url},
-    );
+    });
 }
 
-sub build_audio {
+sub add_audio {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_AUDIO,
-        text               => $args{text},
+    $self->add(+{
+        type               => 'audio',
         originalContentUrl => $args{audio_url},
-        contentMetadata    => {
-            AUDLEN => $args{duration},
-        },
-    );
+        duration           => $args{duration},
+    });
 }
 
-sub build_location {
+sub add_location {
     my($self, %args) = @_;
-    +(
-        contentType => CONTENT_LOCATION,
-        text        => $args{text},
-        location    => {
-            title     => $args{text},
-            address   => $args{address},
-            latitude  => $args{latitude},
-            longitude => $args{longitude},
-        },
-    );
+    $self->add(+{
+        type      => 'location',
+        title     => $args{title},
+        address   => $args{address},
+        latitude  => $args{latitude},
+        longitude => $args{longitude},
+    });
 }
 
-sub build_sticker {
+sub add_sticker {
     my($self, %args) = @_;
-    +(
-        contentType        => CONTENT_STICKER,
-        contentMetadata    => {
-            STKID    => $args{stkid},
-            STKPKGID => $args{stkpkgid},
-            STKVER   => $args{stkver},
-        },
-    );
+    $self->add(+{
+        type      => 'sticker',
+        packageId => $args{package_id},
+        stickerId => $args{sticker_id},
+    });
+}
+
+# If you want this method to use, I recommend using LINE::Bot::API::Builder::ImagemapMessage class for you.
+sub add_imagemap {
+    my($self, $imagemap) = @_;
+    $self->add($imagemap);
+}
+
+# If you want this method to use, I recommend using LINE::Bot::API::Builder::TemplateMessage class for you.
+sub add_template {
+    my($self, $template) = @_;
+    $self->add($template);
 }
 
 1;

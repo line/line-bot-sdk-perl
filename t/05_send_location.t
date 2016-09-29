@@ -5,39 +5,77 @@ use t::Util;
 
 use JSON::XS;
 use LINE::Bot::API;
+use LINE::Bot::API::Builder::SendMessage;
 
 my $bot = LINE::Bot::API->new(
-    channel_id     => 1000000000,
-    channel_secret => 'testsecret',
-    channel_mid    => 'TEST_MID',
+    channel_secret       => 'testsecret',
+    channel_access_token => 'ACCESS_TOKEN',
 );
+
+my $builder = LINE::Bot::API::Builder::SendMessage->new;
+$builder->add_location(
+    title      => 'location label',
+    address    => 'tokyo shibuya-ku',
+    latitude   => -35.10,
+    longitude  => 139.10,
+);
+
 send_request {
-    my $res = $bot->send_location(
-        to_mid     => 'DUMMY_MID',
-        text       => 'location label',
-        address    => 'tokyo shibuya-ku',
-        latitude   => '35.61823286112982',
-        longitude  => '139.72824096679688',
-    );
-    is $res->http_status, 200;
-    is $res->timestamp, '1347940533207';
+    my $res = $bot->push_message('DUMMY_ID', $builder->build);
     ok $res->is_success;
+    is $res->http_status, 200;
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
-    is $args{url},    'https://trialbot-api.line.me/v1/events';
+    is $args{url},    'https://api.line.me/v2/bot/message/push';
 
     my $data = decode_json $args{content};
-    is_deeply $data->{to}, ['DUMMY_MID'];
-    is_deeply $data->{content}{location}, { title => 'location label', address => 'tokyo shibuya-ku', latitude => '35.61823286112982', longitude => '139.72824096679688' };
-    is $data->{content}{text}, 'location label';
+    is $data->{to}, 'DUMMY_ID';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'location';
+    is $message->{title}, 'location label';
+    is $message->{address}, 'tokyo shibuya-ku';
+    is $message->{latitude}, -35.10;
+    is $message->{longitude}, 139.10;
 
-    is $data->{content}{contentType}, CONTENT_LOCATION;
-    is $data->{content}{toType}, RECIPIENT_USER;
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
 
-    +{
-        timestamp    => 1347940533207,
-    };
+    +{};
+};
+
+send_request {
+    my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
+    ok $res->is_success;
+    is $res->http_status, 200;
+} receive_request {
+    my %args = @_;
+    is $args{method}, 'POST';
+    is $args{url},    'https://api.line.me/v2/bot/message/reply';
+
+    my $data = decode_json $args{content};
+    is $data->{replyToken}, 'DUMMY_TOKEN';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'location';
+    is $message->{title}, 'location label';
+    is $message->{address}, 'tokyo shibuya-ku';
+    is $message->{latitude}, -35.10;
+    is $message->{longitude}, 139.10;
+
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
+
+    +{};
 };
 
 done_testing;

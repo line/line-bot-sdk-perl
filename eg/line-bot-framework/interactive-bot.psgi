@@ -7,14 +7,15 @@ use Plack::Request;
 use LINE::Bot::API;
 use LINEBotFramework;
 
-my $channel_id     = $ENV{CHANNEL_ID};
-my $channel_secret = $ENV{CHANNEL_SECRET};
-my $channel_mid    = $ENV{CHANNEL_MID};
+my $channel_secret         = $ENV{CHANNEL_SECRET};
+my $channel_access_token   = $ENV{CHANNEL_ACCESS_TOKEN};
+my $messaging_api_endpoint = $ENV{MESSAGING_API_ENDPOINT};
+my $callback_url           = $ENV{CALLBACK_URL} // '/perl/callback';
 
 my $bot = LINE::Bot::API->new(
-    channel_id     => $channel_id,
-    channel_secret => $channel_secret,
-    channel_mid    => $channel_mid,
+    channel_secret         => $channel_secret,
+    channel_access_token   => $channel_access_token,
+    messaging_api_endpoint => $messaging_api_endpoint,
 );
 
 my $framework = LINEBotFramework->new(
@@ -29,12 +30,12 @@ sub {
     my $env = shift;
     my $req = Plack::Request->new($env);
 
-    unless ($req->method eq 'POST' && $req->path eq '/perl/callback') {
-        return [404, [], ['Not Found']];
+    unless ($req->method eq 'POST' && $req->path eq $callback_url) {
+        return [200, [], ['Not Found']];
     }
 
-    unless ($framework->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
-        return [470, [], ['bad request']];
+    unless ($framework->validate_signature($req->content, $req->header('X-Line-Signature'))) {
+        return [200, [], ['bad request']];
     }
 
     $framework->dispatcher($req->content);
@@ -50,9 +51,8 @@ interactive-bot.psgi - A example bot with a bot framework
 
 =head1 SYNOPSIS
 
-    $ export CHANNEL_ID=YOUR CHANNEL ID
     $ export CHANNEL_SECRET=YOUR CHANNEL SECRET
-    $ export CHANNEL_MID=YOUR CHANNEL MID
+    $ export CHANNEL_ACCESS_TOKEN=YOUR CHANNEL ACCESS TOKEN
     $ plackup eg/interactive-bot.psgi
 
 =head1 COPYRIGHT & LICENSE

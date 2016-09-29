@@ -5,113 +5,109 @@ use lib 'lib';
 use Plack::Request;
 
 use LINE::Bot::API;
+use LINE::Bot::API::Builder::SendMessage;
 
-my $channel_id     = $ENV{CHANNEL_ID};
-my $channel_secret = $ENV{CHANNEL_SECRET};
-my $channel_mid    = $ENV{CHANNEL_MID};
+my $channel_secret         = $ENV{CHANNEL_SECRET};
+my $channel_access_token   = $ENV{CHANNEL_ACCESS_TOKEN};
+my $messaging_api_endpoint = $ENV{MESSAGING_API_ENDPOINT};
+my $callback_url           = $ENV{CALLBACK_URL} // '/perl/callback';
 
 my $bot = LINE::Bot::API->new(
-    channel_id     => $channel_id,
-    channel_secret => $channel_secret,
-    channel_mid    => $channel_mid,
+    channel_secret         => $channel_secret,
+    channel_access_token   => $channel_access_token,
+    messaging_api_endpoint => $messaging_api_endpoint,
 );
 
 sub {
     my $env = shift;
     my $req = Plack::Request->new($env);
 
-    unless ($req->method eq 'POST' && $req->path eq '/perl/callback') {
-        return [404, [], ['Not Found']];
+    unless ($req->method eq 'POST' && $req->path eq $callback_url) {
+        return [200, [], ['Not Found']];
     }
 
-    unless ($bot->validate_signature($req->content, $req->header('X-LINE-ChannelSignature'))) {
-        return [500, [], ['bad request']];
+    unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
+        return [200, [], ['bad request']];
     }
 
-    my $receives = $bot->create_receives_from_json($req->content);
-    for my $receive (@{ $receives }) {
-        if ($receive->is_message) {
-            warn sprintf 'content_id=%s, from_mid=%s, created_time=%s', $receive->content_id, $receive->from_mid, $receive->created_time;
+    my $events = $bot->parse_events_from_json($req->content);
+    for my $event (@{ $events }) {
+        my $messages = LINE::Bot::API::Builder::SendMessage->new;
 
-            if ($receive->is_text) {
-                if ($receive->text eq 'me') {
-                    my $res = $bot->get_user_profile($receive->from_mid);
-                    my $contact = $res->{contacts}[0];
+        if ($event->is_message_event) {
+            my $from_id;
+            if ($event->is_user_event) {
+                $from_id = $event->user_id;
+            } elsif ($event->is_group_event) {
+                $from_id = $event->group_id;
+            } elsif ($event->is_room_event) {
+                $from_id = $event->room_id;
+            }
+            warn sprintf 'message_id=%s, type=%s(%s), reply_token=%s, timestamp=%s', $event->message_id, $event->type, $from_id, $event->reply_token, $event->timestamp;
 
-                    $bot->multiple_message->add_text(
-                        to_mid => $receive->from_mid,
-                        text   => sprintf('Hello! %s san! Your status message is %s', $contact->{displayName}, $contact->{statusMessage}),
-                    )->add_image(
-                        image_url   => $contact->{pictureUrl},
-                        preview_url => $contact->{pictureUrl},
+            if ($event->is_text_message) {
+                if ($event->text eq 'me' && $event->is_user_event) {
+                    my $profile = $bot->get_profile($event->user_id);
+
+                    $messages->add_text(
+                        text   => sprintf('Hello! %s san! Your status message is %s', $profile->display_name, ($profile->status_message // 'null')),
                     )->add_sticker(
-                        stkid       => int(rand(10))+1,
-                        stkpkgid    => 1,
-                        stkver      => 100,
-                    )->send_messages(
-                        to_mid           => $receive->from_mid,
-                        message_notified => 0,
+                        package_id => '1',
+                        sticker_id => int(rand(10))+1 + '',
                     );
+
                 } else {
-                    $bot->send_text(
-                        to_mid => $receive->from_mid,
-                        text   => $receive->text,
-                    );
+                    $messages->add_text( text => $event->text );
                 }
-            } elsif ($receive->is_image || $receive->is_video) {
+            } elsif ($event->is_image_message || $event->is_video_message) {
                 my $size = do {
-                    my($temp) = $bot->get_message_content($receive->content_id);
-                    -s $temp;
-                };
-                my $preview_size = do {
-                    my($temp) = $bot->get_message_content($receive->content_id);
-                    -s $temp;
+                    my $res = $bot->get_message_content($event->message_id);
+                    $res->is_success ? (-s $res->fh) : '-';
                 };
 
-                my $type = $receive->is_image ? 'image' : 'video';
-
-                $bot->send_text(
-                    to_mid => $receive->from_mid,
-                    text   => sprintf("Thank you for sending a %s.\nOriginal file size: %s\nPreview file size: %s", $type, $size, $preview_size),
+                my $type = $event->is_image_message ? 'image' : 'video';
+                $messages->add_text( text => sprintf("Thank you for sending a %s.\nOriginal file size: %s", $type, $size) );
+            } elsif ($event->is_audio_message) {
+                $messages->add_text( text => 'Thank you for sending a audio.' );
+            } elsif ($event->is_location_message) {
+                $messages->add_location(
+                    title     => $event->title,
+                    address   => $event->address,
+                    latitude  => $event->latitude,
+                    longitude => $event->longitude,
                 );
-            } elsif ($receive->is_audio) {
-                $bot->send_text(
-                    to_mid => $receive->from_mid,
-                    text   => 'Thank you for sending a audio.',
-                );
-            } elsif ($receive->is_location) {
-                $bot->send_location(
-                    to_mid    => $receive->from_mid,
-                    address   => $receive->address,
-                    text      => $receive->text,
-                    latitude  => $receive->latitude,
-                    longitude => $receive->longitude,
-                );
-            } elsif ($receive->is_sticker) {
-                $bot->send_sticker(
-                    to_mid   => $receive->from_mid,
-                    stkpkgid => $receive->stkpkgid,
-                    stkid    => $receive->stkid,
-                    stkver   => $receive->stkver,
-                );
-            } elsif ($receive->is_contact) {
-                $bot->send_text(
-                    to_mid => $receive->from_mid,
-                    text   => sprintf('Thank you for sending %s information.', $receive->display_name),
+            } elsif ($event->is_sticker_message) {
+                $messages->add_sticker(
+                    sticker_id => $event->sticker_id,
+                    package_id => $event->package_id,
                 );
             }
-        } elsif ($receive->is_operation) {
-            warn sprintf 'revision=%s, from_mid=%s', $receive->revision, $receive->from_mid;
+        } elsif ($event->is_follow_event) {
+            $messages->add_text( text => 'Thank you for adding me to your contact list!' );
+        } elsif ($event->is_unfollow_event) {
+            warn 'unfollow_event';
+            next;
+        } elsif ($event->is_join_event) {
+            my $type = $event->is_group_event ? 'group' : 'room';
+            $messages->add_text( text => sprintf('Thank you for adding me to this %s!', $type) );
+        } elsif ($event->is_leave_event) {
+            warn 'leave_event';
+            next;
+        } elsif ($event->is_postback_event) {
+            $messages->add_text( text => sprintf('postback_data=%s', $event->postback_data) );
+        } elsif ($event->is_beacon_detection_event) {
+            $messages->add_text( text => sprintf('beacon_hwid=%s beacon_type=%s', $event->beacon_hwid, $event->beacon_type) );
+        }
 
-            if ($receive->is_add_contact) {
-                warn "add contact";
+        my $res = $bot->reply_message($event->reply_token, $messages->build);
 
-                $bot->send_text(
-                    to_mid => $receive->from_mid,
-                    text   => 'Thank you for adding me to your contact list!',
-                );
-            } elsif ($receive->is_block_contact) {
-                warn "block contact...";
+        # error handling
+        unless ($res->is_success) {
+            warn $res->message;
+            for my $detail (@{ $res->details // []}) {
+                if ($detail && ref($detail) eq 'HASH') {
+                    warn "    detail: " . $detail->{message};
+                }
             }
         }
     }
@@ -127,9 +123,8 @@ echo.psgi - example echo bot
 
 =head1 SYNOPSIS
 
-    $ export CHANNEL_ID=YOUR CHANNEL ID
     $ export CHANNEL_SECRET=YOUR CHANNEL SECRET
-    $ export CHANNEL_MID=YOUR CHANNEL MID
+    $ export CHANNEL_ACCESS_TOKEN=YOUR CHANNEL ACCESS TOKEN
     $ plackup eg/echo.psgi
 
 =head1 COPYRIGHT & LICENSE

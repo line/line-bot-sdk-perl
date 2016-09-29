@@ -2,6 +2,8 @@ package LINEBotFramework::Response;
 use strict;
 use warnings;
 
+use LINE::Bot::API::Builder::SendMessage;
+
 sub new {
     my($class, %args) = @_;
     bless {
@@ -26,30 +28,43 @@ sub render_template {
 
 sub finalize {
     my($self, %args) = @_;
+    return 1 unless scalar(@{ $self->{queues} });
 
     local $self->{bot}      = $args{bot};
     local $self->{xslate}   = $args{xslate};
     local $self->{base_obj} = $args{base_obj};
 
-    for my $args (@{ $self->{queues} }) {
-        my $type = delete $args->{type};
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+
+    for my $queue (@{ $self->{queues} }) {
+        my $type = delete $queue->{type};
         my $method = "exec_$type";
-        $self->$method
-            (%{ $args },
-             to_mid => $args{to_mid},
-         );
+        $self->$method($messages, %{ $queue });
     }
+
+    my $res = $self->{bot}->reply_message($args{reply_token}, $messages->build);
+
+    # error handling
+    unless ($res->is_success) {
+        warn $res->message;
+        for my $detail (@{ $res->details // []}) {
+                if ($detail && ref($detail) eq 'HASH') {
+                    warn "    detail: " . $detail->{message};
+                }
+            }
+    }
+
     return 1;
 }
 
 sub send_text {
     my($self, %args) = @_;
-    $args{type} ||= 'send_text';
+    $args{type} ||= 'text';
     push @{ $self->{queues} }, \%args;
 }
 
-sub exec_send_text {
-    my($self, %args) = @_;
+sub exec_text {
+    my($self, $messages, %args) = @_;
     my $text;
 
     my $page = delete $args{page};
@@ -60,27 +75,26 @@ sub exec_send_text {
         $text = $args{text};
     }
 
-    $self->{bot}->send_text(
-        %args,
+    $messages->add_text(
         text => $text,
     );
 }
 
-for my $type (qw/ sticker link image location video audio rich_message /) {
-    my $method = "send_$type";
+for my $type (qw/ image video audio sticker location imagemap template /) {
+    my $add_method = "add_$type";
     my $enqueue = sub {
         my($self, %args) = @_;
-        $args{type} ||= $method;
+        $args{type} ||= $type;
         push @{ $self->{queues} }, \%args;
     };
     my $exec = sub {
-        my($self, %args) = @_;
-        $self->{bot}->$method(%args);
+        my($self, $messages, %args) = @_;
+        $messages->$add_method(%args);
     };
 
     no strict 'refs';
-    *{"LINEBotFramework::Response::$method"}      = $enqueue;
-    *{"LINEBotFramework::Response::exec_$method"} = $exec;
+    *{"LINEBotFramework::Response::send_$type"} = $enqueue;
+    *{"LINEBotFramework::Response::exec_$type"} = $exec;
 }
 
 1;

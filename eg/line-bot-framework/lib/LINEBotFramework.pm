@@ -47,23 +47,23 @@ sub validate_signature {
 sub dispatcher {
     my($self, $json) = @_;
 
-    my $receives = $self->{bot}->create_receives_from_json($json);
-    for my $receive (@{ $receives }) {
-        if ($receive->is_operation) {
-            $self->dispatcher_operation($receive);
-        } elsif ($receive->is_message) {
-            $self->dispatcher_message($receive);
+    my $events = $self->{bot}->parse_events_from_json($json);
+    for my $event (@{ $events }) {
+        if ($event->is_message_event) {
+            $self->dispatcher_message($event);
+        } else {
+            $self->dispatcher_operation($event);
         }
     }
 }
 
 sub dispatcher_operation {
-    my($self, $operation, @args) = @_;
+    my($self, $event, @args) = @_;
 
     my $req = LINEBotFramework::Request->new(
-        bot       => $self->{bot},
-        operation => $operation,
-        session   => +{},
+        bot     => $self->{bot},
+        event   => $event,
+        session => +{},
     );
 
     if ($self->load_class('Operation')->can('before_hook')) {
@@ -71,23 +71,32 @@ sub dispatcher_operation {
     }
 
     my $res;
-    if ($operation->is_add_contact) {
-        $res = $self->load_class('Operation')->add_contact($req, @args);
-    } elsif ($operation->is_block_contact) {
-        $res = $self->load_class('Operation')->block_contact($req, @args);
+    if ($event->is_follow_event) {
+        $res = $self->load_class('Operation')->on_follow($req, @args);
+    } elsif ($event->is_unfollow_event) {
+        $res = $self->load_class('Operation')->on_unfollow($req, @args);
+    } elsif ($event->is_join_event) {
+        $res = $self->load_class('Operation')->on_join($req, @args);
+    } elsif ($event->is_leave_event) {
+        $res = $self->load_class('Operation')->on_leave($req, @args);
+    } elsif ($event->is_postback_event) {
+        $res = $self->load_class('Operation')->on_postback($req, @args);
+    } elsif ($event->is_beacon_detection_event) {
+        $res = $self->load_class('Operation')->on_beacon_detection($req, @args);
     }
 
     return $self->response_finalize($req, $res);
 }
 
 sub dispatcher_message {
-    my($self, $message, @args) = @_;
+    my($self, $event, @args) = @_;
 
-    my($context, $session) = $self->{base_obj}->get_context($message->from_mid);
+    my $source = $self->_extract_source_data($event);
+    my($context, $session) = $self->{base_obj}->get_context($source->{type}, $source->{from_id});
 
     my $req = LINEBotFramework::Request->new(
         bot     => $self->{bot},
-        message => $message,
+        event   => $event,
         context => $context,
         session => $session,
     );
@@ -120,19 +129,20 @@ sub dispatcher_message {
 
 sub exec_message_router {
     my($self, $req) = @_;
+    my $event = $req->event;
     my $route;
 
     my $text;
-    if ($req->message->is_text) {
-        $text = $req->message->text;
+    if ($event->is_text_message) {
+        $text = $event->text;
     }
 
     local $_                                     = $text;
     local $LINEBotFramework::Dispatcher::TEXT    = $text;
     local $LINEBotFramework::Dispatcher::CONTEXT = $req->context;
-    local $LINEBotFramework::Dispatcher::MESSAGE = $req->message;
+    local $LINEBotFramework::Dispatcher::EVENT   = $event;
     local $LINEBotFramework::Dispatcher::SESSION = $req->session;
-    my $ret = $self->load_class('Dispatcher')->dispatch($req->context, $req->message, $req->session);
+    my $ret = $self->load_class('Dispatcher')->dispatch($req->context, $event, $req->session);
     if ($ret) {
         if (ref($ret) eq 'HASH') {
             $route = $ret;
@@ -153,27 +163,48 @@ sub exec_message_router {
 sub response_finalize {
     my($self, $req, $res) = @_;
     return unless $res;
+    my $event = $req->event;
 
-    my $from_mid = $req->message ? $req->message->from_mid : $req->operation ? $req->operation->from_mid : undef;
-    return unless $from_mid;
+    my $reply_token = $event->reply_token;
+    if ($reply_token) {
+        my $ret = $res->finalize(
+            reply_token => $reply_token,
+            bot         => $self->{bot},
+            xslate      => $self->{xslate},
+            base_obj    => $self->{base_obj},
+        );
+        return unless $ret;
+    }
 
-    my $ret = $res->finalize(
-        to_mid   => $from_mid,
-        bot      => $self->{bot},
-        xslate   => $self->{xslate},
-        base_obj => $self->{base_obj},
-    );
-    return unless $ret;
-
-    if ($req->message || $req->operation->is_add_contact) {
-        # save context
-       my $next_context = $res->next_context;
-        unless ($next_context eq 'self') {
-            $self->{base_obj}->set_context($from_mid, $next_context, $req->session);
-        }
+    # save context
+    my $next_context = $res->next_context;
+    unless ($next_context eq 'self') {
+        my $source = $self->_extract_source_data($event);
+        $self->{base_obj}->set_context($source->{type}, $source->{from_id}, $next_context, $req->session);
     }
 
     return 1;
+}
+
+sub _extract_source_data {
+    my($self, $event) = @_;
+
+    my $source_type = 'user';
+    my $from_id;
+    if ($event->is_user_event) {
+        $from_id = $event->user_id;
+    } elsif ($event->is_group_event) {
+        $source_type = 'group';
+        $from_id     = $event->group_id;
+    } elsif ($event->is_room_event) {
+        $source_type = 'room';
+        $from_id     = $event->room_id;
+    }
+
+    return +{
+        type    => $source_type,
+        from_id => $from_id,
+    };
 }
 
 1;

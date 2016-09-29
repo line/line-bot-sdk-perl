@@ -4,7 +4,7 @@ use warnings;
 
 use LINEBotFramework::Response;
 
-sub add_contact {
+sub on_follow {
     my($class, $req) = @_;
 
     my $res = LINEBotFramework::Response->new;
@@ -21,5 +21,6 @@ sub add_contact {
     $res;
 }
 
+sub on_join { goto \&on_follow }
 
 1;
