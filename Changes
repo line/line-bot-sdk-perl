@@ -2,6 +2,9 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
+1.01  2016-11-07 11:05:37 JST
+        - Fixed broken English for documentation
+
 1.00  2016-09-29 11:09:37 JST
         - Released Bot Messaging API Version 1
 

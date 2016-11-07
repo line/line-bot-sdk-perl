@@ -45,13 +45,13 @@ LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
 # DESCRIPTION
 
-LINE::Bot::API is a client library to easily use the LINE Messaging API.
-You can create a bot which will run on the LINE App by registering your bot account.
-Your **Messaging API** account can be created from [LINE BUSINESS CENTER](https://business.line.me/).
+LINE::Bot::API is a client library which lets you easily start using the LINE Messaging API.
+You can create a bot which runs on the LINE app by registering for a LINE Messaging API account.
+You can create a **Messaging API** account from the [LINE Business Center](https://business.line.me/).
 
-You can find the **Channel Secret** and **Channel Access Token** on the Basic information page at [LINE BUSINESS CENTER](https://business.line.me/).
+You can find the **Channel secret** and **Channel access token** on the Basic information page on the Channel Console which you can access from the [LINE Business Center](https://business.line.me/).
 
-Please use this POD and LINE developers site's online documentation to enjoy your bot development work!
+Use this documentation and the LINE Developers documentation to get you started developing your own bot!
 
 # METHODS
 
@@ -70,7 +70,7 @@ Send a reply message to a user, room or group.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example reply text' );
-    
+
     my $ret = $bot->reply_message($reply_token, $messages->build);
     unless ($ret->is_success) {
         # error
@@ -80,10 +80,10 @@ Send a reply message to a user, room or group.
         }
     }
 
-You can get a `reply_token` by a [Webhook Event Object](https://devdocs.line.me/#webhook-event-object).
-And see also `parse_events_from_json($json)` method's document.
+You can get a `reply_token` from a [webhook event object](https://devdocs.line.me/#webhook-event-object).
+See the documentation for the `parse_events_from_json($json)` method.
 
-See also a online documentation.
+You can also see the online API reference documentation.
 [https://devdocs.line.me/#reply-message](https://devdocs.line.me/#reply-message)
 
 ## push\_message($user\_id|$room\_id|$group\_id, \[ $message, ... \])
@@ -94,10 +94,10 @@ Send a push message to a user, room or group.
     $messages->add_text( text => 'Example push text' );
     $bot->push_message($user_id, $messages->build);
 
-You can get a `user_id`, `room_id` or `group_id` by a [Webhook Event Object](https://devdocs.line.me/#webhook-event-object).
-And see also `parse_events_from_json($json)` method's document.
+You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://devdocs.line.me/#webhook-event-object).
+See the documentation for the `parse_events_from_json($json)` method.
 
-See also a online documentation.
+You can also see the online API reference documentation.
 [https://devdocs.line.me/#push-message](https://devdocs.line.me/#push-message)
 
 ## validate\_signature($json, $signature)
@@ -109,7 +109,7 @@ See also a online documentation.
 
 ## parse\_events\_from\_json($json)
 
-Parse Webhook Event Objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event) instances.
+Parse webhook event objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event) instances.
 
     my $req = Plack::Request->new( ... );
     my $events = $bot->parse_events_from_json($req->content);
@@ -139,7 +139,7 @@ Parse Webhook Event Objects and build [LINE::Bot::API::Event](https://metacpan.o
 
 ## leave\_room($room\_id)
 
-Bot leaves a chat room.
+Bot leaves a room.
 
     $bot->leave_room($room_id);
 
@@ -148,12 +148,12 @@ And see also `parse_events_from_json($json)` method's document.
 
 ## leave\_group($group\_id)
 
-Bot leaves a chat group.
+Bot leaves a group.
 
     $bot->leave_group($group_id);
 
-You can get a `group_id` by a [Webhook Event Object](https://devdocs.line.me/#webhook-event-object).
-And see also `parse_events_from_json($json)` method's document.
+You can get a `group_id` from a [webhook event object](https://devdocs.line.me/#webhook-event-object).
+See the documentation for the `parse_events_from_json($json)` method.
 
 ## get\_message\_content($message\_id)
 
@@ -166,15 +166,15 @@ Get the original file which was sent by user.
         ...
     }
 
-You can get a `message_id` by a [Webhook Event Object](https://devdocs.line.me/#webhook-event-object).
-And see also `parse_events_from_json($json)` method's document.
+You can get a `message_id` from a [webhook event object](https://devdocs.line.me/#webhook-event-object).
+See the documentation for the `parse_events_from_json($json)` method.
 
-See also a online document.
+You can also see the online API reference documentation.
 [https://devdocs.line.me/#get-content](https://devdocs.line.me/#get-content)
 
 ## get\_profile($user\_id)
 
-You can get the user profile information.
+Get user profile information.
 
     my $res = $bot->get_profile($user_id);
     if ($ret->is_success) {
@@ -184,12 +184,12 @@ You can get the user profile information.
         say $ret->status_message;
     }
 
-See also a online document.
+See the online API reference documentation.
 [https://devdocs.line.me/#bot-api-get-profile](https://devdocs.line.me/#bot-api-get-profile)
 
-## How to build for Send Message Object
+## How to build a send message object
 
-When a `LINE::Bot::API::Builder::SendMessage` class is used, it would be possible to build a send message object easily.
+When the `LINE::Bot::API::Builder::SendMessage` class is used, it is possible easily to build a send message object.
 That class supports a fluent interface.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
@@ -201,7 +201,7 @@ That class supports a fluent interface.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-See also a online documentation.
+See the online API reference documentation.
 [https://devdocs.line.me/#send-message-object](https://devdocs.line.me/#send-message-object)
 
 ### Text type
@@ -271,10 +271,10 @@ Build a sticker type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Imagemap Type
+### Imagemap type
 
 Build an imagemap type object.
-You can use a helper module for imagemap type.
+You can use a helper module for the imagemap type.
 
     my $imagemap = LINE::Bot::API::Builder::ImagemapMessage->new(
         base_url    => 'https://example.com/bot/images/rm001',
@@ -294,15 +294,15 @@ You can use a helper module for imagemap type.
         area_width  => 1040,
         area_height => 520,
     );
-    
+
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_imagemap($imagemap->build);
     $bot->reply_message($reply_token, $messages->build);
 
-### Template Type
+### Template type
 
 Build a template type object.
-You can use a helper module for template type.
+You can use a helper module for the template type.
 
 #### Buttons type
 
@@ -325,7 +325,7 @@ You can use a helper module for template type.
         label => 'message2',
         text  => 'message2',
     );
-    
+
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($buttons->build);
     $bot->reply_message($reply_token, $messages->build);
@@ -346,7 +346,7 @@ You can use a helper module for template type.
         label => 'uri',
         uri   => 'http://example.com/',
     );
-    
+
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($confirm->build);
     $bot->reply_message($reply_token, $messages->build);
@@ -374,7 +374,7 @@ You can use a helper module for template type.
         );
         $carousel->add_column($column->build);
     }
-    
+
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
