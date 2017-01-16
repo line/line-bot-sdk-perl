@@ -180,6 +180,7 @@ subtest 'parse_events_json' => sub {
     subtest 'message' => sub {
         subtest 'text' => sub {
             my $event = $events->[0];
+            is $event->message_type, 'text';
             is $event->timestamp, 12345678901234;
             ok $event->is_user_event;
             is $event->user_id, 'userid';
@@ -191,6 +192,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'image' => sub {
             my $event = $events->[1];
+            is $event->message_type, 'image';
             ok $event->is_group_event;
             is $event->group_id, 'groupid';
             ok $event->is_image_message;
@@ -198,6 +200,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'video' => sub {
             my $event = $events->[2];
+            is $event->message_type, 'video';
             ok $event->is_room_event;
             is $event->room_id, 'roomid';
             ok $event->is_video_message;
@@ -205,11 +208,13 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'audio' => sub {
             my $event = $events->[3];
+            is $event->message_type, 'audio';
             ok $event->is_audio_message;
             is $event->reply_token, 'replytoken';
         };
         subtest 'location' => sub {
             my $event = $events->[4];
+            is $event->message_type, 'location';
             ok $event->is_location_message;
             is $event->reply_token, 'replytoken';
             is $event->title, 'label';
@@ -219,6 +224,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'sticker' => sub {
             my $event = $events->[5];
+            is $event->message_type, 'sticker';
             ok $event->is_sticker_message;
             is $event->reply_token, 'replytoken';
             is $event->package_id, '1';

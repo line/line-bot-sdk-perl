@@ -30,7 +30,9 @@ sub new {
 
 sub is_message_event { 1 }
 
-sub message_id  { $_[0]->{message}{id} }
+sub message_id    { $_[0]->{message}{id} }
+
+sub message_type  { $_[0]->{message}{type} }
 
 sub is_text_message     { 0 }
 sub is_image_message    { 0 }
