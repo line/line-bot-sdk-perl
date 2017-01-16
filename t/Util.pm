@@ -20,8 +20,9 @@ sub send_request (&@) {
         my $http_status = delete $ret->{http_status} // 200;
         my $json = encode_json $ret;
         return ('0', $http_status, 'OK', [
-            'Content-Type'   => 'application/json; charset=UTF-8',
-            'Content-Length' => length($json),
+            'X-Line-Request-Id' => 'dummy_id',
+            'Content-Type'      => 'application/json; charset=UTF-8',
+            'Content-Length'    => length($json),
         ], $json);
     };
     $code->();

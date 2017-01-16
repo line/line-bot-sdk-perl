@@ -11,7 +11,8 @@ sub new {
     $self;
 }
 
-sub is_success  { $_[0]->{http_status} == 200 }
-sub http_status { $_[0]->{http_status} }
+sub is_success        { $_[0]->{http_status} == 200 }
+sub http_status       { $_[0]->{http_status} }
+sub x_line_request_id { $_[0]->{http_headers}->header('X-Line-Request-Id') }
 
 1;

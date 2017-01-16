@@ -73,6 +73,7 @@ sub post {
 
     my $ret = $JSON->decode($res_content);
     $ret->{http_status} = $res_status;
+    $ret->{http_headers} = Furl::Headers->new($res_headers);
     $ret;
 }
 

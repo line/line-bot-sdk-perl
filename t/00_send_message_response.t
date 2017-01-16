@@ -21,6 +21,7 @@ subtest 'success' => sub {
         isa_ok $res, 'LINE::Bot::API::Response::Common';
         ok $res->is_success;
         is $res->http_status, 200;
+        is $res->x_line_request_id, 'dummy_id';
     } receive_request {
         +{};
     };
