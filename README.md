@@ -100,6 +100,20 @@ See the documentation for the `parse_events_from_json($json)` method.
 You can also see the online API reference documentation.
 [https://devdocs.line.me/#push-message](https://devdocs.line.me/#push-message)
 
+## multicast(\[$user\_id, ... \], \[ $message, ... \])
+
+Send a push message to multiple users.
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+    $messages->add_text( text => 'Example push text' );
+    $bot->multicast([ $user_id ], $messages->build);
+
+You can get a `user_id` from a [webhook event object](https://devdocs.line.me/#webhook-event-object).
+See the documentation for the `parse_events_from_json($json)` method.
+
+You can also see the online API reference documentation.
+[https://devdocs.line.me/#multicast](https://devdocs.line.me/#multicast)
+
 ## validate\_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
