@@ -207,7 +207,7 @@ L<https://devdocs.line.me/#push-message>
 
 =head2 multicast([$user_id, ... ], [ $message, ... ])
 
-Send a push message to multiple users.
+Send push messages to multiple users.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );

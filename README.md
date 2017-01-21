@@ -102,7 +102,7 @@ You can also see the online API reference documentation.
 
 ## multicast(\[$user\_id, ... \], \[ $message, ... \])
 
-Send a push message to multiple users.
+Send push messages to multiple users.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );
