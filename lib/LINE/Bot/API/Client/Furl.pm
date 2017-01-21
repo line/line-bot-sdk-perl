@@ -5,6 +5,7 @@ use warnings;
 use Carp qw/ carp croak /;
 use File::Temp;
 use Furl::HTTP;
+use Furl::Headers;
 use JSON::XS;
 
 use LINE::Bot::API;
