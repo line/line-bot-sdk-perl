@@ -52,6 +52,19 @@ sub push_message {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub multicast {
+    my($self, $to_ids, $messages) = @_;
+
+    my $res = $self->{client}->post(
+        $self->{messaging_api_endpoint} . 'message/multicast',
+        +{
+            to       => $to_ids,
+            messages => $messages,
+        }
+    );
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub get_message_content {
     my($self, $message_id, %options) = @_;
     my $res = $self->{client}->contents_download(
@@ -191,6 +204,20 @@ See the documentation for the C<parse_events_from_json($json)> method.
 
 You can also see the online API reference documentation.
 L<https://devdocs.line.me/#push-message>
+
+=head2 multicast([$user_id, ... ], [ $message, ... ])
+
+Send push messages to multiple users.
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+    $messages->add_text( text => 'Example push text' );
+    $bot->multicast([ $user_id ], $messages->build);
+
+You can get a C<user_id> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+See the documentation for the C<parse_events_from_json($json)> method.
+
+You can also see the online API reference documentation.
+L<https://devdocs.line.me/#multicast>
 
 =head2 validate_signature($json, $signature)
 
