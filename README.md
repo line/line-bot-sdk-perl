@@ -66,7 +66,7 @@ Create a new LINE::Bot::API instance.
 
 ## reply\_message($reply\_token, \[ $message, ... \] )
 
-Send a reply message to a user, room or group.
+Send reply messages to a user, room or group.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example reply text' );
@@ -88,7 +88,7 @@ You can also see the online API reference documentation.
 
 ## push\_message($user\_id|$room\_id|$group\_id, \[ $message, ... \])
 
-Send a push message to a user, room or group.
+Send push messages to a user, room or group.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );
