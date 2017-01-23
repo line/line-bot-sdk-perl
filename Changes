@@ -2,6 +2,11 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
+1.02  2017-01-23 11:44:09 JST
+        - Supported multicast API
+        - Added accsessor for X-Line-Request-Id #10
+        - Added accsessor for Event message type #11
+
 1.01  2016-11-07 11:05:37 JST
         - Fixed broken English for documentation
 

@@ -65,10 +65,12 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.01",
+   "version" : "1.02",
    "x_contributors" : [
+      "Hiroyuki Akabane <hirobanex@gmail.com>",
       "Kazuhiro Osawa <yappo@shibuya.pl>",
       "LAU KENNETH <JP20405@w022341503a59m.local>",
+      "moznion <moznion@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::XS version 3.02"
