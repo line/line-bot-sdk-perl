@@ -75,7 +75,7 @@ Send reply messages to a user, room or group.
     unless ($ret->is_success) {
         # error
         warn $ret->message;
-        for my $detail (@{ $res->details // []}) {
+        for my $detail (@{ $ret->details // []}) {
             warn "    detail: " . $detail->{message};
         }
     }
