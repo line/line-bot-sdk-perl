@@ -190,7 +190,7 @@ You can also see the online API reference documentation.
 
 Get user profile information.
 
-    my $res = $bot->get_profile($user_id);
+    my $ret = $bot->get_profile($user_id);
     if ($ret->is_success) {
         say $ret->display_name;
         say $ret->user_id;
