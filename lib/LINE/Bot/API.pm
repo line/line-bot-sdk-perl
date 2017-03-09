@@ -180,7 +180,7 @@ Send reply messages to a user, room or group.
     unless ($ret->is_success) {
         # error
         warn $ret->message;
-        for my $detail (@{ $res->details // []}) {
+        for my $detail (@{ $ret->details // []}) {
             warn "    detail: " . $detail->{message};
         }
     }
@@ -295,7 +295,7 @@ L<https://devdocs.line.me/#get-content>
 
 Get user profile information.
 
-    my $res = $bot->get_profile($user_id);
+    my $ret = $bot->get_profile($user_id);
     if ($ret->is_success) {
         say $ret->display_name;
         say $ret->user_id;
