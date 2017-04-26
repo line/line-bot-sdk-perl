@@ -154,7 +154,8 @@ my $json = <<JSON;
    "replyToken":"replytoken",
    "beacon":{
     "hwid":"bid",
-    "type":"enter"
+    "type":"enter",
+    "dm":"1234567890abcdef"
    }
   }
  ]
@@ -168,7 +169,7 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'UOg2VV1fQy1Ec7wvoZ25vhxWqYp7rvehbtOeIzGet4I='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'vBVpRe9JIRqxWSLElfOkEHlFdLVujbX3jHoCHjqiaAQ='));
     };
 };
 
@@ -269,6 +270,7 @@ subtest 'parse_events_json' => sub {
         is $event->reply_token, 'replytoken';
         is $event->beacon_hwid, 'bid';
         is $event->beacon_type, 'enter';
+        is $event->beacon_device_message, "\x12\x34\x56\x78\x90\xab\xcd\xef";
     };
 };
 
