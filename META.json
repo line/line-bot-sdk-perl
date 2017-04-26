@@ -4,7 +4,7 @@
       "LINE Corporation"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Milla version v1.0.16, Dist::Zilla version 6.007, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Dist::Milla version v1.0.17, Dist::Zilla version 6.009, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "artistic_2"
    ],
@@ -31,7 +31,7 @@
       },
       "develop" : {
          "requires" : {
-            "Dist::Milla" : "v1.0.16",
+            "Dist::Milla" : "v1.0.17",
             "Test::Pod" : "1.41"
          }
       },
@@ -65,13 +65,15 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.02",
+   "version" : "1.03",
    "x_contributors" : [
       "Hiroyuki Akabane <hirobanex@gmail.com>",
+      "Jose Luis <GuitarSucks@users.noreply.github.com>",
       "Kazuhiro Osawa <yappo@shibuya.pl>",
       "LAU KENNETH <JP20405@w022341503a59m.local>",
       "moznion <moznion@gmail.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>"
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
    "x_serialization_backend" : "JSON::XS version 3.02"
 }

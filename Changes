@@ -2,6 +2,9 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
+1.03  2017-04-26 22:15:39 JST
+        - Supported a device message for Beacon
+
 1.02  2017-01-23 11:44:09 JST
         - Supported multicast API
         - Added accsessor for X-Line-Request-Id #10
