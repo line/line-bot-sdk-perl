@@ -29,11 +29,7 @@ sub is_user_event  { $_[0]->{source}{type} eq 'user' }
 sub is_group_event { $_[0]->{source}{type} eq 'group' }
 sub is_room_event  { $_[0]->{source}{type} eq 'room' }
 
-sub user_id {
-    my $self = shift;
-    croak 'This event source is not a user type.' unless $self->is_user_event;
-    $self->{source}{userId};
-}
+sub user_id { $_[0]->{source}{userId} }
 
 sub group_id {
     my $self = shift;
