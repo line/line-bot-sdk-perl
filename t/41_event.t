@@ -32,6 +32,36 @@ my $json = <<JSON;
    "timestamp":12345678901234,
    "source":{
     "type":"group",
+    "groupId":"groupid",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"text",
+    "text":"message"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"room",
+    "roomId":"roomid",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"text",
+    "text":"message"
+   }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
     "groupId":"groupid"
    },
    "replyToken":"replytoken",
@@ -169,14 +199,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'vBVpRe9JIRqxWSLElfOkEHlFdLVujbX3jHoCHjqiaAQ='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'DSp95GuTXGaUT/WtDlq3GFQBN9hyhFh1j4Hz4Bc6q5s='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 12;
+    is scalar(@{ $events }), 14;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -191,8 +221,20 @@ subtest 'parse_events_json' => sub {
             is $event->message_id, 'contentid';
             is $event->text, 'message';
         };
-        subtest 'image' => sub {
+        subtest 'text group' => sub {
             my $event = $events->[1];
+            ok $event->is_group_event;
+            is $event->group_id, 'groupid';
+            is $event->user_id, 'userid';
+        };
+        subtest 'text room' => sub {
+            my $event = $events->[2];
+            ok $event->is_room_event;
+            is $event->room_id, 'roomid';
+            is $event->user_id, 'userid';
+        };
+        subtest 'image' => sub {
+            my $event = $events->[3];
             is $event->message_type, 'image';
             ok $event->is_group_event;
             is $event->group_id, 'groupid';
@@ -200,7 +242,7 @@ subtest 'parse_events_json' => sub {
             is $event->reply_token, 'replytoken';
         };
         subtest 'video' => sub {
-            my $event = $events->[2];
+            my $event = $events->[4];
             is $event->message_type, 'video';
             ok $event->is_room_event;
             is $event->room_id, 'roomid';
@@ -208,13 +250,13 @@ subtest 'parse_events_json' => sub {
             is $event->reply_token, 'replytoken';
         };
         subtest 'audio' => sub {
-            my $event = $events->[3];
+            my $event = $events->[5];
             is $event->message_type, 'audio';
             ok $event->is_audio_message;
             is $event->reply_token, 'replytoken';
         };
         subtest 'location' => sub {
-            my $event = $events->[4];
+            my $event = $events->[6];
             is $event->message_type, 'location';
             ok $event->is_location_message;
             is $event->reply_token, 'replytoken';
@@ -224,7 +266,7 @@ subtest 'parse_events_json' => sub {
             is $event->longitude, 134.23;
         };
         subtest 'sticker' => sub {
-            my $event = $events->[5];
+            my $event = $events->[7];
             is $event->message_type, 'sticker';
             ok $event->is_sticker_message;
             is $event->reply_token, 'replytoken';
@@ -234,38 +276,38 @@ subtest 'parse_events_json' => sub {
     };
 
     subtest 'follow' => sub {
-        my $event = $events->[6];
+        my $event = $events->[8];
         ok $event->is_follow_event;
         is $event->reply_token, 'replytoken';
     };
 
     subtest 'unfollow' => sub {
-        my $event = $events->[7];
+        my $event = $events->[9];
         ok $event->is_unfollow_event;
         is $event->reply_token, undef;
     };
 
     subtest 'join' => sub {
-        my $event = $events->[8];
+        my $event = $events->[10];
         ok $event->is_join_event;
         is $event->reply_token, 'replytoken';
     };
 
     subtest 'leave' => sub {
-        my $event = $events->[9];
+        my $event = $events->[11];
         ok $event->is_leave_event;
         is $event->reply_token, undef;
     };
 
     subtest 'postback' => sub {
-        my $event = $events->[10];
+        my $event = $events->[12];
         ok $event->is_postback_event;
         is $event->reply_token, 'replytoken';
         is $event->postback_data, 'postback';
     };
 
     subtest 'beacon' => sub {
-        my $event = $events->[11];
+        my $event = $events->[13];
         ok $event->is_beacon_detection_event;
         is $event->reply_token, 'replytoken';
         is $event->beacon_hwid, 'bid';
