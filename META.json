@@ -65,7 +65,7 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.03",
+   "version" : "1.04",
    "x_contributors" : [
       "Hiroyuki Akabane <hirobanex@gmail.com>",
       "Jose Luis <GuitarSucks@users.noreply.github.com>",

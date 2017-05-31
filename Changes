@@ -2,6 +2,9 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
 
+1.04  2017-05-31 16:59:18 JST
+        - Supported a userId field for Source group and Source room
+
 1.03  2017-04-26 22:15:39 JST
         - Supported a device message for Beacon
 
