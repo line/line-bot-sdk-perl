@@ -192,20 +192,19 @@ sub run_messages {
     {
         my $message = $messages->[3];
         is $message->{type}, 'template';
-        is $message->{altText}, 'This is carousel';
+        is $message->{altText}, 'This is image carousel';
 
         my $template = $message->{template};
         is $template->{type}, 'image_carousel';
 
         is scalar(@{ $template->{columns} }), 3;
         for my $i (0..2) {
-            is $template->{columns}[$i]{thumbnailImageUrl}, 'http://example.com/image.jpg';
+            is $template->{columns}[$i]{imageUrl}, 'http://example.com/image.jpg';
         }
 
         {
             my $column = $template->{columns}[0];
-            is scalar(@{ $column->{actions} }), 1;
-            is_deeply $column->{actions}[0], +{
+            is_deeply $column->{action}, +{
                 type  => 'postback',
                 label => 'label',
                 data  => 'postback data',
@@ -215,8 +214,7 @@ sub run_messages {
 
         {
             my $column = $template->{columns}[1];
-            is scalar(@{ $column->{actions} }), 1;
-            is_deeply $column->{actions}[0], +{
+            is_deeply $column->{action}, +{
                 type  => 'message',
                 label => 'label',
                 text  => 'send text',
@@ -225,8 +223,7 @@ sub run_messages {
 
         {
             my $column = $template->{columns}[2];
-            is scalar(@{ $column->{actions} }), 1;
-            is_deeply $column->{actions}[0], +{
+            is_deeply $column->{action}, +{
                 type  => 'uri',
                 label => 'label',
                 uri   => 'https://example.com/',
