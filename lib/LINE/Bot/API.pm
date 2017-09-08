@@ -498,6 +498,41 @@ You can use a helper module for the template type.
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
 
+=head4 Image Carousel type
+
+    my $carousel = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
+        alt_text => 'this is a carousel template',
+    );
+
+    my $column1 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item1.jpg',
+    )->add_postback_action(
+        label => 'postback',
+        data  => 'postback data',
+        text  => 'postback message',
+    );
+    $carousel->add_column($column1->build);
+    
+    my $column2 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item2.jpg',
+    )->add_message_action(
+        label => 'message',
+        text  => 'message',
+    );
+    $carousel->add_column($column2->build);
+    
+    my $column3 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item3.jpg',
+    )->add_uri_action(
+        label => 'uri',
+        uri   => 'http://example.com/',
+    );
+    $carousel->add_column($column3->build);
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new(
+    )->add_template($carousel->build);
+    $bot->reply_message($reply_token, $messages->build);
+
 =head1 COPYRIGHT & LICENSE
 
 Copyright 2016 LINE Corporation
