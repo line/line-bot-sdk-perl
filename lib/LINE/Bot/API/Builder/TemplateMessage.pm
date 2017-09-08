@@ -17,6 +17,11 @@ sub new_carousel {
     LINE::Bot::API::Builder::TemplateMessage::Carousel->new(%args);
 }
 
+sub new_image_carousel {
+    my($class, %args) = @_;
+    LINE::Bot::API::Builder::TemplateMessage::ImageCarousel->new(%args);
+}
+
 
 package LINE::Bot::API::Builder::TemplateMessage::ActionBase {
 
@@ -131,6 +136,32 @@ package LINE::Bot::API::Builder::TemplateMessage::Carousel {
     }
 }
 
+package LINE::Bot::API::Builder::TemplateMessage::ImageCarousel {
+
+    sub new {
+        my($class, %args) = @_;
+        bless {
+            type     => 'template',
+            altText  => $args{alt_text},
+            template => +{
+                type    => 'image_carousel',
+                columns => $args{columns} // +[],
+            },
+        }, $class;
+    }
+
+    sub build {
+        my($self, ) = @_;
+        +{ %{ $self } };
+    }
+
+    sub add_column {
+        my($self, $column) = @_;
+        push @{ $self->{template}{columns} }, $column;
+        $self;
+    }
+}
+
 package LINE::Bot::API::Builder::TemplateMessage::Column {
     use parent -norequire, 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
 
@@ -150,6 +181,29 @@ package LINE::Bot::API::Builder::TemplateMessage::Column {
     }
 
     sub _actions { $_[0]{actions} }
+}
+
+package LINE::Bot::API::Builder::TemplateMessage::ImageColumn {
+    use parent -norequire, 'LINE::Bot::API::Builder::TemplateMessage::ActionBase';
+
+    sub new {
+        my($class, %args) = @_;
+        bless {
+            imageUrl => $args{image_url},
+            action   => undef,
+        }, $class;
+    }
+
+    sub build {
+        my($self, ) = @_;
+        +{ %{ $self } };
+    }
+
+    sub add_action {
+        my($self, $action) = @_;
+        $self->{action} = $action;
+        $self;
+    }
 }
 
 1;

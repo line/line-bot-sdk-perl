@@ -69,10 +69,50 @@ my $builder = LINE::Bot::API::Builder::SendMessage->new;
     $builder->add_template($template->build);
 }
 
+# image carousel
+{
+    my $template = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
+        alt_text  => 'This is image carousel',
+    );
+
+    {
+        my $column = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+            image_url => 'http://example.com/image.jpg',
+        )->add_postback_action(
+            label => 'label',
+            data  => 'postback data',
+            text  => 'send text',
+        );
+        $template->add_column($column->build);
+    }
+
+    {
+        my $column = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+            image_url => 'http://example.com/image.jpg',
+        )->add_message_action(
+            label => 'label',
+            text  => 'send text',
+        );
+        $template->add_column($column->build);
+    }
+
+    {
+        my $column = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+            image_url => 'http://example.com/image.jpg',
+        )->add_uri_action (
+            label => 'label',
+            uri   => 'https://example.com/',
+        );
+        $template->add_column($column->build);
+    }
+
+    $builder->add_template($template->build);
+}
+
 sub run_messages {
     my $messages = shift;
 
-    is scalar(@{ $messages }), 3;
+    is scalar(@{ $messages }), 4;
     {
         my $message = $messages->[0];
         is $message->{type}, 'template';
@@ -146,6 +186,49 @@ sub run_messages {
             label => 'label',
             uri   => 'https://example.com/',
         };
+    }
+
+
+    {
+        my $message = $messages->[3];
+        is $message->{type}, 'template';
+        is $message->{altText}, 'This is image carousel';
+
+        my $template = $message->{template};
+        is $template->{type}, 'image_carousel';
+
+        is scalar(@{ $template->{columns} }), 3;
+        for my $i (0..2) {
+            is $template->{columns}[$i]{imageUrl}, 'http://example.com/image.jpg';
+        }
+
+        {
+            my $column = $template->{columns}[0];
+            is_deeply $column->{action}, +{
+                type  => 'postback',
+                label => 'label',
+                data  => 'postback data',
+                text  => 'send text',
+            };
+        }
+
+        {
+            my $column = $template->{columns}[1];
+            is_deeply $column->{action}, +{
+                type  => 'message',
+                label => 'label',
+                text  => 'send text',
+            };
+        }
+
+        {
+            my $column = $template->{columns}[2];
+            is_deeply $column->{action}, +{
+                type  => 'uri',
+                label => 'label',
+                uri   => 'https://example.com/',
+            };
+        }
     }
 }
 
