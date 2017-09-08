@@ -189,8 +189,8 @@ package LINE::Bot::API::Builder::TemplateMessage::ImageColumn {
     sub new {
         my($class, %args) = @_;
         bless {
-            thumbnailImageUrl => $args{image_url},
-            actions           => $args{actions} // +[],
+            imageUrl => $args{image_url},
+            action   => undef,
         }, $class;
     }
 
@@ -199,7 +199,11 @@ package LINE::Bot::API::Builder::TemplateMessage::ImageColumn {
         +{ %{ $self } };
     }
 
-    sub _actions { $_[0]{actions} }
+    sub add_action {
+        my($self, $action) = @_;
+        $self->{action} = $action;
+        $self;
+    }
 }
 
 1;
