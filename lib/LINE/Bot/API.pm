@@ -501,7 +501,7 @@ You can use a helper module for the template type.
 =head4 Image Carousel type
 
     my $carousel = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
-        alt_text => 'this is a carousel template',
+        alt_text => 'this is a image carousel template',
     );
 
     my $column1 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(

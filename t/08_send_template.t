@@ -72,7 +72,7 @@ my $builder = LINE::Bot::API::Builder::SendMessage->new;
 # image carousel
 {
     my $template = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
-        alt_text  => 'This is carousel',
+        alt_text  => 'This is image carousel',
     );
 
     {
