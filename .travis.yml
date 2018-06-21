@@ -7,3 +7,5 @@ perl:
   - 5.18
   - 5.16
   - 5.14
+script:
+  prove -lrv t/
