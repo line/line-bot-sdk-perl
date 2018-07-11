@@ -144,7 +144,7 @@ Allows you to easily handle operatiion messages.
 Using instance method directly is not-recommended.
 Please use L<parse_events_from_json($json)|LINE::Bot::API/parse_events_from_json($json)> of LINE::Bot::API instead.
 
-See also L<https://devdocs.line.me/#webhook-event-object> for more deitals of these package's getter method.
+See also L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects> for more about the attributes.
 
 =head1 COPYRIGHT & LICENSE
 
@@ -156,6 +156,6 @@ https://opensource.org/licenses/Artistic-2.0
 
 =head1 SEE ALSO
 
-L<https://devdocs.line.me/>
+L<https://developers.line.me/>
 
 =cut
