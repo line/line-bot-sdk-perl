@@ -185,11 +185,10 @@ Send reply messages to a user, room or group.
         }
     }
 
-You can get a C<reply_token> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<reply_token> from a L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
-You can also see the online API reference documentation.
-L<https://devdocs.line.me/#reply-message>
+See also the API reference of this method: L<https://developers.line.me/en/reference/messaging-api/#send-reply-message>
 
 =head2 push_message($user_id|$room_id|$group_id, [ $message, ... ])
 
@@ -199,11 +198,10 @@ Send push messages to a user, room or group.
     $messages->add_text( text => 'Example push text' );
     $bot->push_message($user_id, $messages->build);
 
-You can get a C<user_id>, C<room_id> or C<group_id> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<user_id>, C<room_id> or C<group_id> from a L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>
 See the documentation for the C<parse_events_from_json($json)> method.
 
-You can also see the online API reference documentation.
-L<https://devdocs.line.me/#push-message>
+See also the LINE Developers API reference of this method: L<https://developers.line.me/en/reference/messaging-api/#send-push-message>
 
 =head2 multicast([$user_id, ... ], [ $message, ... ])
 
@@ -213,11 +211,10 @@ Send push messages to multiple users.
     $messages->add_text( text => 'Example push text' );
     $bot->multicast([ $user_id ], $messages->build);
 
-You can get a C<user_id> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<user_id> from a L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
-You can also see the online API reference documentation.
-L<https://devdocs.line.me/#multicast>
+See also the LINE Developers API reference of this method: L<https://developers.line.me/en/reference/messaging-api/#send-multicast-messages>
 
 =head2 validate_signature($json, $signature)
 
@@ -262,7 +259,7 @@ Bot leaves a room.
 
     $bot->leave_room($room_id);
 
-You can get a C<room_id> by a L<Webhook Event Object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<room_id> by a L<Webhook Event Object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>.
 And see also C<parse_events_from_json($json)> method's document.
 
 =head2 leave_group($group_id)
@@ -271,7 +268,7 @@ Bot leaves a group.
 
     $bot->leave_group($group_id);
 
-You can get a C<group_id> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<group_id> from a L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
 =head2 get_message_content($message_id)
@@ -285,11 +282,12 @@ Get the original file which was sent by user.
         ...
     }
 
-You can get a C<message_id> from a L<webhook event object|https://devdocs.line.me/#webhook-event-object>.
+You can get a C<message_id> from a L<webhook event object|https://developers.line.me/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
 You can also see the online API reference documentation.
-L<https://devdocs.line.me/#get-content>
+
+See also the LINE Developers API reference of this method: L<https://developers.line.me/en/reference/messaging-api/#get-content>
 
 =head2 get_profile($user_id)
 
@@ -303,10 +301,11 @@ Get user profile information.
         say $ret->status_message;
     }
 
-See the online API reference documentation.
-L<https://devdocs.line.me/#bot-api-get-profile>
+See also the LINE Developers API reference of this method:  L<https://developers.line.me/en/reference/messaging-api/#get-profile>
 
 =head2 How to build a send message object
+
+See the LINE Developers API reference about L<Message objects|https://developers.line.me/en/reference/messaging-api/#message-objects>
 
 When the C<LINE::Bot::API::Builder::SendMessage> class is used, it is possible easily to build a send message object.
 That class supports a fluent interface.
@@ -319,9 +318,6 @@ That class supports a fluent interface.
         preview_url => 'http://example.com/image_preview.jpg',
     );
     $bot->reply_message($reply_token, $messages->build);
-
-See the online API reference documentation.
-L<https://devdocs.line.me/#send-message-object>
 
 =head3 Text type
 
@@ -544,6 +540,6 @@ https://opensource.org/licenses/Artistic-2.0
 =head1 SEE ALSO
 
 L<LINE::Bot::API::Event>,
-L<https://business.line.me/>, L<https://devdocs.line.me/>
+L<https://business.line.me/>, L<https://developers.line.me/>
 
 =cut
