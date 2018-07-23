@@ -1,5 +1,11 @@
+os:
+  - linux
+  - osx
+
 language: perl
+
 perl:
+  - 5.28
   - 5.26
   - 5.24
   - 5.22
@@ -7,5 +13,12 @@ perl:
   - 5.18
   - 5.16
   - 5.14
+
 script:
   prove -lrv t/
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -L https://install.perlbrew.pl | bash ; source $HOME/perl5/perlbrew/etc/bashrc; perlbrew install -j4 --notest --as perl-$TRAVIS_PERL_VERSION $(perlbrew available | grep $TRAVIS_PERL_VERSION | cut -c4- | head -1); perlbrew clean; perlbrew install-cpanm; perlbrew use "$TRAVIS_PERL_VERSION"; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone git://github.com/travis-perl/helpers ~/travis-perl-helpers; source ~/travis-perl-helpers/init; build-perl; fi
+  - perl -V
+  - cpanm --notest Test::More~0.98
