@@ -77,8 +77,8 @@ sub multicast {
 
 sub get_message_content {
     my($self, $message_id, %options) = @_;
-    my $res = $self->{client}->contents_download(
-        $self->{messaging_api_endpoint} . "message/$message_id/content",
+    my $res = $self->request(
+        'contents_download' => "message/$message_id/content",
         %options
     );
     LINE::Bot::API::Response::Content->new(%{ $res });
@@ -86,7 +86,7 @@ sub get_message_content {
 
 sub get_profile {
     my($self, $user_id) = @_;
-    my $res = $self->{client}->get($self->{messaging_api_endpoint} . "profile/$user_id");
+    my $res = $self->request(get => "profile/$user_id");
     LINE::Bot::API::Response::Profile->new(%{ $res });
 }
 
