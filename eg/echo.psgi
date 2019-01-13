@@ -23,11 +23,13 @@ sub {
     my $req = Plack::Request->new($env);
 
     unless ($req->method eq 'POST' && $req->path eq $callback_url) {
-        return [200, [], ['Not Found']];
+        warn "Unknown endpoint: $callback_url != @{[ $req->path ]}\n";
+        return [404, [], ['Not Found']];
     }
 
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
-        return [200, [], ['bad request']];
+        warn "Bad LINE Signature\n";
+        return [400, [], ['bad request']];
     }
 
     my $events = $bot->parse_events_from_json($req->content);
