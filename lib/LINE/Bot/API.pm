@@ -11,6 +11,7 @@ use LINE::Bot::API::Client;
 use LINE::Bot::API::Event;
 use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
+use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
 
 sub new {
@@ -100,6 +101,24 @@ sub leave_group {
     my($self, $group_id) = @_;
     my $res = $self->request(post => "group/$group_id/leave", +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub get_number_of_sent_reply_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/delivery/reply?date=${date}");
+    LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
+}
+
+sub get_number_of_sent_push_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/delivery/push?date=${date}", +{});
+    LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
+}
+
+sub get_number_of_sent_multicast_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/delivery/multicast?date=${date}", +{});
+    LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
 }
 
 sub validate_signature {
@@ -312,6 +331,49 @@ Get user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.me/en/reference/messaging-api/#get-profile>
+
+=head2 C<< get_number_of_sent_reply_messages($date) >>
+
+Gets the number of messages sent with the C<< /bot/message/reply >> endpoint.
+
+The number of messages retrieved by this operation does not include
+the number of messages sent from LINE@ Manager.
+
+The C<< $date >> parameter is "yyyyMMdd" format.
+
+=head2 C<< get_number_of_sent_push_messages($date) >>
+
+Gets the number of messages sent with the C<< /bot/message/push >> endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+=over 4
+
+=item date
+
+Date the messages were sent
+
+    Format: yyyyMMdd (Example: 20191231)
+    Timezone: UTC+9
+
+=back
+
+=head2 C<< get_number_of_sent_multicast_messages($date) >>
+
+Gets the number of messages sent with the C<< /bot/message/multicast >> endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+=over 4
+
+=item date
+
+Date the messages were sent
+
+    Format: yyyyMMdd (Example: 20191231)
+    Timezone: UTC+9
+
+=back
 
 =head2 How to build a send message object
 
