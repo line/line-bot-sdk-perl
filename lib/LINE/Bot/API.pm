@@ -13,6 +13,7 @@ use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
+use LINE::Bot::API::Response::IssueLinkToken;
 
 sub new {
     my($class, %args) = @_;
@@ -129,6 +130,12 @@ sub validate_signature {
 sub parse_events_from_json {
     my($self, $json) = @_;
     LINE::Bot::API::Event->parse_events_json($json);
+}
+
+sub issue_link_token {
+    my($self, $user_id) = @_;
+    my $res = $self->request(post => "user/${user_id}/linkToken", +{});
+    LINE::Bot::API::Response::IssueLinkToken->new(%{ $res });
 }
 
 1;
