@@ -47,11 +47,11 @@ LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
 LINE::Bot::API is a client library which lets you easily start using the LINE Messaging API.
 You can create a bot which runs on the LINE app by registering for a LINE Messaging API account.
-You can create a **Messaging API** account from the [LINE Developers site](https://developers.line.me/en/docs/messaging-api/getting-started/).
+You can create a **Messaging API** account from the [LINE Business Center](https://business.line.me/).
 
-You can find the **channel secret** and **channel access token** on the "Channel settings" page on the [LINE Developers console](https://developers.line.me/console/) which you can access from the [LINE Developers site](https://developers.line.me/).
+You can find the **Channel secret** and **Channel access token** on the Basic information page on the Channel Console which you can access from the [LINE Business Center](https://business.line.me/).
 
-Use this documentation and our [developer documentation](https://developers.line.me/en/docs/messaging-api/overview/) to get started developing your own bot!
+Use this documentation and the LINE Developers documentation to get you started developing your own bot!
 
 # METHODS
 
@@ -80,11 +80,10 @@ Send reply messages to a user, room or group.
         }
     }
 
-You can get a `reply_token` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `reply_token` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
-You can also see the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#send-reply-message](https://developers.line.me/en/docs/messaging-api/reference/#send-reply-message)
+See also the API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-reply-message](https://developers.line.me/en/reference/messaging-api/#send-reply-message)
 
 ## push\_message($user\_id|$room\_id|$group\_id, \[ $message, ... \])
 
@@ -94,11 +93,10 @@ Send push messages to a user, room or group.
     $messages->add_text( text => 'Example push text' );
     $bot->push_message($user_id, $messages->build);
 
-You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects)
 See the documentation for the `parse_events_from_json($json)` method.
 
-You can also see the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#send-push-message](https://developers.line.me/en/docs/messaging-api/reference/#send-push-message)
+See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-push-message](https://developers.line.me/en/reference/messaging-api/#send-push-message)
 
 ## multicast(\[$user\_id, ... \], \[ $message, ... \])
 
@@ -108,11 +106,10 @@ Send push messages to multiple users.
     $messages->add_text( text => 'Example push text' );
     $bot->multicast([ $user_id ], $messages->build);
 
-You can get a `user_id` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `user_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
-You can also see the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#send-multicast-messages](https://developers.line.me/en/docs/messaging-api/reference/#send-multicast-messages)
+See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-multicast-messages](https://developers.line.me/en/reference/messaging-api/#send-multicast-messages)
 
 ## validate\_signature($json, $signature)
 
@@ -157,7 +154,7 @@ Bot leaves a room.
 
     $bot->leave_room($room_id);
 
-You can get a `room_id` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `room_id` by a [Webhook Event Object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
 And see also `parse_events_from_json($json)` method's document.
 
 ## leave\_group($group\_id)
@@ -166,7 +163,7 @@ Bot leaves a group.
 
     $bot->leave_group($group_id);
 
-You can get a `group_id` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `group_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
 ## get\_message\_content($message\_id)
@@ -180,11 +177,12 @@ Get the original file which was sent by user.
         ...
     }
 
-You can get a `message_id` from a [webhook event object](https://developers.line.me/en/docs/messaging-api/reference/#webhook-event-objects).
+You can get a `message_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
 You can also see the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#get-content](https://developers.line.me/en/docs/messaging-api/reference/#get-content)
+
+See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#get-content](https://developers.line.me/en/reference/messaging-api/#get-content)
 
 ## get\_profile($user\_id)
 
@@ -198,12 +196,48 @@ Get user profile information.
         say $ret->status_message;
     }
 
-See the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#get-profile](https://developers.line.me/en/docs/messaging-api/reference/#get-profile)
+See also the LINE Developers API reference of this method:  [https://developers.line.me/en/reference/messaging-api/#get-profile](https://developers.line.me/en/reference/messaging-api/#get-profile)
 
-## How to build a message object
+## `get_number_of_sent_reply_messages($date)`
 
-When the `LINE::Bot::API::Builder::SendMessage` class is used, it is possible easily to build a message object.
+Gets the number of messages sent with the `/bot/message/reply` endpoint.
+
+The number of messages retrieved by this operation does not include
+the number of messages sent from LINE@ Manager.
+
+The `$date` parameter is "yyyyMMdd" format.
+
+## `get_number_of_sent_push_messages($date)`
+
+Gets the number of messages sent with the `/bot/message/push` endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+- date
+
+    Date the messages were sent
+
+        Format: yyyyMMdd (Example: 20191231)
+        Timezone: UTC+9
+
+## `get_number_of_sent_multicast_messages($date)`
+
+Gets the number of messages sent with the `/bot/message/multicast` endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+- date
+
+    Date the messages were sent
+
+        Format: yyyyMMdd (Example: 20191231)
+        Timezone: UTC+9
+
+## How to build a send message object
+
+See the LINE Developers API reference about [Message objects](https://developers.line.me/en/reference/messaging-api/#message-objects)
+
+When the `LINE::Bot::API::Builder::SendMessage` class is used, it is possible easily to build a send message object.
 That class supports a fluent interface.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
@@ -214,9 +248,6 @@ That class supports a fluent interface.
         preview_url => 'http://example.com/image_preview.jpg',
     );
     $bot->reply_message($reply_token, $messages->build);
-
-See the online API reference documentation.
-[https://developers.line.me/en/docs/messaging-api/reference/#message-objects](https://developers.line.me/en/docs/messaging-api/reference/#message-objects)
 
 ### Text type
 
@@ -393,6 +424,41 @@ You can use a helper module for the template type.
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
 
+#### Image Carousel type
+
+    my $carousel = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
+        alt_text => 'this is a image carousel template',
+    );
+
+    my $column1 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item1.jpg',
+    )->add_postback_action(
+        label => 'postback',
+        data  => 'postback data',
+        text  => 'postback message',
+    );
+    $carousel->add_column($column1->build);
+    
+    my $column2 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item2.jpg',
+    )->add_message_action(
+        label => 'message',
+        text  => 'message',
+    );
+    $carousel->add_column($column2->build);
+    
+    my $column3 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
+        image_url => 'https://example.com/bot/images/item3.jpg',
+    )->add_uri_action(
+        label => 'uri',
+        uri   => 'http://example.com/',
+    );
+    $carousel->add_column($column3->build);
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new(
+    )->add_template($carousel->build);
+    $bot->reply_message($reply_token, $messages->build);
+
 # COPYRIGHT & LICENSE
 
 Copyright 2016 LINE Corporation
@@ -403,6 +469,5 @@ https://opensource.org/licenses/Artistic-2.0
 
 # SEE ALSO
 
-- [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event)
-- [https://developers.line.me/](https://developers.line.me/)
-- [https://business.line.me/](https://business.line.me/)
+[LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event),
+[https://business.line.me/](https://business.line.me/), [https://developers.line.me/](https://developers.line.me/)
