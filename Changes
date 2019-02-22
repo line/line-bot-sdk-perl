@@ -1,6 +1,11 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add ImageCarousel message type.
+        - Add example bots.
+        - Add a low-level `requset` method.
+        - Documentation updates.
+        - Update tests to according to @INC changes from perl.
 
 1.04  2017-05-31 16:59:18 JST
         - Supported a userId field for Source group and Source room
