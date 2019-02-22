@@ -5,7 +5,7 @@ Revision history for Perl extension LINE::Bot::API
 1.05  2019-02-22 16:43:36 JST
         - Add ImageCarousel message type.
         - Add example bots.
-        - Add a low-level `requset` method.
+        - Add a low-level `request` method.
         - Documentation updates.
         - Update tests according to @INC changes from perl.
 
