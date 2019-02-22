@@ -87,7 +87,7 @@ push-flex-hello.pl - example script for push a Flex Message
 
 =head1 References:
 
-Flex Message: L<https://developers.line.me/en/docs/messaging-api/reference/#flex-message>
+Flex Message: L<https://developers.line.biz/en/reference/messaging-api/#flex-message>
 
 =head1 COPYRIGHT & LICENSE
 
