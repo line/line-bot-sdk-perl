@@ -224,7 +224,7 @@ Send reply messages to a user, room or group.
 You can get a C<reply_token> from a L<webhook event object|https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
-See also the API reference of this method: L<hhttps://developers.line.biz/en/reference/messaging-api/#send-reply-message>
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-reply-message>
 
 =head2 push_message($user_id|$room_id|$group_id, [ $message, ... ])
 
