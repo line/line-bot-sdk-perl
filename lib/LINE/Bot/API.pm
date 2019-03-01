@@ -619,7 +619,7 @@ https://opensource.org/licenses/Artistic-2.0
 =head1 SEE ALSO
 
 L<LINE::Bot::API::Event>,
-L<https://developers.line.biz/>
-L<https://at.line.me/en/>,
+L<https://developers.line.biz/>,
+L<https://at.line.me/>
 
 =cut
