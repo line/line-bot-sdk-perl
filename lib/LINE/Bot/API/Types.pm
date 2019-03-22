@@ -92,7 +92,7 @@ declare MessageEvent => as Dict[
     replyToken => NonEmptyStr,
     timestamp => PositiveOrZeroNum,
     source  => $SourceGroup | $SourceUser | $SourceRoom,
-    message => $TextMessage | $ImageMessage | $AudioMessage | $FileMessage | $LocationMessage | $StickerMessage,
+    message => $TextMessage | $ImageMessage | $AudioMessage | $VideoMessage | $FileMessage | $LocationMessage | $StickerMessage,
 ];
 
 # __PACKAGE__->meta->make_immutable;

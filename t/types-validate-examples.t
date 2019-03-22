@@ -14,25 +14,34 @@ sub verify {
     my ($type, $file) = @_;
 
     $file = File::Spec->join($Bin, 'examples', $file);
-    print "== $file\n";
 
     open my $fh, '<', $file;
     my $c = do { local $/; <$fh> };
     close($fh);
 
-    my $val = decode_json($c);
+    eval {
+        my $val = decode_json($c);
 
-    my $error = $type->validate($val);
-    if ($error) {
-        fail "$type: $file";
-        diag $error;
-    } else {
-        pass "$type: $file";
-    }
+        my $error = $type->validate($val);
+        if ($error) {
+            fail "$type: $file";
+            diag $error;
+        } else {
+            pass "$type: $file";
+        }
+        1;
+    } or do {
+        my $err = $_;
+        fail "ERROR: $type: $file";
+        diag $c;
+    };
 }
 
 my @tests = (
     [ MessageEvent, 'text-message-1.json'],
+    [ MessageEvent, 'image-message-1.json'],
+    [ MessageEvent, 'video-message-1.json'],
+    [ MessageEvent, 'audio-message-1.json'],
 );
 
 for (@tests){
