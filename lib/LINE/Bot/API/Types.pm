@@ -167,6 +167,16 @@ declare PostbackEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#beacon-event
+declare BeaconEvent => as Dict[
+    type       => Enum["beacon"],
+    replyToken => NonEmptyStr,
+    beacon     => Dict[
+        hwid => NonEmptyStr,
+        type => Enum["enter", "leave", "banner"],
+        dm   => Optional[Str],
+    ],
+    @__common__,
+];
 
-# __PACKAGE__->meta->make_immutable;
 1;
