@@ -156,6 +156,17 @@ declare MemberLeftEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#postback-event
+declare PostbackEvent => as Dict[
+    type       => Enum["postback"],
+    replyToken => NonEmptyStr,
+    postback   => Dict[
+        data => Str,
+        params => HashRef
+    ],
+    @__common__,
+];
+
 
 # __PACKAGE__->meta->make_immutable;
 1;
