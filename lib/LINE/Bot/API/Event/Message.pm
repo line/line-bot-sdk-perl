@@ -13,6 +13,7 @@ my %TYPE2CLASS = (
     audio    => 'LINE::Bot::API::Event::Message::Audio',
     location => 'LINE::Bot::API::Event::Message::Location',
     sticker  => 'LINE::Bot::API::Event::Message::Sticker',
+    file     => 'LINE::Bot::API::Event::Message::File',
 );
 
 sub new {
@@ -40,6 +41,7 @@ sub is_video_message    { 0 }
 sub is_audio_message    { 0 }
 sub is_location_message { 0 }
 sub is_sticker_message  { 0 }
+sub is_file_message     { 0 }
 
 package LINE::Bot::API::Event::Message::Text {
     use parent 'LINE::Bot::API::Event::Message';
@@ -85,6 +87,15 @@ package LINE::Bot::API::Event::Message::Sticker {
 
     sub package_id { $_[0]->{message}{packageId} }
     sub sticker_id { $_[0]->{message}{stickerId} }
+}
+
+package LINE::Bot::API::Event::Message::File {
+    use parent 'LINE::Bot::API::Event::Message';
+
+    sub is_file_message { 1 }
+
+    sub file_name { $_[0]->{message}{fileName} }
+    sub file_size { $_[0]->{message}{fileSize} }
 }
 
 1;

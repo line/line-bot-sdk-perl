@@ -188,6 +188,21 @@ my $json = <<JSON;
     "type":"enter",
     "dm":"1234567890abcdef"
    }
+  },
+  {
+   "type":"message",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"file",
+    "fileName": "file.txt",
+    "fileSize": 2138
+   }
   }
  ]
 }
@@ -200,14 +215,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'DSp95GuTXGaUT/WtDlq3GFQBN9hyhFh1j4Hz4Bc6q5s='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'tfZMGk9LcFNAE5NUdUBaDuDzdGy3wmAOm8SjATX+Kc8='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 14;
+    is scalar(@{ $events }), 15;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -314,6 +329,15 @@ subtest 'parse_events_json' => sub {
         is $event->beacon_hwid, 'bid';
         is $event->beacon_type, 'enter';
         is $event->beacon_device_message, "\x12\x34\x56\x78\x90\xab\xcd\xef";
+    };
+
+    subtest 'file message' => sub {
+        my $event = $events->[14];
+        is $event->message_type, 'file';
+        ok $event->is_file_message;
+        is $event->reply_token, 'replytoken';
+        is $event->file_size, 2138;
+        is $event->file_name, 'file.txt';
     };
 };
 
