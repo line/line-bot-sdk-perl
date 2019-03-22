@@ -7,7 +7,8 @@ requires 'JSON::XS';
 requires 'IO::Socket::SSL';
 requires 'MIME::Base64';
 requires 'URI';
- 
+requires 'Type::Tiny';
+
 on test => sub {
     requires 'Test::More';
 };
