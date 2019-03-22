@@ -106,5 +106,13 @@ declare ErrorResponse => as Dict[
     ]
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#follow-event
+declare FollowEvent => as Dict[
+    type       => Enum["follow"],
+    timestamp  => PositiveOrZeroNum,
+    source     => $SourceGroup | $SourceUser | $SourceRoom,
+    replyToken => NonEmptyStr,
+];
+
 # __PACKAGE__->meta->make_immutable;
 1;
