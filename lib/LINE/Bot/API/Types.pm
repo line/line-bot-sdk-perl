@@ -114,5 +114,12 @@ declare FollowEvent => as Dict[
     replyToken => NonEmptyStr,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#unfollow-event
+declare UnfollowEvent => as Dict[
+    type       => Enum["unfollow"],
+    timestamp  => PositiveOrZeroNum,
+    source     => $SourceGroup | $SourceUser | $SourceRoom
+];
+
 # __PACKAGE__->meta->make_immutable;
 1;
