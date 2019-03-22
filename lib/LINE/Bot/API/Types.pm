@@ -106,27 +106,35 @@ declare ErrorResponse => as Dict[
     ]
 ];
 
+my @__common__ = (
+    timestamp  => PositiveOrZeroNum,
+    source     => $SourceGroup | $SourceUser | $SourceRoom,
+);
+
 # https://developers.line.biz/en/reference/messaging-api/#follow-event
 declare FollowEvent => as Dict[
     type       => Enum["follow"],
-    timestamp  => PositiveOrZeroNum,
-    source     => $SourceGroup | $SourceUser | $SourceRoom,
     replyToken => NonEmptyStr,
+    @__common__
 ];
 
 # https://developers.line.biz/en/reference/messaging-api/#unfollow-event
 declare UnfollowEvent => as Dict[
     type       => Enum["unfollow"],
-    timestamp  => PositiveOrZeroNum,
-    source     => $SourceGroup | $SourceUser | $SourceRoom
+    @__common__
 ];
 
 # https://developers.line.biz/en/reference/messaging-api/#join-event
 declare JoinEvent => as Dict[
     type       => Enum["join"],
-    timestamp  => PositiveOrZeroNum,
-    source     => $SourceGroup | $SourceUser | $SourceRoom,
     replyToken => NonEmptyStr,
+    @__common__,
+];
+
+# https://developers.line.biz/en/reference/messaging-api/#leave-event
+declare LeaveEvent => as Dict[
+    type       => Enum["leave"],
+    @__common__,
 ];
 
 # __PACKAGE__->meta->make_immutable;
