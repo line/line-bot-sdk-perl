@@ -8,7 +8,7 @@ use File::Spec;
 use JSON::XS qw(decode_json);
 use Test::More;
 
-use LINE::Bot::API::Types qw<MessageEvent ErrorResponse FollowEvent UnfollowEvent JoinEvent LeaveEvent MemberJoinedEvent MemberLeftEvent PostbackEvent BeaconEvent AccountLinkEvent>;
+use LINE::Bot::API::Types qw<MessageEvent ErrorResponse FollowEvent UnfollowEvent JoinEvent LeaveEvent MemberJoinedEvent MemberLeftEvent PostbackEvent BeaconEvent AccountLinkEvent DeviceLinkEvent DeviceUnlinkEvent>;
 
 sub verify {
     my ($type, $file) = @_;
@@ -38,6 +38,8 @@ sub verify {
 }
 
 my @tests = (
+    [ DeviceUnlinkEvent, 'device-unlink-event.json'],
+    [ DeviceLinkEvent, 'device-link-event.json'],
     [ AccountLinkEvent, 'account-link-event.json'],
     [ BeaconEvent, 'beacon-event.json'],
     [ PostbackEvent, 'postback-event.json'],

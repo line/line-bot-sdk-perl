@@ -1,0 +1,13 @@
+{
+  "type": "things",
+  "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
+  "timestamp": 1462629479859,
+  "source": {
+    "type": "user",
+    "userId": "U91eeaf62d..."
+  },
+  "things": {
+    "deviceId": "t2c449c9d1...",
+    "type": "unlink"
+  }
+}

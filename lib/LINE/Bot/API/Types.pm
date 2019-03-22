@@ -190,4 +190,26 @@ declare AccountLinkEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#device-link-event
+declare DeviceLinkEvent => as Dict[
+    type       => Enum["things"],
+    replyToken => NonEmptyStr,
+    things     => Dict[
+        type => Enum["link"],
+        deviceId => NonEmptyStr,
+    ],
+    @__common__,
+];
+
+# https://developers.line.biz/en/reference/messaging-api/#device-unlink-event
+declare DeviceUnlinkEvent => as Dict[
+    type       => Enum["things"],
+    replyToken => NonEmptyStr,
+    things     => Dict[
+        type => Enum["unlink"],
+        deviceId => NonEmptyStr,
+    ],
+    @__common__,
+];
+
 1;
