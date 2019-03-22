@@ -121,5 +121,13 @@ declare UnfollowEvent => as Dict[
     source     => $SourceGroup | $SourceUser | $SourceRoom
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#join-event
+declare JoinEvent => as Dict[
+    type       => Enum["join"],
+    timestamp  => PositiveOrZeroNum,
+    source     => $SourceGroup | $SourceUser | $SourceRoom,
+    replyToken => NonEmptyStr,
+];
+
 # __PACKAGE__->meta->make_immutable;
 1;
