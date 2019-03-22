@@ -137,5 +137,25 @@ declare LeaveEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#member-joined-event
+declare MemberJoinedEvent => as Dict[
+    type       => Enum["memberJoined"],
+    replyToken => NonEmptyStr,
+    joined     => Dict[
+        members => ArrayRef[ $SourceUser ]
+    ],
+    @__common__,
+];
+
+# https://developers.line.biz/en/reference/messaging-api/#member-left-event
+declare MemberLeftEvent => as Dict[
+    type       => Enum["memberLeft"],
+    left       => Dict[
+        members => ArrayRef[ $SourceUser ]
+    ],
+    @__common__,
+];
+
+
 # __PACKAGE__->meta->make_immutable;
 1;
