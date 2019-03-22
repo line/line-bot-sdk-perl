@@ -8,7 +8,7 @@ use File::Spec;
 use JSON::XS qw(decode_json);
 use Test::More;
 
-use LINE::Bot::API::Types qw<MessageEvent>;
+use LINE::Bot::API::Types qw<MessageEvent ErrorResponse>;
 
 sub verify {
     my ($type, $file) = @_;
@@ -38,6 +38,7 @@ sub verify {
 }
 
 my @tests = (
+    [ ErrorResponse, 'error-response-1.json'],
     [ MessageEvent, 'text-message-1.json'],
     [ MessageEvent, 'image-message-1.json'],
     [ MessageEvent, 'video-message-1.json'],

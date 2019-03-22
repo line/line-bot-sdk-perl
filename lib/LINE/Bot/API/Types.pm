@@ -95,5 +95,16 @@ declare MessageEvent => as Dict[
     message => $TextMessage | $ImageMessage | $AudioMessage | $VideoMessage | $FileMessage | $LocationMessage | $StickerMessage,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#error-responses
+declare ErrorResponse => as Dict[
+    message => NonEmptyStr,
+    details => ArrayRef[
+        Dict[
+            message  => NonEmptyStr,
+            property => NonEmptyStr,
+        ]
+    ]
+];
+
 # __PACKAGE__->meta->make_immutable;
 1;
