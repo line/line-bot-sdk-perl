@@ -179,4 +179,15 @@ declare BeaconEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#account-link-event
+declare AccountLinkEvent => as Dict[
+    type       => Enum["accountLink"],
+    replyToken => NonEmptyStr,
+    link       => Dict[
+        result => Enum["ok", "failed"],
+        nonce  => Str
+    ],
+    @__common__,
+];
+
 1;
