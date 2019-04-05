@@ -389,6 +389,12 @@ Date the messages were sent
 
 =back
 
+=head2 C<<create_rich_menu( $rich_menu_object )>>
+
+This method correspond to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
+
+One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
+
 =head2 How to build a send message object
 
 See the LINE Developers API reference about L<Message objects|https://developers.line.biz/en/reference/messaging-api/#message-objects>
