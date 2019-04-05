@@ -42,6 +42,8 @@ send_request {
     my $res = $bot->create_rich_menu( $rich_menu );
     ok $res->is_success;
     is $res->http_status, 200;
+
+    is $res->rich_menu_id, '333fakemenuId';
 } receive_request {
     my %args = @_;
     is $args{method}, 'POST';
@@ -54,7 +56,9 @@ send_request {
     }
     is $has_header, 1;
 
-    +{};
+    +{
+        richMenuId => '333fakemenuId',
+    };
 };
 
 done_testing;
