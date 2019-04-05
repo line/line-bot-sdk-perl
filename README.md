@@ -80,10 +80,10 @@ Send reply messages to a user, room or group.
         }
     }
 
-You can get a `reply_token` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
+You can get a `reply_token` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
-See also the API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-reply-message](https://developers.line.me/en/reference/messaging-api/#send-reply-message)
+See also the API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-reply-message](https://developers.line.biz/en/reference/messaging-api/#send-reply-message)
 
 ## push\_message($user\_id|$room\_id|$group\_id, \[ $message, ... \])
 
@@ -93,10 +93,10 @@ Send push messages to a user, room or group.
     $messages->add_text( text => 'Example push text' );
     $bot->push_message($user_id, $messages->build);
 
-You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects)
+You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects)
 See the documentation for the `parse_events_from_json($json)` method.
 
-See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-push-message](https://developers.line.me/en/reference/messaging-api/#send-push-message)
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-push-message](https://developers.line.biz/en/reference/messaging-api/#send-push-message)
 
 ## multicast(\[$user\_id, ... \], \[ $message, ... \])
 
@@ -106,10 +106,10 @@ Send push messages to multiple users.
     $messages->add_text( text => 'Example push text' );
     $bot->multicast([ $user_id ], $messages->build);
 
-You can get a `user_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
+You can get a `user_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
-See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#send-multicast-messages](https://developers.line.me/en/reference/messaging-api/#send-multicast-messages)
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages](https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages)
 
 ## validate\_signature($json, $signature)
 
@@ -154,7 +154,7 @@ Bot leaves a room.
 
     $bot->leave_room($room_id);
 
-You can get a `room_id` by a [Webhook Event Object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
+You can get a `room_id` by a [Webhook Event Object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 And see also `parse_events_from_json($json)` method's document.
 
 ## leave\_group($group\_id)
@@ -163,7 +163,7 @@ Bot leaves a group.
 
     $bot->leave_group($group_id);
 
-You can get a `group_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
+You can get a `group_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
 ## get\_message\_content($message\_id)
@@ -177,12 +177,12 @@ Get the original file which was sent by user.
         ...
     }
 
-You can get a `message_id` from a [webhook event object](https://developers.line.me/en/reference/messaging-api/#webhook-event-objects).
+You can get a `message_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
 You can also see the online API reference documentation.
 
-See also the LINE Developers API reference of this method: [https://developers.line.me/en/reference/messaging-api/#get-content](https://developers.line.me/en/reference/messaging-api/#get-content)
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-content](https://developers.line.biz/en/reference/messaging-api/#get-content)
 
 ## get\_profile($user\_id)
 
@@ -196,7 +196,7 @@ Get user profile information.
         say $ret->status_message;
     }
 
-See also the LINE Developers API reference of this method:  [https://developers.line.me/en/reference/messaging-api/#get-profile](https://developers.line.me/en/reference/messaging-api/#get-profile)
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-profile](https://developers.line.biz/en/reference/messaging-api/#get-profile)
 
 ## `get_number_of_sent_reply_messages($date)`
 
@@ -235,7 +235,7 @@ The number of messages retrieved by this operation does not include the number o
 
 ## How to build a send message object
 
-See the LINE Developers API reference about [Message objects](https://developers.line.me/en/reference/messaging-api/#message-objects)
+See the LINE Developers API reference about [Message objects](https://developers.line.biz/en/reference/messaging-api/#message-objects)
 
 When the `LINE::Bot::API::Builder::SendMessage` class is used, it is possible easily to build a send message object.
 That class supports a fluent interface.
@@ -438,7 +438,7 @@ You can use a helper module for the template type.
         text  => 'postback message',
     );
     $carousel->add_column($column1->build);
-    
+
     my $column2 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
         image_url => 'https://example.com/bot/images/item2.jpg',
     )->add_message_action(
@@ -446,7 +446,7 @@ You can use a helper module for the template type.
         text  => 'message',
     );
     $carousel->add_column($column2->build);
-    
+
     my $column3 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
         image_url => 'https://example.com/bot/images/item3.jpg',
     )->add_uri_action(
@@ -470,4 +470,5 @@ https://opensource.org/licenses/Artistic-2.0
 # SEE ALSO
 
 [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event),
-[https://business.line.me/](https://business.line.me/), [https://developers.line.me/](https://developers.line.me/)
+[https://developers.line.biz/](https://developers.line.biz/),
+[https://at.line.me/](https://at.line.me/)
