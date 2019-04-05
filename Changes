@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - define the class for 'File' message type.
+        - Replace links to developers.line.biz.
 
 1.05  2019-02-22 16:43:36 JST
         - Add ImageCarousel message type.
