@@ -15,6 +15,7 @@ use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::IssueLinkToken;
 use LINE::Bot::API::Response::RichMenu;
+use LINE::Bot::API::Response::RichMenuList;
 
 sub new {
     my($class, %args) = @_;
@@ -143,6 +144,12 @@ sub create_rich_menu {
     my ($self, $rich_menu) = @_;
     my $res = $self->request(post => "richmenu", $rich_menu);
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub get_rich_menu_list {
+    my ($self) = @_;
+    my $res = $self->request(get => "richmenu/list");
+    LINE::Bot::API::Response::RichMenuList->new(%{ $res });
 }
 
 1;
@@ -394,6 +401,12 @@ Date the messages were sent
 This method correspond to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
 
 One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
+
+=head2 C<<get_rich_menu_list>>
+
+This method correspond to the API of L<Get rich menu list|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list>
+
+No arguments are needed.
 
 =head2 How to build a send message object
 
