@@ -14,6 +14,7 @@ use LINE::Bot::API::Response::Content;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::IssueLinkToken;
+use LINE::Bot::API::Response::RichMenu;
 
 sub new {
     my($class, %args) = @_;
@@ -136,6 +137,12 @@ sub issue_link_token {
     my($self, $user_id) = @_;
     my $res = $self->request(post => "user/${user_id}/linkToken", +{});
     LINE::Bot::API::Response::IssueLinkToken->new(%{ $res });
+}
+
+sub create_rich_menu {
+    my ($self, $rich_menu) = @_;
+    my $res = $self->request(post => "richmenu", $rich_menu);
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
 1;
