@@ -107,6 +107,20 @@ subtest get_rich_menu => sub {
     };
 };
 
+subtest delete_rich_menu => sub {
+    send_request {
+        my $res = $bot->delete_rich_menu('blahblahid');
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'DELETE';
+        is $args{url},    'https://api.line.me/v2/bot/richmenu/blahblahid';
+        return +{}
+    };
+};
+
+
 subtest get_rich_menu_list => sub {
     send_request {
         my $res = $bot->get_rich_menu_list();

@@ -152,6 +152,11 @@ sub get_rich_menu {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
+sub delete_rich_menu {
+    my ($self, $rich_menu_id) = @_;
+    my $res = $self->request(delete => "richmenu/${rich_menu_id}");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
 
 sub get_rich_menu_list {
     my ($self) = @_;
@@ -403,13 +408,13 @@ Date the messages were sent
 
 =back
 
-=head2 C<<create_rich_menu( $rich_menu_object )>>
+=head2 C<< create_rich_menu( $rich_menu_object ) >>
 
 This method correspond to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
 
 One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
 
-=head2 C<<get_rich_menu( $rich_menu_id )>>
+=head2 C<< get_rich_menu( $rich_menu_id ) >>
 
 This method correspond to the API of L<Get rich menu|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu>
 
@@ -417,7 +422,18 @@ One argument is needed: $rich_menu_id -- which correspond to the
 richMenuId property of the object returned by C<create_rich_menu>
 method.
 
-=head2 C<<get_rich_menu_list>>
+=head2 C<< delete_rich_menu( $rich_menu_id ) >>
+
+This method correspond to the API of L<Delete rich menu|https://developers.line.biz/en/reference/messaging-api/#delete-rich-menu>
+
+One argument is needed: $rich_menu_id -- which correspond to the
+richMenuId property of the object returned by C<create_rich_menu>
+method.
+
+The return value is an empty RichMenu object -- only status code
+matters. Upon successful deletion, status code 200 is returned.
+
+=head2 C<< get_rich_menu_list >>
 
 This method correspond to the API of L<Get rich menu list|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list>
 
