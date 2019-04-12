@@ -146,6 +146,13 @@ sub create_rich_menu {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
+sub get_rich_menu {
+    my ($self, $rich_menu_id) = @_;
+    my $res = $self->request(get => "richmenu/${rich_menu_id}");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+
 sub get_rich_menu_list {
     my ($self) = @_;
     my $res = $self->request(get => "richmenu/list");
@@ -401,6 +408,14 @@ Date the messages were sent
 This method correspond to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
 
 One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
+
+=head2 C<<get_rich_menu( $rich_menu_id )>>
+
+This method correspond to the API of L<Get rich menu|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu>
+
+One argument is needed: $rich_menu_id -- which correspond to the
+richMenuId property of the object returned by C<create_rich_menu>
+method.
 
 =head2 C<<get_rich_menu_list>>
 
