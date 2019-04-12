@@ -164,6 +164,15 @@ sub get_rich_menu_list {
     LINE::Bot::API::Response::RichMenuList->new(%{ $res });
 }
 
+sub set_default_rich_menu;
+sub cancel_default_rich_menu;
+sub get_default_rich_menu_id;
+sub link_rich_menu_to_user;
+sub link_rich_menu_to_multiple_users;
+sub get_rich_menu_id_of_user;
+sub unlink_rich_menu_from_user;
+sub unlink_rich_menus_from_multiple_users;
+
 1;
 __END__
 
