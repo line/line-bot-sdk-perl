@@ -145,4 +145,17 @@ subtest get_rich_menu_list => sub {
     };
 };
 
+subtest set_default_rich_menu => sub {
+    send_request {
+        my $res = $bot->set_default_rich_menu('hehmenuidheh');
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'POST';
+        is $args{url},    'https://api.line.me/v2/bot/user/all/richmenu/hehmenuidheh';
+        return +{}
+    };
+};
+
 done_testing;
