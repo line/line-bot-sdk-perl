@@ -197,4 +197,26 @@ subtest link_rich_menu_to_user => sub {
     };
 };
 
+subtest link_rich_menu_to_multiple_users => sub {
+    send_request {
+        my $res = $bot->link_rich_menu_to_multiple_users(
+            [ 42, 43, 44, 45 ],
+            "fake_menu_id",
+        );
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'POST';
+        is $args{url},    'https://api.line.me/v2/bot/richmenu/bulk/link';
+
+        is_deeply decode_json($args{content}), {
+            userIds => [ 42, 43, 44, 45 ],
+            richMenuId => "fake_menu_id",
+        };
+
+        return +{};
+    };
+};
+
 done_testing;

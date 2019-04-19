@@ -188,7 +188,15 @@ sub link_rich_menu_to_user {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
-sub link_rich_menu_to_multiple_users;
+sub link_rich_menu_to_multiple_users {
+    my ($self, $user_ids, $rich_menu_id) = @_;
+    my $res = $self->request(post => "richmenu/bulk/link", +{
+        richMenuId => $rich_menu_id,
+        userIds => $user_ids,
+    });
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
 sub get_rich_menu_id_of_user;
 sub unlink_rich_menu_from_user;
 sub unlink_rich_menus_from_multiple_users;
@@ -491,6 +499,14 @@ This method corresponds to the API of L<Cancel default rich menu ID|https://deve
 This method corresponds to the API of L<Link rich menu to user|https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-user>
 
 Both of C<$user_id> and C<$rich_menu_id> are required.
+
+=head2 C<< link_rich_menu_to_multiple_users( $user_ids, $rich_menu_id ) >>
+
+This method corresponds to the API of L<Link rich menu to multiple users|https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-users>
+
+Both of C<$user_ids> and C<$rich_menu_id> are required. C<$user_ids>
+should be an ArrayRef of user ids, while C<$rich_menu_id> should be a
+simple scalar.
 
 =head2 How to build a send message object
 
