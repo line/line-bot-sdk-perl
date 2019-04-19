@@ -182,7 +182,12 @@ sub cancel_default_rich_menu {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
-sub link_rich_menu_to_user;
+sub link_rich_menu_to_user {
+    my ($self, $user_id, $rich_menu_id) = @_;
+    my $res = $self->request(post => "user/${user_id}/richmenu/${rich_menu_id}", +{});
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
 sub link_rich_menu_to_multiple_users;
 sub get_rich_menu_id_of_user;
 sub unlink_rich_menu_from_user;
@@ -481,6 +486,11 @@ No arguments are needed. The return value is a RichMenu object with only one pro
 
 This method corresponds to the API of L<Cancel default rich menu ID|https://developers.line.biz/en/reference/messaging-api/#cancel-default-rich-menu>
 
+=head2 C<< link_rich_menu_to_user( $user_id, $rich_menu_id ) >>
+
+This method corresponds to the API of L<Link rich menu to user|https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-user>
+
+Both of C<$user_id> and C<$rich_menu_id> are required.
 
 =head2 How to build a send message object
 

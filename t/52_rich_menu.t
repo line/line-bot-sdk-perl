@@ -184,4 +184,17 @@ subtest cancel_default_rich_menu => sub {
     };
 };
 
+subtest link_rich_menu_to_user => sub {
+    send_request {
+        my $res = $bot->link_rich_menu_to_user(42, "SomeRichMenuId");
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'POST';
+        is $args{url},    'https://api.line.me/v2/bot/user/42/richmenu/SomeRichMenuId';
+        return +{};
+    };
+};
+
 done_testing;
