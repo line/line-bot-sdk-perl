@@ -14,17 +14,21 @@ use LINE::Bot::API::Event::Follow;
 use LINE::Bot::API::Event::Unfollow;
 use LINE::Bot::API::Event::Join;
 use LINE::Bot::API::Event::Leave;
+use LINE::Bot::API::Event::MemberJoin;
+use LINE::Bot::API::Event::MemberLeave;
 use LINE::Bot::API::Event::Postback;
 use LINE::Bot::API::Event::BeaconDetection;
 
 my %TYPE2CLASS = (
-    message  => 'LINE::Bot::API::Event::Message',
-    follow   => 'LINE::Bot::API::Event::Follow',
-    unfollow => 'LINE::Bot::API::Event::Unfollow',
-    join     => 'LINE::Bot::API::Event::Join',
-    leave    => 'LINE::Bot::API::Event::Leave',
-    postback => 'LINE::Bot::API::Event::Postback',
-    beacon   => 'LINE::Bot::API::Event::BeaconDetection',
+    message      => 'LINE::Bot::API::Event::Message',
+    follow       => 'LINE::Bot::API::Event::Follow',
+    unfollow     => 'LINE::Bot::API::Event::Unfollow',
+    join         => 'LINE::Bot::API::Event::Join',
+    leave        => 'LINE::Bot::API::Event::Leave',
+    memberJoined => 'LINE::Bot::API::Event::MemberJoin',
+    memberLeft   => 'LINE::Bot::API::Event::MemberLeave',
+    postback     => 'LINE::Bot::API::Event::Postback',
+    beacon       => 'LINE::Bot::API::Event::BeaconDetection',
 );
 
 sub parse_events_json {

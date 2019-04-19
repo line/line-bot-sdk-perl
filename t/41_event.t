@@ -203,6 +203,23 @@ my $json = <<JSON;
     "fileName": "file.txt",
     "fileSize": 2138
    }
+  },
+  {
+   "type":"memberJoined",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   },
+   "replyToken":"replytoken"
+  },
+  {
+   "type":"memberLeft",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   }
   }
  ]
 }
@@ -215,14 +232,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'tfZMGk9LcFNAE5NUdUBaDuDzdGy3wmAOm8SjATX+Kc8='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, '821ZmccILW3wu5PD3iwtr5GdO4mn2Rp+FMHD3TzeEFo='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 15;
+    is scalar(@{ $events }), 17;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -338,6 +355,18 @@ subtest 'parse_events_json' => sub {
         is $event->reply_token, 'replytoken';
         is $event->file_size, 2138;
         is $event->file_name, 'file.txt';
+    };
+
+    subtest 'memberJoined' => sub {
+        my $event = $events->[15];
+        ok $event->is_member_join_event;
+        is $event->reply_token, 'replytoken';
+    };
+
+    subtest 'memberLeft' => sub {
+        my $event = $events->[16];
+        ok $event->is_member_leave_event;
+        is $event->reply_token, undef;
     };
 };
 

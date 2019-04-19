@@ -134,6 +134,48 @@ my $json = <<JSON;
    }
   },
   {
+   "type":"memberJoined",
+   "timestamp":12345678901234,
+   "replyToken":"replytoken",
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   },
+   "joined":{
+    "members":[
+     {
+      "type":"user",
+      "userId":"userid"
+     },
+     {
+      "type":"user",
+      "userId":"userid"
+     }
+    ]
+   }
+  },
+  {
+   "type":"memberLeft",
+   "timestamp":12345678901234,
+   "replyToken":"replytoken",
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   },
+   "joined":{
+    "members":[
+     {
+      "type":"user",
+      "userId":"userid"
+     },
+     {
+      "type":"user",
+      "userId":"userid"
+     }
+    ]
+   }
+  },
+  {
    "type":"postback",
    "timestamp":12345678901234,
    "source":{
@@ -166,13 +208,13 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok($bot->validate_signature($json, 'QHWgy4GThTN7vK1Nh7fRzNVCAIptZuEFm4V1x6mQFp4='));
+        ok($bot->validate_signature($json, 'zCvNpTHXkZZkgksyWUrzdlQ1ud3ZApuyTRmtAyiZKMk='));
     };
 };
 
 subtest 'parse_events_from_json' => sub {
     my $events = $bot->parse_events_from_json($json);
-    is scalar(@{ $events }), 12;
+    is scalar(@{ $events }), 14;
 };
 
 done_testing;
