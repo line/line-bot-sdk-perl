@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.07  2019-04-19 16:42:43 JST
         - Add member join/leave event.
 
 
