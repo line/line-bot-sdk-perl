@@ -219,4 +219,17 @@ subtest link_rich_menu_to_multiple_users => sub {
     };
 };
 
+subtest get_rich_menu_id_of_user => sub {
+    send_request {
+        my $res = $bot->get_rich_menu_id_of_user(42);
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'GET';
+        is $args{url},    'https://api.line.me/v2/bot/user/42/richmenu';
+        return +{ rirchMenuId => "blahblahmehmeh" };
+    };
+};
+
 done_testing;

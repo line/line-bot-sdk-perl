@@ -197,7 +197,12 @@ sub link_rich_menu_to_multiple_users {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
-sub get_rich_menu_id_of_user;
+sub get_rich_menu_id_of_user {
+    my ($self, $user_id, $rich_menu_id) = @_;
+    my $res = $self->request(get => "user/${user_id}/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
 sub unlink_rich_menu_from_user;
 sub unlink_rich_menus_from_multiple_users;
 
@@ -507,6 +512,13 @@ This method corresponds to the API of L<Link rich menu to multiple users|https:/
 Both of C<$user_ids> and C<$rich_menu_id> are required. C<$user_ids>
 should be an ArrayRef of user ids, while C<$rich_menu_id> should be a
 simple scalar.
+
+=head2 C<< get_rich_menu_id_of_user( $user_id ) >>
+
+This method corresponds to the API of L<Get rich menu ID of user|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-id-of-user>
+
+The argument C<$user_id> is mandatory.  The return value is a RichMenu
+object with only one property: richMenuId.
 
 =head2 How to build a send message object
 
