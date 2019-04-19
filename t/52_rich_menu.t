@@ -232,4 +232,33 @@ subtest get_rich_menu_id_of_user => sub {
     };
 };
 
+subtest unlink_rich_menu_from_user => sub {
+    send_request {
+        my $res = $bot->unlink_rich_menu_from_user(42);
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'DELETE';
+        is $args{url},    'https://api.line.me/v2/bot/user/42/richmenu';
+        return +{};
+    };
+};
+
+subtest unlink_rich_menu_from_multiple_users => sub {
+    send_request {
+        my $res = $bot->unlink_rich_menu_from_multiple_users([42, 43, 44, 45]);
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'POST';
+        is $args{url},    'https://api.line.me/v2/bot/richmenu/bulk/unlink';
+        is_deeply decode_json($args{content}), {
+            userIds => [42, 43, 44, 45]
+        };
+        return +{};
+    };
+};
+
 done_testing;

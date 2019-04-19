@@ -203,8 +203,19 @@ sub get_rich_menu_id_of_user {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
-sub unlink_rich_menu_from_user;
-sub unlink_rich_menus_from_multiple_users;
+sub unlink_rich_menu_from_user {
+    my ($self, $user_id) = @_;
+    my $res = $self->request(delete => "user/${user_id}/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub unlink_rich_menu_from_multiple_users {
+    my ($self, $user_ids) = @_;
+    my $res = $self->request(post => "richmenu/bulk/unlink", +{
+        userIds => $user_ids,
+    });
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
 
 1;
 __END__
@@ -519,6 +530,18 @@ This method corresponds to the API of L<Get rich menu ID of user|https://develop
 
 The argument C<$user_id> is mandatory.  The return value is a RichMenu
 object with only one property: richMenuId.
+
+=head2 C<< unlink_rich_menu_from_user( $user_id ) >>
+
+This method corresponds to the API of L<Unlink rich menu from user|https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-user>
+
+The argument C<$user_id> is mandatory. The return value is an empty object.
+
+=head2 C<< unlink_rich_menu_from_multiple_users( $user_ids ) >>
+
+This method corresponds to the API of L<Unlink rich menu from multiple users|https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-users>
+
+The mandatory argument C<$user_ids> is an ArrayRef of user ids. The return value is an empty object.
 
 =head2 How to build a send message object
 
