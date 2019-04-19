@@ -158,4 +158,17 @@ subtest set_default_rich_menu => sub {
     };
 };
 
+subtest get_default_rich_menu_id => sub {
+    send_request {
+        my $res = $bot->get_default_rich_menu_id();
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'GET';
+        is $args{url},    'https://api.line.me/v2/bot/user/all/richmenu';
+        return +{ richMenuId => "blahblehblueh" }
+    };
+};
+
 done_testing;
