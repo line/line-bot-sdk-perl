@@ -171,4 +171,17 @@ subtest get_default_rich_menu_id => sub {
     };
 };
 
+subtest cancel_default_rich_menu => sub {
+    send_request {
+        my $res = $bot->cancel_default_rich_menu();
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'DELETE';
+        is $args{url},    'https://api.line.me/v2/bot/user/all/richmenu';
+        return +{ richMenuId => "blahblehblueh" }
+    };
+};
+
 done_testing;
