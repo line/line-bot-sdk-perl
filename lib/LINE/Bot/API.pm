@@ -429,13 +429,13 @@ Date the messages were sent
 
 =head2 C<< create_rich_menu( $rich_menu_object ) >>
 
-This method correspond to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
+This method corresponds to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
 
 One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
 
 =head2 C<< get_rich_menu( $rich_menu_id ) >>
 
-This method correspond to the API of L<Get rich menu|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu>
+This method corresponds to the API of L<Get rich menu|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu>
 
 One argument is needed: $rich_menu_id -- which correspond to the
 richMenuId property of the object returned by C<create_rich_menu>
@@ -443,7 +443,7 @@ method.
 
 =head2 C<< delete_rich_menu( $rich_menu_id ) >>
 
-This method correspond to the API of L<Delete rich menu|https://developers.line.biz/en/reference/messaging-api/#delete-rich-menu>
+This method corresponds to the API of L<Delete rich menu|https://developers.line.biz/en/reference/messaging-api/#delete-rich-menu>
 
 One argument is needed: $rich_menu_id -- which correspond to the
 richMenuId property of the object returned by C<create_rich_menu>
@@ -454,13 +454,13 @@ matters. Upon successful deletion, status code 200 is returned.
 
 =head2 C<< get_rich_menu_list >>
 
-This method correspond to the API of L<Get rich menu list|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list>
+This method corresponds to the API of L<Get rich menu list|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list>
 
 No arguments are needed.
 
 =head2 C<< set_default_rich_menu( $rich_menu_id ) >>
 
-This method correspond to the API of L<Set default rich menu|https://developers.line.biz/en/reference/messaging-api/#set-default-rich-menu>
+This method corresponds to the API of L<Set default rich menu|https://developers.line.biz/en/reference/messaging-api/#set-default-rich-menu>
 
 One argument is needed: $rich_menu_id -- which correspond to the
 richMenuId property of the object returned by C<create_rich_menu>
@@ -468,7 +468,7 @@ method.
 
 =head2 C<< get_default_rich_menu_id >>
 
-This method correspond to the API of L<Get default rich menu ID|https://developers.line.biz/en/reference/messaging-api/#get-default-rich-menu-id>
+This method corresponds to the API of L<Get default rich menu ID|https://developers.line.biz/en/reference/messaging-api/#get-default-rich-menu-id>
 
 No arguments are needed. The return value is a RichMenu object with only one property: richMenuId.
 
