@@ -10,7 +10,7 @@
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : 2
+      "version" : "2"
    },
    "name" : "LINE-Bot-API",
    "no_index" : {
@@ -66,7 +66,7 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.06",
+   "version" : "1.07",
    "x_contributors" : [
       "7kashin <4nji.7ka6ra@gmail.com>",
       "Hirofumi Kataoka <hirofumi.kataoka@gmail.com>",
@@ -84,8 +84,8 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
-   "x_generated_by_perl" : "v5.18.2",
-   "x_serialization_backend" : "Cpanel::JSON::XS version 4.08",
+   "x_generated_by_perl" : "v5.28.0",
+   "x_serialization_backend" : "JSON::XS version 4.02",
    "x_static_install" : 1
 }
 
