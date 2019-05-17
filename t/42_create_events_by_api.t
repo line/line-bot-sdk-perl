@@ -195,6 +195,32 @@ my $json = <<JSON;
    "replyToken":"replytoken",
    "beacon.hwid":"bid",
    "beacon.type":"enter"
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "deviceId": "deviceid",
+      "type": "link"
+    }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "deviceId": "deviceid",
+      "type": "unlink"
+    }
   }
  ]
 }
@@ -208,13 +234,13 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok($bot->validate_signature($json, 'zCvNpTHXkZZkgksyWUrzdlQ1ud3ZApuyTRmtAyiZKMk='));
+        ok($bot->validate_signature($json, 'eicPGyl5tJ17UNzckv1+0P4QJ9xKCG0UEri6mzfOiCs='));
     };
 };
 
 subtest 'parse_events_from_json' => sub {
     my $events = $bot->parse_events_from_json($json);
-    is scalar(@{ $events }), 14;
+    is scalar(@{ $events }), 16;
 };
 
 done_testing;
