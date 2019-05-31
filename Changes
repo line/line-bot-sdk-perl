@@ -1,6 +1,9 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add accountLink event (PR #67)
+        - Add device link/unlink event. (PR #64)
+        - Support Richmenu API (PR #60)
 
 1.07  2019-04-19 16:42:43 JST
         - Add member join/leave event.
