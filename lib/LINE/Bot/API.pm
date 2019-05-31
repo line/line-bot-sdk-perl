@@ -3,7 +3,6 @@ use strict;
 use warnings;
 our $VERSION = '1.07';
 
-use JSON::XS;
 use URI;
 
 use LINE::Bot::API::Builder::SendMessage;
