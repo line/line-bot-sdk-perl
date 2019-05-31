@@ -233,6 +233,88 @@ The number of messages retrieved by this operation does not include the number o
         Format: yyyyMMdd (Example: 20191231)
         Timezone: UTC+9
 
+## `create_rich_menu( $rich_menu_object )`
+
+This method corresponds to the API of [Creating rich menu](https://developers.line.biz/en/reference/messaging-api/#create-rich-menu)
+
+One argument is needed: `$rich_menu_object`, which is a plain HashRef representing [rich menu object](https://developers.line.biz/en/reference/messaging-api/#rich-menu-object)
+
+## `get_rich_menu( $rich_menu_id )`
+
+This method corresponds to the API of [Get rich menu](https://developers.line.biz/en/reference/messaging-api/#get-rich-menu)
+
+One argument is needed: $rich\_menu\_id -- which correspond to the
+richMenuId property of the object returned by `create_rich_menu`
+method.
+
+## `delete_rich_menu( $rich_menu_id )`
+
+This method corresponds to the API of [Delete rich menu](https://developers.line.biz/en/reference/messaging-api/#delete-rich-menu)
+
+One argument is needed: $rich\_menu\_id -- which correspond to the
+richMenuId property of the object returned by `create_rich_menu`
+method.
+
+The return value is an empty RichMenu object -- only status code
+matters. Upon successful deletion, status code 200 is returned.
+
+## `get_rich_menu_list`
+
+This method corresponds to the API of [Get rich menu list](https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list)
+
+No arguments are needed.
+
+## `set_default_rich_menu( $rich_menu_id )`
+
+This method corresponds to the API of [Set default rich menu](https://developers.line.biz/en/reference/messaging-api/#set-default-rich-menu)
+
+One argument is needed: $rich\_menu\_id -- which correspond to the
+richMenuId property of the object returned by `create_rich_menu`
+method.
+
+## `get_default_rich_menu_id`
+
+This method corresponds to the API of [Get default rich menu ID](https://developers.line.biz/en/reference/messaging-api/#get-default-rich-menu-id)
+
+No arguments are needed. The return value is a RichMenu object with only one property: richMenuId.
+
+## `cancel_default_rich_menu`
+
+This method corresponds to the API of [Cancel default rich menu ID](https://developers.line.biz/en/reference/messaging-api/#cancel-default-rich-menu)
+
+## `link_rich_menu_to_user( $user_id, $rich_menu_id )`
+
+This method corresponds to the API of [Link rich menu to user](https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-user)
+
+Both of `$user_id` and `$rich_menu_id` are required.
+
+## `link_rich_menu_to_multiple_users( $user_ids, $rich_menu_id )`
+
+This method corresponds to the API of [Link rich menu to multiple users](https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-users)
+
+Both of `$user_ids` and `$rich_menu_id` are required. `$user_ids`
+should be an ArrayRef of user ids, while `$rich_menu_id` should be a
+simple scalar.
+
+## `get_rich_menu_id_of_user( $user_id )`
+
+This method corresponds to the API of [Get rich menu ID of user](https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-id-of-user)
+
+The argument `$user_id` is mandatory.  The return value is a RichMenu
+object with only one property: richMenuId.
+
+## `unlink_rich_menu_from_user( $user_id )`
+
+This method corresponds to the API of [Unlink rich menu from user](https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-user)
+
+The argument `$user_id` is mandatory. The return value is an empty object.
+
+## `unlink_rich_menu_from_multiple_users( $user_ids )`
+
+This method corresponds to the API of [Unlink rich menu from multiple users](https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-users)
+
+The mandatory argument `$user_ids` is an ArrayRef of user ids. The return value is an empty object.
+
 ## How to build a send message object
 
 See the LINE Developers API reference about [Message objects](https://developers.line.biz/en/reference/messaging-api/#message-objects)
@@ -461,7 +543,7 @@ You can use a helper module for the template type.
 
 # COPYRIGHT & LICENSE
 
-Copyright 2016 LINE Corporation
+Copyright 2016-2019 LINE Corporation
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at

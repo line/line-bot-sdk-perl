@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.07';
+our $VERSION = '1.08';
 
 use URI;
 
@@ -770,7 +770,7 @@ You can use a helper module for the template type.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2016 LINE Corporation
+Copyright 2016-2019 LINE Corporation
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at
