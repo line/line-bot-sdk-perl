@@ -78,10 +78,28 @@ sub post {
     $ret;
 }
 
+sub delete {
+    my($self, $url) = @_;
+
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->delete(
+        $url,
+        [
+            $self->credentials,
+        ],
+    );
+    unless ($res_content && $res_content =~ /^\{.*\}$/) {
+        croak 'LINE Messaging API error: ' . $res_content;
+    }
+
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
+}
+
 sub contents_download {
     my($self, $url, %options) = @_;
 
-    my $fh = delete($options{fh}) || File::Temp->new(%options);
+    my $fh = CORE::delete($options{fh}) || File::Temp->new(%options);
 
     my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->request(
         method     => 'GET',
