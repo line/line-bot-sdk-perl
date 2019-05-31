@@ -21,7 +21,7 @@ being objects all the way down.
 =cut
 
 sub richMenuId  { $_[0]->{richMenuId} }
-sub chatBarText { $_[0]->{richMenuId} }
+sub chatBarText { $_[0]->{chatBarText} }
 sub size        { $_[0]->{size} }
 sub selected    { $_[0]->{selected} }
 sub name        { $_[0]->{nam} }
