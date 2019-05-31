@@ -19,6 +19,7 @@ use LINE::Bot::API::Event::MemberLeave;
 use LINE::Bot::API::Event::Postback;
 use LINE::Bot::API::Event::BeaconDetection;
 use LINE::Bot::API::Event::Things;
+use LINE::Bot::API::Event::AccountLink;
 
 my %TYPE2CLASS = (
     message      => 'LINE::Bot::API::Event::Message',
@@ -31,6 +32,7 @@ my %TYPE2CLASS = (
     postback     => 'LINE::Bot::API::Event::Postback',
     beacon       => 'LINE::Bot::API::Event::BeaconDetection',
     things       => 'LINE::Bot::API::Event::Things',
+    accountLink  => 'LINE::Bot::API::Event::AccountLink',
 );
 
 sub parse_events_json {

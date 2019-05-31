@@ -246,6 +246,19 @@ my $json = <<JSON;
       "deviceId": "deviceid",
       "type": "unlink"
     }
+  },
+  {
+    "type": "accountLink",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "userId": "U91eeaf62d...",
+      "type": "user"
+    },
+    "link": {
+      "result": "ok",
+      "nonce": "xxxxxxxxxxxxxxx"
+    }
   }
  ]
 }
@@ -258,14 +271,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'lyyAIt9crnux2tdXy5nDfcK9dqfjtz3H1Fi9SlyVdCI='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'A2mrTDj/JKpnt6TSlEtCllrinNn6EJluDdrCRGbXfhg='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 19;
+    is scalar(@{ $events }), 20;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -412,6 +425,18 @@ subtest 'parse_events_json' => sub {
             is $event->things_device_id, 'deviceid';
             is $event->things_type, 'unlink';
         };
+    };
+
+    subtest 'accountLink' => sub {
+        my $event = $events->[19];
+        is ref($event->link), ref({});
+        is $event->link->{result}, "ok";
+        is $event->link->{nonce}, "xxxxxxxxxxxxxxx";
+        is((0+ keys %{$event->link}), 2);
+        is $event->type, "accountLink";
+        ok defined($event->replyToken);
+        ok defined($event->timestamp);
+        ok defined($event->source);
     };
 };
 
