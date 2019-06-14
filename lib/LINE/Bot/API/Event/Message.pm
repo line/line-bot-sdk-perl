@@ -55,18 +55,24 @@ package LINE::Bot::API::Event::Message::Image {
     use parent 'LINE::Bot::API::Event::Message';
 
     sub is_image_message { 1 }
+
+    sub content_provider { $_[0]->{message}{contentProvider} }
 }
 
 package LINE::Bot::API::Event::Message::Video {
     use parent 'LINE::Bot::API::Event::Message';
 
     sub is_video_message { 1 }
+
+    sub content_provider { $_[0]->{message}{contentProvider} }
 }
 
 package LINE::Bot::API::Event::Message::Audio {
     use parent 'LINE::Bot::API::Event::Message';
 
     sub is_audio_message { 1 }
+
+    sub content_provider { $_[0]->{message}{contentProvider} }
 }
 
 package LINE::Bot::API::Event::Message::Location {
