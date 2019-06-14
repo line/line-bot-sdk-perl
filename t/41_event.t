@@ -502,6 +502,12 @@ subtest 'parse_events_json' => sub {
 
         is $event->message_type, 'video';
         ok $event->content_provider;
+
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.mp4",
+            "previewImageUrl" => "https://example.com/preview.jpg"
+        };
     };
 
     subtest 'image with contentProvider' => sub {
@@ -509,6 +515,11 @@ subtest 'parse_events_json' => sub {
 
         is $event->message_type, 'image';
         ok $event->content_provider;
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.jpg",
+            "previewImageUrl" => "https://example.com/preview.jpg"
+        };
     };
 
     subtest 'audio with contentProvider' => sub {
@@ -516,6 +527,10 @@ subtest 'parse_events_json' => sub {
 
         is $event->message_type, 'audio';
         ok $event->content_provider;
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.mp3"
+        };
     };
 };
 
