@@ -15,6 +15,8 @@ use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::IssueLinkToken;
 use LINE::Bot::API::Response::RichMenu;
 use LINE::Bot::API::Response::RichMenuList;
+use LINE::Bot::API::Response::TargetLimit;
+use LINE::Bot::API::Response::TotalUsage;
 
 sub new {
     my($class, %args) = @_;
@@ -103,6 +105,18 @@ sub leave_group {
     my($self, $group_id) = @_;
     my $res = $self->request(post => "group/$group_id/leave", +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub get_target_limit_for_additional_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/quota");
+    LINE::Bot::API::Response::TargetLimit->new(%{ $res });
+}
+
+sub get_number_of_messages_sent_this_month {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/quota/consumption");
+    LINE::Bot::API::Response::TotalUsage->new(%{ $res });
 }
 
 sub get_number_of_sent_reply_messages {
@@ -402,6 +416,18 @@ See the documentation for the C<parse_events_from_json($json)> method.
 You can also see the online API reference documentation.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-content>
+
+=head2 get_target_limit_for_additional_messages
+
+Gets the target limit for additional messages in the current month.
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-quota>
+
+=head2 get_number_of_messages_sent_this_month
+
+Gets the number of messages sent in the current month.
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-consumption>
 
 =head2 get_profile($user_id)
 
