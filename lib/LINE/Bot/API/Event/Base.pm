@@ -21,8 +21,13 @@ sub is_follow_event           { 0 }
 sub is_unfollow_event         { 0 }
 sub is_join_event             { 0 }
 sub is_leave_event            { 0 }
+sub is_member_join_event      { 0 }
+sub is_member_leave_event     { 0 }
 sub is_postback_event         { 0 }
 sub is_beacon_detection_event { 0 }
+sub is_device_link_event      { 0 }
+sub is_device_unlink_event    { 0 }
+sub is_account_link_event     { 0 }
 
 # source field
 sub is_user_event  { $_[0]->{source}{type} eq 'user' }

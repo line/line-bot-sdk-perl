@@ -4,7 +4,6 @@ use Test::More;
 use lib 't/lib';
 use t::Util;
 
-use JSON::XS;
 use LINE::Bot::API;
 
 my $bot = LINE::Bot::API->new(

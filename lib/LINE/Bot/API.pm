@@ -1,9 +1,8 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.05';
+our $VERSION = '1.08';
 
-use JSON::XS;
 use URI;
 
 use LINE::Bot::API::Builder::SendMessage;
@@ -14,6 +13,10 @@ use LINE::Bot::API::Response::Content;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::IssueLinkToken;
+use LINE::Bot::API::Response::RichMenu;
+use LINE::Bot::API::Response::RichMenuList;
+use LINE::Bot::API::Response::TargetLimit;
+use LINE::Bot::API::Response::TotalUsage;
 
 sub new {
     my($class, %args) = @_;
@@ -104,6 +107,18 @@ sub leave_group {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub get_target_limit_for_additional_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/quota");
+    LINE::Bot::API::Response::TargetLimit->new(%{ $res });
+}
+
+sub get_number_of_messages_sent_this_month {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/quota/consumption");
+    LINE::Bot::API::Response::TotalUsage->new(%{ $res });
+}
+
 sub get_number_of_sent_reply_messages {
     my($self, $date) = @_;
     my $res = $self->request(get => "message/delivery/reply?date=${date}");
@@ -136,6 +151,83 @@ sub issue_link_token {
     my($self, $user_id) = @_;
     my $res = $self->request(post => "user/${user_id}/linkToken", +{});
     LINE::Bot::API::Response::IssueLinkToken->new(%{ $res });
+}
+
+sub create_rich_menu {
+    my ($self, $rich_menu) = @_;
+    my $res = $self->request(post => "richmenu", $rich_menu);
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub get_rich_menu {
+    my ($self, $rich_menu_id) = @_;
+    my $res = $self->request(get => "richmenu/${rich_menu_id}");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub delete_rich_menu {
+    my ($self, $rich_menu_id) = @_;
+    my $res = $self->request(delete => "richmenu/${rich_menu_id}");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub get_rich_menu_list {
+    my ($self) = @_;
+    my $res = $self->request(get => "richmenu/list");
+    LINE::Bot::API::Response::RichMenuList->new(%{ $res });
+}
+
+sub set_default_rich_menu {
+    my ($self, $rich_menu_id) = @_;
+    my $res = $self->request(post => "user/all/richmenu/${rich_menu_id}", +{});
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub get_default_rich_menu_id {
+    my ($self) = @_;
+    my $res = $self->request(get => "user/all/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub cancel_default_rich_menu {
+    my ($self) = @_;
+    my $res = $self->request(delete => "user/all/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub link_rich_menu_to_user {
+    my ($self, $user_id, $rich_menu_id) = @_;
+    my $res = $self->request(post => "user/${user_id}/richmenu/${rich_menu_id}", +{});
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub link_rich_menu_to_multiple_users {
+    my ($self, $user_ids, $rich_menu_id) = @_;
+    my $res = $self->request(post => "richmenu/bulk/link", +{
+        richMenuId => $rich_menu_id,
+        userIds => $user_ids,
+    });
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub get_rich_menu_id_of_user {
+    my ($self, $user_id, $rich_menu_id) = @_;
+    my $res = $self->request(get => "user/${user_id}/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub unlink_rich_menu_from_user {
+    my ($self, $user_id) = @_;
+    my $res = $self->request(delete => "user/${user_id}/richmenu");
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub unlink_rich_menu_from_multiple_users {
+    my ($self, $user_ids) = @_;
+    my $res = $self->request(post => "richmenu/bulk/unlink", +{
+        userIds => $user_ids,
+    });
+    LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
 1;
@@ -325,6 +417,18 @@ You can also see the online API reference documentation.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-content>
 
+=head2 get_target_limit_for_additional_messages
+
+Gets the target limit for additional messages in the current month.
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-quota>
+
+=head2 get_number_of_messages_sent_this_month
+
+Gets the number of messages sent in the current month.
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-consumption>
+
 =head2 get_profile($user_id)
 
 Get user profile information.
@@ -381,6 +485,88 @@ Date the messages were sent
     Timezone: UTC+9
 
 =back
+
+=head2 C<< create_rich_menu( $rich_menu_object ) >>
+
+This method corresponds to the API of L<Creating rich menu|https://developers.line.biz/en/reference/messaging-api/#create-rich-menu>
+
+One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
+
+=head2 C<< get_rich_menu( $rich_menu_id ) >>
+
+This method corresponds to the API of L<Get rich menu|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu>
+
+One argument is needed: $rich_menu_id -- which correspond to the
+richMenuId property of the object returned by C<create_rich_menu>
+method.
+
+=head2 C<< delete_rich_menu( $rich_menu_id ) >>
+
+This method corresponds to the API of L<Delete rich menu|https://developers.line.biz/en/reference/messaging-api/#delete-rich-menu>
+
+One argument is needed: $rich_menu_id -- which correspond to the
+richMenuId property of the object returned by C<create_rich_menu>
+method.
+
+The return value is an empty RichMenu object -- only status code
+matters. Upon successful deletion, status code 200 is returned.
+
+=head2 C<< get_rich_menu_list >>
+
+This method corresponds to the API of L<Get rich menu list|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-list>
+
+No arguments are needed.
+
+=head2 C<< set_default_rich_menu( $rich_menu_id ) >>
+
+This method corresponds to the API of L<Set default rich menu|https://developers.line.biz/en/reference/messaging-api/#set-default-rich-menu>
+
+One argument is needed: $rich_menu_id -- which correspond to the
+richMenuId property of the object returned by C<create_rich_menu>
+method.
+
+=head2 C<< get_default_rich_menu_id >>
+
+This method corresponds to the API of L<Get default rich menu ID|https://developers.line.biz/en/reference/messaging-api/#get-default-rich-menu-id>
+
+No arguments are needed. The return value is a RichMenu object with only one property: richMenuId.
+
+=head2 C<< cancel_default_rich_menu >>
+
+This method corresponds to the API of L<Cancel default rich menu ID|https://developers.line.biz/en/reference/messaging-api/#cancel-default-rich-menu>
+
+=head2 C<< link_rich_menu_to_user( $user_id, $rich_menu_id ) >>
+
+This method corresponds to the API of L<Link rich menu to user|https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-user>
+
+Both of C<$user_id> and C<$rich_menu_id> are required.
+
+=head2 C<< link_rich_menu_to_multiple_users( $user_ids, $rich_menu_id ) >>
+
+This method corresponds to the API of L<Link rich menu to multiple users|https://developers.line.biz/en/reference/messaging-api/#link-rich-menu-to-users>
+
+Both of C<$user_ids> and C<$rich_menu_id> are required. C<$user_ids>
+should be an ArrayRef of user ids, while C<$rich_menu_id> should be a
+simple scalar.
+
+=head2 C<< get_rich_menu_id_of_user( $user_id ) >>
+
+This method corresponds to the API of L<Get rich menu ID of user|https://developers.line.biz/en/reference/messaging-api/#get-rich-menu-id-of-user>
+
+The argument C<$user_id> is mandatory.  The return value is a RichMenu
+object with only one property: richMenuId.
+
+=head2 C<< unlink_rich_menu_from_user( $user_id ) >>
+
+This method corresponds to the API of L<Unlink rich menu from user|https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-user>
+
+The argument C<$user_id> is mandatory. The return value is an empty object.
+
+=head2 C<< unlink_rich_menu_from_multiple_users( $user_ids ) >>
+
+This method corresponds to the API of L<Unlink rich menu from multiple users|https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-users>
+
+The mandatory argument C<$user_ids> is an ArrayRef of user ids. The return value is an empty object.
 
 =head2 How to build a send message object
 
@@ -587,7 +773,7 @@ You can use a helper module for the template type.
         text  => 'postback message',
     );
     $carousel->add_column($column1->build);
-    
+
     my $column2 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
         image_url => 'https://example.com/bot/images/item2.jpg',
     )->add_message_action(
@@ -595,7 +781,7 @@ You can use a helper module for the template type.
         text  => 'message',
     );
     $carousel->add_column($column2->build);
-    
+
     my $column3 = LINE::Bot::API::Builder::TemplateMessage::ImageColumn->new(
         image_url => 'https://example.com/bot/images/item3.jpg',
     )->add_uri_action(
@@ -610,7 +796,7 @@ You can use a helper module for the template type.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2016 LINE Corporation
+Copyright 2016-2019 LINE Corporation
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at

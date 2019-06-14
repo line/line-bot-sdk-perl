@@ -203,6 +203,62 @@ my $json = <<JSON;
     "fileName": "file.txt",
     "fileSize": 2138
    }
+  },
+  {
+   "type":"memberJoined",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   },
+   "replyToken":"replytoken"
+  },
+  {
+   "type":"memberLeft",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"group",
+    "groupId":"groupid"
+   }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "deviceId": "deviceid",
+      "type": "link"
+    }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "deviceId": "deviceid",
+      "type": "unlink"
+    }
+  },
+  {
+    "type": "accountLink",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "userId": "U91eeaf62d...",
+      "type": "user"
+    },
+    "link": {
+      "result": "ok",
+      "nonce": "xxxxxxxxxxxxxxx"
+    }
   }
  ]
 }
@@ -215,14 +271,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'tfZMGk9LcFNAE5NUdUBaDuDzdGy3wmAOm8SjATX+Kc8='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'A2mrTDj/JKpnt6TSlEtCllrinNn6EJluDdrCRGbXfhg='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 15;
+    is scalar(@{ $events }), 20;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -338,6 +394,49 @@ subtest 'parse_events_json' => sub {
         is $event->reply_token, 'replytoken';
         is $event->file_size, 2138;
         is $event->file_name, 'file.txt';
+    };
+
+    subtest 'memberJoined' => sub {
+        my $event = $events->[15];
+        ok $event->is_member_join_event;
+        is $event->reply_token, 'replytoken';
+    };
+
+    subtest 'memberLeft' => sub {
+        my $event = $events->[16];
+        ok $event->is_member_leave_event;
+        is $event->reply_token, undef;
+    };
+
+    subtest 'things' => sub {
+        subtest 'link' => sub {
+            my $event = $events->[17];
+            ok $event->is_things_event;
+            ok $event->is_device_link;
+            is $event->reply_token, 'replytoken';
+            is $event->things_device_id, 'deviceid';
+            is $event->things_type, 'link';
+        };
+        subtest 'unlink' => sub {
+            my $event = $events->[18];
+            ok $event->is_things_event;
+            ok $event->is_device_unlink;
+            is $event->reply_token, 'replytoken';
+            is $event->things_device_id, 'deviceid';
+            is $event->things_type, 'unlink';
+        };
+    };
+
+    subtest 'accountLink' => sub {
+        my $event = $events->[19];
+        is ref($event->link), ref({});
+        is $event->link->{result}, "ok";
+        is $event->link->{nonce}, "xxxxxxxxxxxxxxx";
+        is((0+ keys %{$event->link}), 2);
+        is $event->type, "accountLink";
+        ok defined($event->replyToken);
+        ok defined($event->timestamp);
+        ok defined($event->source);
     };
 };
 
