@@ -80,6 +80,18 @@ sub multicast {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub broadcast {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/broadcast',
+        +{
+            messages => $messages,
+        }
+    );
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub get_message_content {
     my($self, $message_id, %options) = @_;
     my $res = $self->request(
@@ -134,6 +146,12 @@ sub get_number_of_sent_push_messages {
 sub get_number_of_sent_multicast_messages {
     my($self, $date) = @_;
     my $res = $self->request(get => "message/delivery/multicast?date=${date}", +{});
+    LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
+}
+
+sub get_number_of_send_broadcast_messages {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "message/delivery/broadcast?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
 }
 
@@ -344,6 +362,16 @@ See the documentation for the C<parse_events_from_json($json)> method.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages>
 
+=head2 broadcast([ $message, ... ])
+
+Sends push messages to multiple users at any time.
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+    $messages->add_text( text => 'Example push text' );
+    $bot->broadcast($messages->build);
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message>
+
 =head2 validate_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
@@ -474,6 +502,23 @@ Date the messages were sent
 Gets the number of messages sent with the C<< /bot/message/multicast >> endpoint.
 
 The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+=over 4
+
+=item date
+
+Date the messages were sent
+
+    Format: yyyyMMdd (Example: 20191231)
+    Timezone: UTC+9
+
+=back
+
+=head2 C<< get_number_of_send_broadcast_messages($date) >>
+
+Gets the number of messages sent with the C<< /bot/message/broadcast >> endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
 
 =over 4
 

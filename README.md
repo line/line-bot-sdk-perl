@@ -111,6 +111,16 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages](https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages)
 
+## broadcast(\[ $message, ... \])
+
+Sends push messages to multiple users at any time.
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+    $messages->add_text( text => 'Example push text' );
+    $bot->broadcast($messages->build);
+
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
+
 ## validate\_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
@@ -237,6 +247,19 @@ The number of messages retrieved by this operation does not include the number o
 Gets the number of messages sent with the `/bot/message/multicast` endpoint.
 
 The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+- date
+
+    Date the messages were sent
+
+        Format: yyyyMMdd (Example: 20191231)
+        Timezone: UTC+9
+
+## `get_number_of_sent_broadcast_messages($date)`
+
+Gets the number of messages sent with the `/bot/message/broadcast` endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
 
 - date
 
