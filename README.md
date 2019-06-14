@@ -184,6 +184,18 @@ You can also see the online API reference documentation.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-content](https://developers.line.biz/en/reference/messaging-api/#get-content)
 
+## get\_target\_limit\_for\_additional\_messages
+
+Gets the target limit for additional messages in the current month.
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-quota](https://developers.line.biz/en/reference/messaging-api/#get-quota)
+
+## get\_number\_of\_messages\_sent\_this\_month
+
+Gets the number of messages sent in the current month.
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-consumption](https://developers.line.biz/en/reference/messaging-api/#get-consumption)
+
 ## get\_profile($user\_id)
 
 Get user profile information.
