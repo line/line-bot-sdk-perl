@@ -627,8 +627,7 @@ Build a sticker type object.
 
 =head3 Imagemap type
 
-Build an imagemap type object.
-You can use a helper module for the imagemap type.
+To build a message of imagemap type, you may use a helper module.
 
     my $imagemap = LINE::Bot::API::Builder::ImagemapMessage->new(
         base_url    => 'https://example.com/bot/images/rm001',
@@ -652,6 +651,27 @@ You can use a helper module for the imagemap type.
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_imagemap($imagemap->build);
     $bot->reply_message($reply_token, $messages->build);
+
+An Imagemap message can contain a video area inside. Here is an example of one withe upper half being a video overlay:
+
+    my $imagemap_message = LINE::Bot::API::Builder::ImagemapMessage->new(
+        base_url    => 'https://example.com/bot/images/rm001',
+        alt_text    => 'this is an imagemap',
+        base_width  => 1040,
+        base_height => 1040,
+        video => {
+            originalContentUrl => "https://example.com/video.mp4",
+            previewImageUrl => "https://example.com/video_preview.jpg",
+            area => {
+                x => 0,
+                y => 0,
+                width => 1040,
+                height => 585
+            }
+        }
+    )->build;
+
+For more detail about Imagemap message, see: L<https://developers.line.biz/en/reference/messaging-api/#imagemap-message>
 
 =head3 Template type
 

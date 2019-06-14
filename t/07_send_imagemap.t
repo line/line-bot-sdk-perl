@@ -115,4 +115,62 @@ send_request {
     +{};
 };
 
+send_request {
+    my $imagemap = LINE::Bot::API::Builder::ImagemapMessage->new(
+        base_url    => 'https://example.com/bot/images/rm001',
+        alt_text    => 'this is an imagemap',
+        base_width  => 1040,
+        base_height => 1040,
+        video => {
+            originalContentUrl => "https://example.com/video.mp4",
+            previewImageUrl => "https://example.com/video_preview.jpg",
+            area => {
+                x => 0,
+                y => 0,
+                width => 1040,
+                height => 585
+            }
+        }
+    );
+    my $builder = LINE::Bot::API::Builder::SendMessage->new->add_imagemap($imagemap->build);
+
+    my $res = $bot->reply_message('DUMMY_TOKEN', $builder->build);
+    ok $res->is_success;
+    is $res->http_status, 200;
+} receive_request {
+    my %args = @_;
+    is $args{method}, 'POST';
+    is $args{url},    'https://api.line.me/v2/bot/message/reply';
+
+    my $data = decode_json $args{content};
+    is $data->{replyToken}, 'DUMMY_TOKEN';
+    is scalar(@{ $data->{messages} }), 1;
+    my $message = $data->{messages}[0];
+    is $message->{type}, 'imagemap';
+    is $message->{baseUrl}, 'https://example.com/bot/images/rm001';
+    is $message->{altText}, 'this is an imagemap';
+    is $message->{baseSize}{width}, '1040';
+    is $message->{baseSize}{height}, '1040';
+
+    is_deeply $message->{video}, {
+        originalContentUrl => "https://example.com/video.mp4",
+        previewImageUrl => "https://example.com/video_preview.jpg",
+        area => {
+            x => 0,
+            y => 0,
+            width => 1040,
+            height => 585
+        }
+    };
+
+    my $has_header = 0;
+    my @headers = @{ $args{headers} };
+    while (my($key, $value) = splice @headers, 0, 2) {
+        $has_header++ if $key eq 'Authorization' && $value eq 'Bearer ACCESS_TOKEN';
+    }
+    is $has_header, 1;
+
+    +{};
+};
+
 done_testing;

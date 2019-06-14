@@ -4,7 +4,7 @@ use warnings;
 
 sub new {
     my($class, %args) = @_;
-    my $o = {
+    my %o = (
         type     => 'imagemap',
         baseUrl  => $args{base_url},
         altText  => $args{alt_text},
@@ -13,7 +13,7 @@ sub new {
             height => $args{base_height},
         },
         actions  => $args{actions} // [],
-    };
+    );
 
     if ($args{video}) {
         $o{video} = {};
@@ -23,12 +23,15 @@ sub new {
         for my $attr (qw(x y width height)) {
             $o{video}{area}{$attr} = $args{video}{area}{$attr};
         }
-        for my $attr (qw(linkUri)) {
-            $o{video}{externalLink}{$attr} = $args{video}{externalLink}{$attr};
+
+        if ($args{video}{externalLink}) {
+            for my $attr (qw(label linkUri)) {
+                $o{video}{externalLink}{$attr} = $args{video}{externalLink}{$attr};
+            }
         }
     }
 
-    return bless $o, $class;
+    return bless \%o, $class;
 }
 
 sub build {
