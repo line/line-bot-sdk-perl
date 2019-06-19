@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.09  2019-06-19 12:55:11 JST
         - Add broadcast APIs (PR #71)
         - Add get_quota APIs (PR #69)
         - Add accessors to video in imagemap messages (PR #68)
