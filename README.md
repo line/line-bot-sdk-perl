@@ -111,6 +111,16 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages](https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages)
 
+## broadcast(\[ $message, ... \])
+
+Sends push messages to multiple users at any time.
+
+    my $messages = LINE::Bot::API::Builder::SendMessage->new;
+    $messages->add_text( text => 'Example push text' );
+    $bot->broadcast($messages->build);
+
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
+
 ## validate\_signature($json, $signature)
 
     my $req = Plack::Request->new( ... );
@@ -237,6 +247,19 @@ The number of messages retrieved by this operation does not include the number o
 Gets the number of messages sent with the `/bot/message/multicast` endpoint.
 
 The number of messages retrieved by this operation does not include the number of messages sent from LINE@ Manager.
+
+- date
+
+    Date the messages were sent
+
+        Format: yyyyMMdd (Example: 20191231)
+        Timezone: UTC+9
+
+## `get_number_of_send_broadcast_messages($date)`
+
+Gets the number of messages sent with the `/bot/message/broadcast` endpoint.
+
+The number of messages retrieved by this operation does not include the number of messages sent from LINE Official Account Manager.
 
 - date
 
@@ -412,8 +435,7 @@ Build a sticker type object.
 
 ### Imagemap type
 
-Build an imagemap type object.
-You can use a helper module for the imagemap type.
+To build a message of imagemap type, you may use a helper module.
 
     my $imagemap = LINE::Bot::API::Builder::ImagemapMessage->new(
         base_url    => 'https://example.com/bot/images/rm001',
@@ -437,6 +459,27 @@ You can use a helper module for the imagemap type.
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_imagemap($imagemap->build);
     $bot->reply_message($reply_token, $messages->build);
+
+An Imagemap message can contain a video area inside. Here is an example of one withe upper half being a video overlay:
+
+    my $imagemap_message = LINE::Bot::API::Builder::ImagemapMessage->new(
+        base_url    => 'https://example.com/bot/images/rm001',
+        alt_text    => 'this is an imagemap',
+        base_width  => 1040,
+        base_height => 1040,
+        video => {
+            originalContentUrl => "https://example.com/video.mp4",
+            previewImageUrl => "https://example.com/video_preview.jpg",
+            area => {
+                x => 0,
+                y => 0,
+                width => 1040,
+                height => 585
+            }
+        }
+    )->build;
+
+For more detail about Imagemap message, see: [https://developers.line.biz/en/reference/messaging-api/#imagemap-message](https://developers.line.biz/en/reference/messaging-api/#imagemap-message)
 
 ### Template type
 
