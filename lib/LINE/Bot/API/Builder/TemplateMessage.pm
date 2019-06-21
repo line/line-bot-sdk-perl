@@ -56,6 +56,9 @@ package LINE::Bot::API::Builder::TemplateMessage::ActionBase {
             type  => 'uri',
             label => $args{label},
             uri   => $args{uri},
+            $args{altUri} ? (
+                altUri => { %{$args{altUri}} }
+            ): ()
         });
     }
 }
