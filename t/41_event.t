@@ -259,6 +259,59 @@ my $json = <<JSON;
       "result": "ok",
       "nonce": "xxxxxxxxxxxxxxx"
     }
+  },
+  {
+    "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
+    "type": "message",
+    "timestamp": 1462629479859,
+    "source": {
+      "type": "user",
+      "userId": "U4af4980629..."
+    },
+    "message": {
+      "id": "325708",
+      "type": "video",
+      "duration": 60000,
+      "contentProvider": {
+        "type": "external",
+        "originalContentUrl": "https://example.com/original.mp4",
+        "previewImageUrl": "https://example.com/preview.jpg"
+      }
+    }
+  },
+  {
+    "type": "message",
+    "timestamp": 1462629479859,
+    "source": {
+      "type": "user",
+      "userId": "xxxxxxxxx"
+    },
+    "message": {
+      "id": "325708",
+      "type": "image",
+      "contentProvider": {
+        "type": "external",
+        "originalContentUrl": "https://example.com/original.jpg",
+        "previewImageUrl": "https://example.com/preview.jpg"
+      }
+    }
+  },
+  {
+    "type": "message",
+    "timestamp": 1462629479859,
+    "source": {
+      "type": "user",
+      "userId": "xxxxxxxxx"
+    },
+    "message": {
+      "id": "325708",
+      "type": "audio",
+      "duration": 60000,
+      "contentProvider": {
+        "type": "external",
+        "originalContentUrl": "https://example.com/original.mp3"
+      }
+    }
   }
  ]
 }
@@ -271,14 +324,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'A2mrTDj/JKpnt6TSlEtCllrinNn6EJluDdrCRGbXfhg='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, '+Kj2v6lADqzJ26ce9o5GDs/N3q5LqSrMoT+b3gDaMjQ='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 20;
+    is scalar(@{ $events }), 23;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -305,27 +358,32 @@ subtest 'parse_events_json' => sub {
             is $event->room_id, 'roomid';
             is $event->user_id, 'userid';
         };
-        subtest 'image' => sub {
+        subtest 'image (without contentProvider)' => sub {
             my $event = $events->[3];
             is $event->message_type, 'image';
             ok $event->is_group_event;
             is $event->group_id, 'groupid';
             ok $event->is_image_message;
             is $event->reply_token, 'replytoken';
+            ok ! $event->content_provider;
         };
-        subtest 'video' => sub {
+        subtest 'video without contentProvider' => sub {
             my $event = $events->[4];
             is $event->message_type, 'video';
             ok $event->is_room_event;
             is $event->room_id, 'roomid';
             ok $event->is_video_message;
             is $event->reply_token, 'replytoken';
+
+            ok ! $event->content_provider;
         };
-        subtest 'audio' => sub {
+        subtest 'audio without contentProvider' => sub {
             my $event = $events->[5];
             is $event->message_type, 'audio';
             ok $event->is_audio_message;
             is $event->reply_token, 'replytoken';
+
+            ok ! $event->content_provider;
         };
         subtest 'location' => sub {
             my $event = $events->[6];
@@ -437,6 +495,42 @@ subtest 'parse_events_json' => sub {
         ok defined($event->replyToken);
         ok defined($event->timestamp);
         ok defined($event->source);
+    };
+
+    subtest 'video with contentProvider' => sub {
+        my $event = $events->[20];
+
+        is $event->message_type, 'video';
+        ok $event->content_provider;
+
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.mp4",
+            "previewImageUrl" => "https://example.com/preview.jpg"
+        };
+    };
+
+    subtest 'image with contentProvider' => sub {
+        my $event = $events->[21];
+
+        is $event->message_type, 'image';
+        ok $event->content_provider;
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.jpg",
+            "previewImageUrl" => "https://example.com/preview.jpg"
+        };
+    };
+
+    subtest 'audio with contentProvider' => sub {
+        my $event = $events->[22];
+
+        is $event->message_type, 'audio';
+        ok $event->content_provider;
+        is_deeply $event->content_provider, {
+            "type" => "external",
+            "originalContentUrl" => "https://example.com/original.mp3"
+        };
     };
 };
 
