@@ -1,0 +1,20 @@
+{
+  "type": "memberLeft",
+  "timestamp": 1462629479960,
+  "source": {
+    "type": "group",
+    "groupId": "C4af4980629..."
+  },
+  "left": {
+    "members": [
+      {
+        "type": "user",
+        "userId": "U4af4980629..."
+      },
+      {  
+        "type": "user",
+        "userId": "U91eeaf62d9..."
+      }
+    ]
+  }
+}

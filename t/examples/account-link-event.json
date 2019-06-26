@@ -1,0 +1,13 @@
+{
+  "type": "accountLink",
+  "replyToken": "b60d432864f44d079f6d8efe86cf404b",
+  "source": {
+    "userId": "U91eeaf62d...",
+    "type": "user"
+  },
+  "timestamp": 1513669370317,
+  "link": {
+    "result": "ok",
+    "nonce": "xxxxxxxxxxxxxxx"
+  }
+}
