@@ -50,43 +50,22 @@ my @messages = (
                         "type" => "text",
                         "align" => "end",
                         "text" => "".localtime(),
-                    }
+                    },
+                    +{
+                        "type" => "button",
+                        "style" => "link",
+                        "height" => "sm",
+                        "action" => {
+                            "type" => "uri",
+                            "label" => "URI action sample",
+                            "uri" => "https://example.com",
+                            "altUri" => {
+                                "desktop" => "https://example.com/desktop"
+                            }
+                        }
+                    },
                 ]
             }
-        }
-    },
-    {
-        "type" => "bubble",
-        "body" => {
-            "type" => "box",
-            "layout" => "vertical",
-            "spacing" => "sm",
-            "contents" => [
-                +{
-                    "type" => "button",
-                    "style" => "primary",
-                    "action" => {
-                        "type" => "uri",
-                        "label" => "nyan",
-                        "uri" => "https =>//example.com",
-                        "altUri" => {
-                            "desktop" => "https =>//example.com/desktop"
-                        }
-                    }
-                },
-                +{
-                    "type" => "button",
-                    "style" => "primary",
-                    "action" => {
-                        "type" => "uri",
-                        "label" => "meow",
-                        "uri" => "https =>//example.com",
-                        "altUri" => {
-                            "desktop" => "https =>//example.com/desktop"
-                        }
-                    }
-                }
-            ]
         }
     }
 );
