@@ -41,10 +41,6 @@ steps:
     image: perl:5.24
 
   - << : *installation
-    name: Install (perl 5.24)
-    image: perl:5.24
-
-  - << : *installation
     name: Install (perl 5.22)
     image: perl:5.22
 
