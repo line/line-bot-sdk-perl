@@ -15,7 +15,7 @@ steps:
       - Test
     commands:
       - cpanm --quiet -n Dist::Milla
-      - dzil authordeps --missing | cpanm
+      - dzil authordeps --missing | cpanm --quiet -n
       - milla build
       - ls -l
 
