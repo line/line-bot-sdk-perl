@@ -78,8 +78,6 @@ my $bot = LINE::Bot::API->new(
     ):(),
 );
 
-my $msg = LINE::Bot::API::Builder::SendMessage->new;
-
 my $res = $bot->push_message($to_id, \@messages);
 
 unless ($res->is_success) {
