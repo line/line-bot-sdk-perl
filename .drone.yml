@@ -31,3 +31,27 @@ steps:
   - << : *installation
     name: Install (perl 5.28)
     image: perl:5.28
+
+  - << : *installation
+    name: Install (perl 5.26)
+    image: perl:5.26
+
+  - << : *installation
+    name: Install (perl 5.24)
+    image: perl:5.24
+
+  - << : *installation
+    name: Install (perl 5.24)
+    image: perl:5.24
+
+  - << : *installation
+    name: Install (perl 5.22)
+    image: perl:5.22
+
+  - << : *installation
+    name: Install (perl 5.20)
+    image: perl:5.20
+
+  - << : *installation
+    name: Install (perl 5.18)
+    image: perl:5.18
