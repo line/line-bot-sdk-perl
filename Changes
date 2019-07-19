@@ -1,6 +1,9 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add an example of using altUri.desktop.
+        - Cleanup "URI" -- which is actually not a direct dependency.
+        - Add Type::Tiny as a dependency
 
 1.09  2019-06-19 12:55:11 JST
         - Add broadcast APIs (PR #71)
