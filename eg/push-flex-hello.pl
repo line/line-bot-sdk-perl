@@ -19,19 +19,8 @@ my($to_id) = @ARGV;
 
 $to_id or die "requires \$ARGV[0]: a user ID";
 
-my $bot = LINE::Bot::API->new(
-    channel_secret         => $channel_secret,
-    channel_access_token   => $channel_access_token,
-    $messaging_api_endpoint ? (
-        messaging_api_endpoint => $messaging_api_endpoint,
-    ):(),
-);
-
-my $msg = LINE::Bot::API::Builder::SendMessage->new;
-
-my $res = $bot->push_message(
-    $to_id,
-    [+{
+my @messages = (
+    +{
         type => "flex",
         altText => "Hello World",
         contents => {
@@ -61,12 +50,35 @@ my $res = $bot->push_message(
                         "type" => "text",
                         "align" => "end",
                         "text" => "".localtime(),
-                    }
+                    },
+                    +{
+                        "type" => "button",
+                        "style" => "link",
+                        "height" => "sm",
+                        "action" => {
+                            "type" => "uri",
+                            "label" => "URI action sample",
+                            "uri" => "https://example.com",
+                            "altUri" => {
+                                "desktop" => "https://example.com/desktop"
+                            }
+                        }
+                    },
                 ]
             }
         }
-    }]
+    }
 );
+
+my $bot = LINE::Bot::API->new(
+    channel_secret         => $channel_secret,
+    channel_access_token   => $channel_access_token,
+    $messaging_api_endpoint ? (
+        messaging_api_endpoint => $messaging_api_endpoint,
+    ):(),
+);
+
+my $res = $bot->push_message($to_id, \@messages);
 
 unless ($res->is_success) {
     print Dumper([ res => $res ]);
