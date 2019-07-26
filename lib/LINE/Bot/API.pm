@@ -10,6 +10,8 @@ use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::Profile;
+use LINE::Bot::API::Response::GroupMemberProfile;
+use LINE::Bot::API::Response::RoomMemberProfile;
 use LINE::Bot::API::Response::IssueLinkToken;
 use LINE::Bot::API::Response::RichMenu;
 use LINE::Bot::API::Response::RichMenuList;
@@ -103,6 +105,18 @@ sub get_profile {
     my($self, $user_id) = @_;
     my $res = $self->request(get => "profile/$user_id");
     LINE::Bot::API::Response::Profile->new(%{ $res });
+}
+
+sub get_group_member_profile {
+    my($self, $group_id, $user_id) = @_;
+    my $res = $self->request(get => "group/$group_id/member/$user_id");
+    LINE::Bot::API::Response::GroupMemberProfile->new(%{ $res });
+}
+
+sub get_room_member_profile {
+    my($self, $room_id, $user_id) = @_;
+    my $res = $self->request(get => "room/$room_id/member/$user_id");
+    LINE::Bot::API::Response::RoomMemberProfile->new(%{ $res });
 }
 
 sub leave_room {
@@ -468,6 +482,27 @@ Get user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
+
+=head2 get_group_member_profile($group_id, $user_id)
+
+Get group user profile information.
+
+    my $ret = $bot->get_group_member_profile($group_id, $user_id);
+    if ($ret->is_success) {
+        say $ret->display_name;
+        say $ret->user_id;
+        say $ret->picture_url;
+    }
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile>
+
+=head2 get_room_member_profile($room_id, $user_id)
+
+Get room user profile information.
+A room is like a group without a group name.
+The response is similar to get_group_member_profile.
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile>
 
 =head2 C<< get_number_of_sent_reply_messages($date) >>
 
