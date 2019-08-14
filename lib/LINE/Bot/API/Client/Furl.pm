@@ -78,6 +78,23 @@ sub post {
     $ret;
 }
 
+sub post_form {
+    my ($self, $url, $headers, $data) = @_;
+
+    $headers //= [];
+    $data //= [];
+
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
+        $url,
+        [ @$headers, 'Content-Type' => 'application/x-www-form-urlencoded' ],
+        $data,
+    );
+
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
+}
+
 sub delete {
     my($self, $url) = @_;
 
