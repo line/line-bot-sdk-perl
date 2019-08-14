@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.10  2019-08-14 14:58:51 JST
         - Add an example of using altUri.desktop.
         - Add APIs for getting group/room member profiles
         - Add support for renewing OAuth tokens.
