@@ -220,6 +220,27 @@ Get user profile information.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-profile](https://developers.line.biz/en/reference/messaging-api/#get-profile)
 
+## get\_group\_member\_profile($group\_id, $user\_id)
+
+Get group user profile information.
+
+    my $ret = $bot->get_group_member_profile($group_id, $user_id);
+    if ($ret->is_success) {
+        say $ret->display_name;
+        say $ret->user_id;
+        say $ret->picture_url;
+    }
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile](https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile)
+
+## get\_room\_member\_profile($room\_id, $user\_id)
+
+Get room user profile information.
+A room is like a group without a group name.
+The response is similar to get\_group\_member\_profile.
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile](https://developers.line.biz/en/reference/messaging-api/#get-room-member-profile)
+
 ## `get_number_of_sent_reply_messages($date)`
 
 Gets the number of messages sent with the `/bot/message/reply` endpoint.
