@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.11  2019-08-14 15:04:38 JST
         - Add support for renewing OAuth tokens. (PR #74)
 
 1.10  2019-08-14 14:58:51 JST
