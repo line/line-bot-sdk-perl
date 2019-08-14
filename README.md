@@ -119,7 +119,7 @@ Sends push messages to multiple users at any time.
     $messages->add_text( text => 'Example push text' );
     $bot->broadcast($messages->build);
 
-See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
+See also the LINE Developers API reference of thi smethod: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
 
 ## validate\_signature($json, $signature)
 
@@ -370,6 +370,33 @@ The argument `$user_id` is mandatory. The return value is an empty object.
 This method corresponds to the API of [Unlink rich menu from multiple users](https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-users)
 
 The mandatory argument `$user_ids` is an ArrayRef of user ids. The return value is an empty object.
+
+## `issue_channel_access_token({ client_id => '...', client_secret => '...' })`
+
+This method corresponds to the API of: [Issue Channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token)
+
+The argument is a HashRef with two pairs of mandatary key-values:
+
+    {
+        client_id => "...",
+        client_secret => "...",
+    }
+
+Both pieces of information can be accquired from the [channel console](https://metacpan.org/pod/client_id).
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access\_token", "expires\_in", and "token\_type" attributes of the response object for future use.
+
+Otherwise, you my examine the "error" attribute and "error\_description" attribute for more information about the error.
+
+## `revoke_channel_access_token({ access_token => "..." })`
+
+This method corresponds to the API of: [Revoke channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token)
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { access_token => "..." }
+
+Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you my examine the "error" attribute and "error\_description" attribute for more information about the error.
 
 ## How to build a send message object
 
