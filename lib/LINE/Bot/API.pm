@@ -261,6 +261,11 @@ sub unlink_rich_menu_from_multiple_users {
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
 }
 
+sub upload_rich_menu_image {
+    my ($self, $richMenuId, $image) = @_;
+    # To be implemented...
+}
+
 sub issue_channel_access_token {
     my ($self, $opts) = @_;
 
