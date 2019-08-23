@@ -423,7 +423,7 @@ Sends push messages to multiple users at any time.
 
 See also the LINE Developers API reference of thi smethod: L<https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message>
 
-=head2 C<< validate_signature($json, $signature)
+=head2 C<< validate_signature($json, $signature) >>
 
     my $req = Plack::Request->new( ... );
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {

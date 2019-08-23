@@ -55,7 +55,7 @@ Use this documentation and the LINE Developers documentation to get you started 
 
 # METHODS
 
-## new(%args)
+## `new(%args)`
 
 Create a new LINE::Bot::API instance.
 
@@ -64,7 +64,7 @@ Create a new LINE::Bot::API instance.
         channel_access_token => $channel_access_token,
     );
 
-## reply\_message($reply\_token, \[ $message, ... \] )
+## `reply_message($reply_token, [ $message, ... ] )`
 
 Send reply messages to a user, room or group.
 
@@ -85,7 +85,7 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-reply-message](https://developers.line.biz/en/reference/messaging-api/#send-reply-message)
 
-## push\_message($user\_id|$room\_id|$group\_id, \[ $message, ... \])
+## `push_message($user_id|$room_id|$group_id, [ $message, ... ])`
 
 Send push messages to a user, room or group.
 
@@ -98,7 +98,7 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-push-message](https://developers.line.biz/en/reference/messaging-api/#send-push-message)
 
-## multicast(\[$user\_id, ... \], \[ $message, ... \])
+## `multicast([$user_id, ... ], [ $message, ... ])`
 
 Send push messages to multiple users.
 
@@ -111,7 +111,7 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages](https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages)
 
-## broadcast(\[ $message, ... \])
+## `broadcast([ $message, ... ])`
 
 Sends push messages to multiple users at any time.
 
@@ -121,14 +121,14 @@ Sends push messages to multiple users at any time.
 
 See also the LINE Developers API reference of thi smethod: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
 
-## validate\_signature($json, $signature)
+## `validate_signature($json, $signature)`
 
     my $req = Plack::Request->new( ... );
     unless ($bot->validate_signature($req->content, $req->header('X-Line-Signature'))) {
         die 'failed to signature validation';
     }
 
-## parse\_events\_from\_json($json)
+## `parse_events_from_json($json)`
 
 Parse webhook event objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event) instances.
 
@@ -158,7 +158,7 @@ Parse webhook event objects and build [LINE::Bot::API::Event](https://metacpan.o
         }
     }
 
-## leave\_room($room\_id)
+## `leave_room($room_id)`
 
 Bot leaves a room.
 
@@ -167,7 +167,7 @@ Bot leaves a room.
 You can get a `room_id` by a [Webhook Event Object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 And see also `parse_events_from_json($json)` method's document.
 
-## leave\_group($group\_id)
+## `leave_group($group_id)`
 
 Bot leaves a group.
 
@@ -176,7 +176,7 @@ Bot leaves a group.
 You can get a `group_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
-## get\_message\_content($message\_id)
+## `get_message_content($message_id)`
 
 Get the original file which was sent by user.
 
@@ -194,19 +194,19 @@ You can also see the online API reference documentation.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-content](https://developers.line.biz/en/reference/messaging-api/#get-content)
 
-## get\_target\_limit\_for\_additional\_messages
+## `get_target_limit_for_additional_messages`
 
 Gets the target limit for additional messages in the current month.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-quota](https://developers.line.biz/en/reference/messaging-api/#get-quota)
 
-## get\_number\_of\_messages\_sent\_this\_month
+## `get_number_of_messages_sent_this_month`
 
 Gets the number of messages sent in the current month.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-consumption](https://developers.line.biz/en/reference/messaging-api/#get-consumption)
 
-## get\_profile($user\_id)
+## `get_profile($user_id)`
 
 Get user profile information.
 
@@ -220,7 +220,7 @@ Get user profile information.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-profile](https://developers.line.biz/en/reference/messaging-api/#get-profile)
 
-## get\_group\_member\_profile($group\_id, $user\_id)
+## `get_group_member_profile($group_id, $user_id)`
 
 Get group user profile information.
 
@@ -233,7 +233,7 @@ Get group user profile information.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile](https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile)
 
-## get\_room\_member\_profile($room\_id, $user\_id)
+## `get_room_member_profile($room_id, $user_id)`
 
 Get room user profile information.
 A room is like a group without a group name.
@@ -398,7 +398,7 @@ The argument is a HashRef with one pair of mandatary key-values;
 
 Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you my examine the "error" attribute and "error\_description" attribute for more information about the error.
 
-## How to build a send message object
+# How to build a send message object
 
 See the LINE Developers API reference about [Message objects](https://developers.line.biz/en/reference/messaging-api/#message-objects)
 
@@ -414,7 +414,7 @@ That class supports a fluent interface.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Text type
+## Text type
 
 Build a text type object.
 
@@ -424,7 +424,7 @@ Build a text type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Image type
+## Image type
 
 Build an image type object.
 
@@ -435,7 +435,7 @@ Build an image type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Video type
+## Video type
 
 Build a video type object.
 
@@ -446,7 +446,7 @@ Build a video type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Audio type
+## Audio type
 
 Build an audio type object.
 
@@ -457,7 +457,7 @@ Build an audio type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Location type
+## Location type
 
 Build a location type object.
 
@@ -470,7 +470,7 @@ Build a location type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Sticker type
+## Sticker type
 
 Build a sticker type object.
 
@@ -481,7 +481,7 @@ Build a sticker type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
-### Imagemap type
+## Imagemap type
 
 To build a message of imagemap type, you may use a helper module.
 
@@ -529,12 +529,12 @@ An Imagemap message can contain a video area inside. Here is an example of one w
 
 For more detail about Imagemap message, see: [https://developers.line.biz/en/reference/messaging-api/#imagemap-message](https://developers.line.biz/en/reference/messaging-api/#imagemap-message)
 
-### Template type
+## Template type
 
 Build a template type object.
 You can use a helper module for the template type.
 
-#### Buttons type
+### Buttons type
 
     my $buttons = LINE::Bot::API::Builder::TemplateMessage->new_buttons(
         alt_text  => 'this is a buttons template',
@@ -560,7 +560,7 @@ You can use a helper module for the template type.
     )->add_template($buttons->build);
     $bot->reply_message($reply_token, $messages->build);
 
-#### Confirm type
+### Confirm type
 
     my $confirm = LINE::Bot::API::Builder::TemplateMessage->new_confirm(
         alt_text => 'this is a confirm template',
@@ -581,7 +581,7 @@ You can use a helper module for the template type.
     )->add_template($confirm->build);
     $bot->reply_message($reply_token, $messages->build);
 
-#### Carousel type
+### Carousel type
 
     my $carousel = LINE::Bot::API::Builder::TemplateMessage->new_carousel(
         alt_text => 'this is a carousel template',
@@ -609,7 +609,7 @@ You can use a helper module for the template type.
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
 
-#### Image Carousel type
+### Image Carousel type
 
     my $carousel = LINE::Bot::API::Builder::TemplateMessage->new_image_carousel(
         alt_text => 'this is a image carousel template',
