@@ -19,6 +19,8 @@ use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 
+use Furl;
+
 sub new {
     my($class, %args) = @_;
 
@@ -262,8 +264,33 @@ sub unlink_rich_menu_from_multiple_users {
 }
 
 sub upload_rich_menu_image {
-    my ($self, $richMenuId, $image) = @_;
+    my ($self, $richMenuId, $contentType, $filePath) = @_;
     # To be implemented...
+
+    if (!$contentType) {
+        croak 'Need ContentType';
+    }
+
+    open my $fh, '<', $filePath
+        or croak 'Failed to open file.';
+
+    my $res = $self->{client}->post(
+        'https://api.line.me/v2/bot/richmenu/{$richMenuId}/content',
+        [
+            'Content-Type'   => $contentType,
+            'Content-Length' => -s $fh,
+        ],
+        $fh,
+    );
+
+    close $fh;
+    
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+
 }
 
 sub issue_channel_access_token {
