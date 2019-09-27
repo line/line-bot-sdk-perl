@@ -1,3 +1,17 @@
+use strict;
+use warnings;
+use Test::More;
+use lib 't/lib';
+use t::Util;
+
+use JSON::XS qw(decode_json);
+use LINE::Bot::API;
+
+my $bot = LINE::Bot::API->new(
+    channel_secret       => 'testsecret',
+    channel_access_token => 'ACCESS_TOKEN',
+);
+
 subtest upload_rich_menu_image => sub {
     my $contentType = 'image/jpeg';
     my $imagePath = './controller-rich-menu-image-sample.jpeg';
@@ -16,4 +30,6 @@ subtest upload_rich_menu_image => sub {
 
         +{};
     }
-}
+};
+
+done_testing;
