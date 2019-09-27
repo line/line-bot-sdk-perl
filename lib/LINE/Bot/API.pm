@@ -20,6 +20,7 @@ use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 
 use Furl;
+use Carp 'croak';
 
 sub new {
     my($class, %args) = @_;
@@ -265,26 +266,17 @@ sub unlink_rich_menu_from_multiple_users {
 
 sub upload_rich_menu_image {
     my ($self, $richMenuId, $contentType, $filePath) = @_;
-    # To be implemented...
 
     if (!$contentType) {
         croak 'Need ContentType';
     }
 
-    open my $fh, '<', $filePath
-        or croak 'Failed to open file.';
-
-    my $res = $self->{client}->post(
-        'https://api.line.me/v2/bot/richmenu/{$richMenuId}/content',
-        [
-            'Content-Type'   => $contentType,
-            'Content-Length' => -s $fh,
-        ],
-        $fh,
+    my $res = $self->{client}->post_image(
+        "https://api.line.me/v2/bot/richmenu/$richMenuId/content",
+        [],
+        $filePath
     );
 
-    close $fh;
-    
     if ($res->{http_status} eq '200') {
         return LINE::Bot::API::Response::Token->new(%{ $res });
     } else {
