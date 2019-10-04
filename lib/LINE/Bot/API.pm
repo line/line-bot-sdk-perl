@@ -19,6 +19,11 @@ use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 
+use constant {
+    DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
+    DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
+};
+
 sub new {
     my($class, %args) = @_;
 
@@ -28,7 +33,8 @@ sub new {
         client               => $client,
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
-        messaging_api_endpoint     => $args{messaging_api_endpoint} // 'https://api.line.me/v2/bot/',
+        messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
+        social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
     }, $class;
 }
 
@@ -265,7 +271,7 @@ sub issue_channel_access_token {
     my ($self, $opts) = @_;
 
     my $res = $self->{client}->post_form(
-        'https://api.line.me/v2/oauth/accessToken',
+        $self->{social_api_endpoint} . 'accessToken',
         undef,
         [
             grant_type    => 'client_credentials',
@@ -283,8 +289,9 @@ sub issue_channel_access_token {
 
 sub revoke_channel_access_token {
     my ($self, $opts) = @_;
+
     my $res = $self->{client}->post_form(
-        'https://api.line.me/v2/oauth/revoke',
+        $self->{social_api_endpoint} . 'revoke',
         undef,
         [
             access_token => $opts->{access_token},
