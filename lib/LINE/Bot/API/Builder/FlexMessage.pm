@@ -18,6 +18,10 @@ sub build {
 
 __END__
 
+=head1 NAME
+
+LINE::Bot::API::Builder::FlexMessage
+
 =head1 SYNOPSIS
 
     my $message = LINE::Bot::API::Builder::FlexMessage->new( json => $json_text );
