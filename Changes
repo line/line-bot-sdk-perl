@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add the FlexMessage object builder that can take the result of "FlexMessage Simulator". See LINE::Bot::API::Builder::FlexMessage
 
 1.11  2019-08-14 15:04:38 JST
         - Add support for renewing OAuth tokens. (PR #74)
