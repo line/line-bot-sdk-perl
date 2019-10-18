@@ -107,8 +107,6 @@ sub post_image {
         $url,
         [
             @$headers,
-            'Content-Type' => 'image/jpeg',
-            'Content-Length' => -s $filePath,
             $self->credentials,
         ],
         $fh,

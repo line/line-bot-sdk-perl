@@ -273,7 +273,9 @@ sub upload_rich_menu_image {
 
     my $res = $self->{client}->post_image(
         "https://api.line.me/v2/bot/richmenu/$richMenuId/content",
-        [],
+        [
+            'Content-Type' => $contentType,
+        ],
         $filePath
     );
 
