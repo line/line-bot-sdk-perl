@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.11';
+our $VERSION = '1.12';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
