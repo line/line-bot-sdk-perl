@@ -522,6 +522,7 @@ subtest 'parse_events_json' => sub {
             is $event->things_type, 'scenarioResult';
 
             is $event->scenario_id, 'scenarioid';
+            is $event->revision, 2;
             is $event->start_time, 1547817845950;
             is $event->end_time, 1547817845952;
             is $event->result_code, 'success';

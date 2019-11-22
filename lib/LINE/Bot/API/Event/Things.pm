@@ -54,6 +54,8 @@ package LINE::Bot::API::Event::Things::ScenarioResult {
 
     sub scenario_id { $_[0]->{things}{result}{scenarioId} }
 
+    sub revision { $_[0]->{things}{result}{revision} }
+
     sub start_time { $_[0]->{things}{result}{startTime} }
 
     sub end_time { $_[0]->{things}{result}{endTime} }
