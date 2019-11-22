@@ -4,6 +4,9 @@ use Test::More;
 use lib 't/lib';
 use t::Util;
 
+use Digest::SHA 'hmac_sha256';
+use MIME::Base64 'encode_base64';
+
 use LINE::Bot::API::Event;
 
 my $config = +{
@@ -354,7 +357,7 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'w7ECH6IKPhnXmqijv3fdtsW3OT4J/XYJ2FCGqzOvEvw='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, encode_base64(hmac_sha256($json, $config->{channel_secret}))));
     };
 };
 
