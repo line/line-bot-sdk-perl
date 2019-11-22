@@ -29,6 +29,8 @@ package LINE::Bot::API::Event::Things::ActionResult::Void {
 
 package LINE::Bot::API::Event::Things::ActionResult::Binary {
     use parent 'LINE::Bot::API::Event::Things::ActionResult';
+
+    sub data { $_[0]->{data} }
 }
 
 1;

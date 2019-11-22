@@ -538,6 +538,8 @@ subtest 'parse_events_json' => sub {
 
             ok $binary_action->isa('LINE::Bot::API::Event::Things::ActionResult::Binary');
             ok $void_action->isa('LINE::Bot::API::Event::Things::ActionResult::Void');
+
+            is $binary_action->data, '/w==';
         };
     };
 
