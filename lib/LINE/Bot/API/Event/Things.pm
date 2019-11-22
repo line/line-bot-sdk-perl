@@ -62,6 +62,8 @@ package LINE::Bot::API::Event::Things::ScenarioResult {
 
     sub result_code { $_[0]->{things}{result}{resultCode} }
 
+    sub error_reason { $_[0]->{things}{result}{errorReason} }
+
     sub ble_notification_payload { $_[0]->{things}{result}{bleNotificationPayload} }
 
     sub action_results {

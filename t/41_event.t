@@ -345,6 +345,29 @@ my $json = <<JSON;
           ]
       }
     }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "type": "scenarioResult",
+      "deviceId": "deviceid",
+      "result": {
+          "scenarioId": "scenarioid",
+          "revision": 2,
+          "startTime": 1547817845950,
+          "endTime": 1547817845952,
+          "resultCode": "gatt_error",
+          "errorReason": "foo bar",
+          "bleNotificationPayload": null,
+          "actionResults": null
+      }
+    }
   }
  ]
 }
@@ -364,7 +387,7 @@ subtest 'validate_signature' => sub {
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 24;
+    is scalar(@{ $events }), 25;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -540,6 +563,25 @@ subtest 'parse_events_json' => sub {
             ok $void_action->isa('LINE::Bot::API::Event::Things::ActionResult::Void');
 
             is $binary_action->data, '/w==';
+        };
+        subtest 'scenarioResult with error' => sub {
+            my $event = $events->[24];
+            ok $event->is_things_event;
+            ok $event->is_scenario_result;
+            is $event->reply_token, 'replytoken';
+            is $event->things_device_id, 'deviceid';
+            is $event->things_type, 'scenarioResult';
+
+            is $event->scenario_id, 'scenarioid';
+            is $event->revision, 2;
+            is $event->start_time, 1547817845950;
+            is $event->end_time, 1547817845952;
+            is $event->result_code, 'gatt_error';
+            is $event->error_reason, 'foo bar';
+            is $event->ble_notification_payload, undef;
+
+            my $action_results = $event->action_results;
+            is scalar @$action_results, 0;
         };
     };
 
