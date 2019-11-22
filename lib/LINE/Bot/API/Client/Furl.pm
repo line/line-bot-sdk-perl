@@ -95,6 +95,30 @@ sub post_form {
     $ret;
 }
 
+sub post_image {
+    my ($self, $url, $headers, $filePath) = @_;
+
+    $headers //= [];
+
+    open my $fh, '<', $filePath
+        or croak 'Failed to open file.';
+
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
+        $url,
+        [
+            @$headers,
+            $self->credentials,
+        ],
+        $fh,
+    );
+
+    close $fh;
+
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
+}
+
 sub delete {
     my($self, $url) = @_;
 

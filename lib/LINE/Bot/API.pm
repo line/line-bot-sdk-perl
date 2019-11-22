@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.11';
+our $VERSION = '1.12';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
@@ -23,6 +23,8 @@ use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
 };
+use Furl;
+use Carp 'croak';
 
 sub new {
     my($class, %args) = @_;
@@ -265,6 +267,29 @@ sub unlink_rich_menu_from_multiple_users {
         userIds => $user_ids,
     });
     LINE::Bot::API::Response::RichMenu->new(%{ $res });
+}
+
+sub upload_rich_menu_image {
+    my ($self, $richMenuId, $contentType, $filePath) = @_;
+
+    if (!$contentType) {
+        croak 'Need ContentType';
+    }
+
+    my $res = $self->{client}->post_image(
+        "https://api.line.me/v2/bot/richmenu/$richMenuId/content",
+        [
+            'Content-Type' => $contentType,
+        ],
+        $filePath
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+
 }
 
 sub issue_channel_access_token {
