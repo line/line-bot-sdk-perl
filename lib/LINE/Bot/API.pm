@@ -22,6 +22,7 @@ use LINE::Bot::API::Response::Token;
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
+    DEFAULT_CONTENT_ENDPOINT       => 'https://api-data.line.me',
 };
 use Furl;
 use Carp 'croak';
@@ -37,6 +38,7 @@ sub new {
         channel_access_token => $args{channel_access_token},
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
         social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
+        content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_ENDPOINT,
     }, $class;
 }
 
@@ -45,6 +47,15 @@ sub request {
 
     return $self->{client}->$method(
         $self->{messaging_api_endpoint} .  $path,
+        @payload,
+    );
+}
+
+sub request_content {
+    my ($self, $method, $path, @payload) = @_;
+
+    return $self->{client}->$method(
+        $self->{content_api_endpoint} .  $path,
         @payload,
     );
 }
@@ -103,7 +114,7 @@ sub broadcast {
 
 sub get_message_content {
     my($self, $message_id, %options) = @_;
-    my $res = $self->request(
+    my $res = $self->request_content(
         'contents_download' => "message/$message_id/content",
         %options
     );
@@ -277,7 +288,7 @@ sub upload_rich_menu_image {
     }
 
     my $res = $self->{client}->post_image(
-        "https://api.line.me/v2/bot/richmenu/$richMenuId/content",
+        "https://api-data.line.me/v2/bot/richmenu/$richMenuId/content",
         [
             'Content-Type' => $contentType,
         ],
