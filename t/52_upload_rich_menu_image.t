@@ -26,7 +26,7 @@ subtest upload_rich_menu_image => sub {
         my %args = @_;
         is $args{method}, 'POST';
         is $args{url},    'https://api-data.line.me/v2/bot/richmenu/DUMMY_RICH_MENU_ID/content';
-        
+
         my %headers = @{ $args{headers} };
         is $headers{'Content-Type'}, 'image/jpeg';
 

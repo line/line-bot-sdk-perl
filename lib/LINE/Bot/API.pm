@@ -22,7 +22,7 @@ use LINE::Bot::API::Response::Token;
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
-    DEFAULT_CONTENT_ENDPOINT       => 'https://api-data.line.me',
+    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/',
 };
 use Furl;
 use Carp 'croak';
@@ -38,7 +38,7 @@ sub new {
         channel_access_token => $args{channel_access_token},
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
         social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
-        content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_ENDPOINT,
+        content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_API_ENDPOINT,
     }, $class;
 }
 
@@ -288,7 +288,7 @@ sub upload_rich_menu_image {
     }
 
     my $res = $self->{client}->post_image(
-        "https://api-data.line.me/v2/bot/richmenu/$richMenuId/content",
+        $self->{content_api_endpoint} . "v2/bot/richmenu/$richMenuId/content",
         [
             'Content-Type' => $contentType,
         ],
