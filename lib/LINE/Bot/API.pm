@@ -303,6 +303,9 @@ sub upload_rich_menu_image {
 
 }
 
+sub download_rich_menu_image {
+}
+
 sub issue_channel_access_token {
     my ($self, $opts) = @_;
 
