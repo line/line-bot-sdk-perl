@@ -54,6 +54,19 @@ sub get {
     $ret;
 }
 
+sub get_content {
+    my($self, $url) = @_;
+
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->get(
+        $url,
+        [
+            $self->credentials,
+        ],
+    );
+
+    $res_content;
+}
+
 sub post {
     my($self, $url, $data) = @_;
 

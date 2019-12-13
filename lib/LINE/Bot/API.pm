@@ -281,18 +281,18 @@ sub unlink_rich_menu_from_multiple_users {
 }
 
 sub upload_rich_menu_image {
-    my ($self, $richMenuId, $contentType, $filePath) = @_;
+    my ($self, $rich_menu_id, $content_type, $file_path) = @_;
 
-    if (!$contentType) {
-        croak 'Need ContentType';
+    if (!$content_type) {
+        croak 'Need content_type';
     }
 
     my $res = $self->{client}->post_image(
-        "https://api-data.line.me/v2/bot/richmenu/$richMenuId/content",
+        "https://api-data.line.me/v2/bot/richmenu/$rich_menu_id/content",
         [
-            'Content-Type' => $contentType,
+            'Content-Type' => $content_type,
         ],
-        $filePath
+        $file_path
     );
 
     if ($res->{http_status} eq '200') {
@@ -304,6 +304,11 @@ sub upload_rich_menu_image {
 }
 
 sub download_rich_menu_image {
+    my ($self, $rich_menu_id) = @_;
+
+    return $self->{client}->get_content(
+        "https://api-data.line.me/v2/bot/richmenu/$rich_menu_id/content"
+    );
 }
 
 sub issue_channel_access_token {
