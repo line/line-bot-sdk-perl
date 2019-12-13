@@ -288,7 +288,7 @@ sub upload_rich_menu_image {
     }
 
     my $res = $self->{client}->post_image(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$richMenuId/content",
+        $self->{content_api_endpoint} . "v2/bot/richmenu/$rich_menu_id/content",
         [
             'Content-Type' => $content_type,
         ],
