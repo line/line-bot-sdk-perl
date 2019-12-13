@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Update the hostnames for some API calls. (PR #88)
+          See also: https://developers.line.biz/en/news/#notice-of-domain-name-change-for-certain-endpoints-2019-11-08
 
 1.12  2019-11-08 17:42:10 JST
         - Add the FlexMessage object builder that can take the result of "FlexMessage Simulator". See LINE::Bot::API::Builder::FlexMessage
