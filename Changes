@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add method for calling download_rich_menu_image API (PR #91)
         - Update the hostnames for some API calls. (PR #88)
           See also: https://developers.line.biz/en/news/#notice-of-domain-name-change-for-certain-endpoints-2019-11-08
 
