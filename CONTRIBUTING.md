@@ -7,6 +7,7 @@ source projects you are aware of. It will be amazing if you could help us by doi
   improvements.
 - Ask a question using [the issue tracker](https://github.com/line/line-bot-sdk-perl/issues).
 - Contribute your work by sending [a pull request](https://github.com/line/line-bot-sdk-perl/pulls).
+  - Please also update file `Changes` for significant changes in PR.
 
 ### Contributor license agreement
 
