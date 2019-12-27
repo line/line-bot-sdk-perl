@@ -54,6 +54,30 @@ sub get {
     $ret;
 }
 
+sub put {
+    my($self, $url, $data) = @_;
+
+    my $json = $JSON->encode($data);
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->put(
+        $url,
+        [
+            $self->credentials,
+            'Content-Type'   => 'application/json',
+            'Content-Length' => length($json),
+        ],
+        $json,
+    );
+
+    unless ($res_content && $res_content =~ /^\{.*\}$/) {
+        croak 'LINE Messaging API error: ' . $res_content;
+    }
+
+    my $ret = $JSON->decode($res_content);
+    $ret->{http_status} = $res_status;
+    $ret->{http_headers} = Furl::Headers->new($res_headers);
+    $ret;
+}
+
 sub post {
     my($self, $url, $data) = @_;
 

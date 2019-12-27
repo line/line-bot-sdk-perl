@@ -18,6 +18,7 @@ use LINE::Bot::API::Response::RichMenuList;
 use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
+use LINE::Bot::API::Types qw(RegisterScenarioSetRequest);
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -332,6 +333,28 @@ sub revoke_channel_access_token {
         [
             access_token => $opts->{access_token},
         ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Common->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub register_scenario_set {
+    my ($self, $opts) = @_;
+
+    my $product_id = $opts->{product_id};
+    my $data = $opts->{scenario_set};
+
+    RegisterScenarioSetRequest->assert_valid($data);
+
+    my $things_base_url = 'https://api.line.me/things/v1';
+
+    my $res = $self->{client}->put(
+        "$things_base_url/products/$product_id/scenario-set",
+        $data,
     );
 
     if ($res->{http_status} eq '200') {

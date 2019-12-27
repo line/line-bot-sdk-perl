@@ -212,4 +212,49 @@ declare DeviceUnlinkEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/line-things/#create-scenario-set
+my $ScenarioSetAction = declare ScenarioSetAction => as
+    # Wait for a specified period of time
+    Dict[
+        type => Enum['SLEEP'],
+        sleepMillis => Int,
+    ]
+    # Read data from the specified GATT characteristic value
+    | Dict[
+        type => Enum['GATT_READ'],
+        serviceUuid => Str,
+        characteristicUuid => Str,
+    ]
+    # Write data to the specified GATT characteristic value
+    | Dict[
+        type => Enum['GATT_WRITE'],
+        serviceUuid => Str,
+        characteristicUuid => Str,
+        data => Str, # Base64 encoded data
+    ];
+
+my $ScenarioSetTrigger = declare ScenarioSetTrigger => as
+    # Perform an action as soon as your device connects to the LINE app
+    Dict[
+        type => Enum['IMMEDIATE'],
+    ]
+    # Perform an action when receiving a notification with the specified GATT characteristic value
+    | Dict[
+        type => Enum['BLE_NOTIFICATION'],
+        serviceUuid => Str,
+        characteristicUuid => Str,
+    ]
+    ;
+
+my $ScenarioSet = declare ScenarioSet => as Dict[
+    trigger => $ScenarioSetTrigger,
+    actions => ArrayRef[$ScenarioSetAction],
+];
+
+declare RegisterScenarioSetRequest => as Dict[
+    autoClose => Bool,
+    suppressionInterval => Int,
+    scenarios => ArrayRef[$ScenarioSet],
+];
+
 1;
