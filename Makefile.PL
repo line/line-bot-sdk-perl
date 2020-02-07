@@ -22,13 +22,13 @@ my %WriteMakefileArgs = (
     "IO::Socket::SSL" => 0,
     "JSON::XS" => 0,
     "MIME::Base64" => 0,
-    "Type::Tiny" => 0,
+    "Type::Tiny" => "1.004000",
     "parent" => 0
   },
   "TEST_REQUIRES" => {
     "Test::More" => 0
   },
-  "VERSION" => "1.13",
+  "VERSION" => "1.14",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -42,7 +42,7 @@ my %FallbackPrereqs = (
   "JSON::XS" => 0,
   "MIME::Base64" => 0,
   "Test::More" => 0,
-  "Type::Tiny" => 0,
+  "Type::Tiny" => "1.004000",
   "parent" => 0
 );
 
