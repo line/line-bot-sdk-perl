@@ -43,7 +43,7 @@
             "IO::Socket::SSL" : "0",
             "JSON::XS" : "0",
             "MIME::Base64" : "0",
-            "Type::Tiny" : "0",
+            "Type::Tiny" : "1.004000",
             "parent" : "0",
             "perl" : "5.014000"
          }
@@ -66,7 +66,7 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.13",
+   "version" : "1.14",
    "x_contributors" : [
       "7kashin <4nji.7ka6ra@gmail.com>",
       "bedoshi <bedoshidiary.ester.freesia@gmail.com>",
