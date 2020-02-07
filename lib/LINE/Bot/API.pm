@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.13';
+our $VERSION = '1.14';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
@@ -1009,9 +1009,15 @@ You can use a helper module for the template type.
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
 
-=head1 COPYRIGHT & LICENSE
+=head1 AUTHORS
 
-Copyright 2016-2019 LINE Corporation
+LINE Corporation.
+
+=head1 COPYRIGHT
+
+Copyright 2016-2020
+
+=head1 LICENSE
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at
