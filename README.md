@@ -646,7 +646,7 @@ You can use a helper module for the template type.
 
 # COPYRIGHT & LICENSE
 
-Copyright 2016-2020 LINE Corporation
+Copyright 2016-2020 by LINE Corporation.
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at
