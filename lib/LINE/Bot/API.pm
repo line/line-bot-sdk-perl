@@ -9,6 +9,7 @@ use LINE::Bot::API::Event;
 use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
 use LINE::Bot::API::Response::NumberOfSentMessages;
+use LINE::Bot::API::Response::NumberOfMessageDeliveries;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::GroupMemberProfile;
 use LINE::Bot::API::Response::RoomMemberProfile;
@@ -169,6 +170,12 @@ sub get_number_of_send_broadcast_messages {
     my($self, $date) = @_;
     my $res = $self->request(get => "message/delivery/broadcast?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
+}
+
+sub get_number_of_message_deliveries {
+    my($self, $date) = @_;
+    my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
+    LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
 
 sub validate_signature {
