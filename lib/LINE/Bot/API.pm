@@ -566,6 +566,12 @@ Gets the number of messages sent in the current month.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-consumption>
 
+=head2 C<< get_number_of_message_deliveries >>
+
+Returns the number of messages sent from LINE official account on a specified day.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages>
+
 =head2 C<< get_profile($user_id) >>
 
 Get user profile information.
