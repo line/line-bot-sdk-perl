@@ -189,7 +189,9 @@ sub get_number_of_send_broadcast_messages {
 }
 
 sub get_number_of_message_deliveries {
-    my($self, $date) = @_;
+    my($self, $opts) = @_;
+    my $date = $opts->{date} or croak "get_number_of_message_deliveries: Missing a `date` parameter.";
+
     my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
@@ -566,11 +568,28 @@ Gets the number of messages sent in the current month.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-consumption>
 
-=head2 C<< get_number_of_message_deliveries >>
+=head2 C<< get_number_of_message_deliveries({ date => ... }) >>
 
-Returns the number of messages sent from LINE official account on a specified day.
+Get the number of messages sent from LINE official account on a specified day.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages>
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { date => "20191231" }
+
+The formate of date is "yyyyMMdd", that is, year in 4 digits, month in
+2 digits, and date-of-month in 2 digits.
+
+The return value C<$res> is a response object with the following read-only accessors
+(see the API documentation for the meaning of each.)
+
+    $res->status();     #=> Str
+    $res->broadcast();  #=> Num
+    $res->targeting();  #=> Num
+
+Notice that the "status" does not mean HTTP status. To inspect actual
+HTTP status, invoke C<$res->http_status()>.
 
 =head2 C<< get_profile($user_id) >>
 
