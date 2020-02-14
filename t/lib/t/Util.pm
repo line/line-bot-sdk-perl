@@ -4,7 +4,7 @@ use warnings;
 use parent 'Exporter';
 
 our @EXPORT = qw(
-    send_request receive_request
+    send_request send_get_content_request receive_request
 );
 
 use JSON::XS;
@@ -24,6 +24,21 @@ sub send_request (&@) {
             'Content-Type'      => 'application/json; charset=UTF-8',
             'Content-Length'    => length($json),
         ], $json);
+    };
+    $code->();
+}
+sub send_get_content_request (&@) {
+    my($code, $mock) = @_;
+    no warnings 'redefine';
+    local *Furl::HTTP::request = sub {
+        shift;
+        my $ret = $mock->(@_);
+        my $http_status = 200;
+        return ('0', $http_status, 'OK', [
+            'X-Line-Request-Id' => 'dummy_id',
+            'Content-Type'      => 'image/jpeg',
+            'Content-Length'    => length($ret),
+        ], $ret);
     };
     $code->();
 }

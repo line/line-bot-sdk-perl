@@ -3,6 +3,16 @@ Revision history for Perl extension LINE::Bot::API
 {{$NEXT}}
         - Add `API#get_number_of_message_deliveries`.
 
+1.14  2020-02-07 17:17:42 JST
+        - Requires Type::Tiny at least 1.004000. (PR #97)
+        - An accessor name stickerResourceType is added to LINE::Bot::API::Event::Message::Sticker package.
+          See also: https://developers.line.biz/en/reference/messaging-api/#wh-sticker. (PR #98)
+
+1.13  2019-12-20 16:26:47 JST
+        - Add method for calling download_rich_menu_image API (PR #91)
+        - Update the hostnames for some API calls. (PR #88)
+          See also: https://developers.line.biz/en/news/#notice-of-domain-name-change-for-certain-endpoints-2019-11-08
+
 1.12  2019-11-08 17:42:10 JST
         - Add the FlexMessage object builder that can take the result of "FlexMessage Simulator". See LINE::Bot::API::Builder::FlexMessage
         - Add an method for uploading background image for a RichMenu: `API#upload_rich_menu_image` (PR #84)
