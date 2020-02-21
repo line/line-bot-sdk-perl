@@ -18,7 +18,7 @@ my $bot = LINE::Bot::API->new(
 
 # get_number_of_message_deliveries
 send_request {
-    my $res = $bot->get_number_of_message_deliveries(2020214);
+    my $res = $bot->get_number_of_message_deliveries({ date => '20200214' });
     ok $res->is_success;
     is $res->http_status, 200;
 
@@ -30,7 +30,7 @@ send_request {
     is $args{method}, 'GET';
     use Data::Dumper;
     print Dumper($args{url});
-    is $args{url},    'https://api.line.me/v2/bot/insight/message/delivery?date=2020214';
+    is $args{url},    'https://api.line.me/v2/bot/insight/message/delivery?date=20200214';
 
     # this value is example response from LINE developers
     +{
