@@ -206,6 +206,29 @@ Gets the number of messages sent in the current month.
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-consumption](https://developers.line.biz/en/reference/messaging-api/#get-consumption)
 
+## `get_number_of_message_deliveries({ date => ... })`
+
+Get the number of messages sent from LINE official account on a specified day.
+
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages](https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages)
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { date => "20191231" }
+
+The formate of date is "yyyyMMdd", that is, year in 4 digits, month in
+2 digits, and date-of-month in 2 digits.
+
+The return value `$res` is a response object with the following read-only accessors
+(see the API documentation for the meaning of each.)
+
+    $res->status();     #=> Str
+    $res->broadcast();  #=> Num
+    $res->targeting();  #=> Num
+
+Notice that the "status" does not mean HTTP status. To inspect actual
+HTTP status, invoke `$res-`http\_status()>.
+
 ## `get_profile($user_id)`
 
 Get user profile information.
@@ -219,6 +242,12 @@ Get user profile information.
     }
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-profile](https://developers.line.biz/en/reference/messaging-api/#get-profile)
+
+## `get_friend_demographics`
+
+Retrieves the demographic attributes for a LINE Official Account's friends.
+
+See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-demographic](https://developers.line.biz/en/reference/messaging-api/#get-demographic)
 
 ## `get_group_member_profile($group_id, $user_id)`
 
@@ -397,6 +426,32 @@ The argument is a HashRef with one pair of mandatary key-values;
     { access_token => "..." }
 
 Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you my examine the "error" attribute and "error\_description" attribute for more information about the error.
+
+## `get_number_of_followers({ date => "..." })`
+
+This method corresponds to the API of: [Get number of followers](https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers)
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { date => "20191231" }
+
+The formate of date is "yyyyMMdd", that is, year in 4 digits, month in
+2 digits, and date-of-month in 2 digits.
+
+Upon successful invocation, a 200 OK HTTP response is
+returned. Otherwise, you my examine the "error" attribute and
+"error\_description" attribute for more information about the error.
+
+The return value `$res` is a response object with the following read-only accessors
+(see the API documentation for the meaning of each.)
+
+    $res->status();          #=> Str, one of: "ready", "unready", "out_of_service"
+    $res->followers();       #=> Num
+    $res->targetedReaches(); #=> Num
+    $res->blocks();          #=> Num
+
+Notice that the "status" does not mean HTTP status. To inspect actual
+HTTP status, invoke `$res-`http\_status()>.
 
 # How to build a send message object
 
