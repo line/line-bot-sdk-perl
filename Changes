@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add an accessor to the "mode" attribute in Webhook Events. (PR #101)
+          See also https://developers.line.biz/en/news/2019/12/17/mode-property-for-webhook/
         - Add `API#get_number_of_message_deliveries`.
         - Add `API#get_friend_demographics`.
         - Removed Not used code.
@@ -9,8 +11,6 @@ Revision history for Perl extension LINE::Bot::API
         - Requires Type::Tiny at least 1.004000. (PR #97)
         - An accessor name stickerResourceType is added to LINE::Bot::API::Event::Message::Sticker package.
           See also: https://developers.line.biz/en/reference/messaging-api/#wh-sticker. (PR #98)
-        - Add an accessor to the "mode" attribute in Webhook Events. (PR #101)
-          See also https://developers.line.biz/en/news/2019/12/17/mode-property-for-webhook/
 
 1.13  2019-12-20 16:26:47 JST
         - Add method for calling download_rich_menu_image API (PR #91)
