@@ -9,7 +9,9 @@ sub new {
     bless { %args }, $class;
 }
 
-sub type      { $_[0]->{type} }
+# Accessors for Event-level properties. https://developers.line.biz/en/reference/messaging-api/#common-properties
+sub type      { $_[0]->{type}      }
+sub mode      { $_[0]->{mode}      }
 sub timestamp { $_[0]->{timestamp} }
 
 # Unfollow and Leave events don't have this

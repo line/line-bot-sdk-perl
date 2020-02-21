@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add an accessor to the "mode" attribute in Webhook Events. (PR #101)
+          See also https://developers.line.biz/en/news/2019/12/17/mode-property-for-webhook/
         - Add method: get_number_of_followers. (Issue #75)
         - Add `API#get_number_of_message_deliveries`. (Issue #75)
         - Add `API#get_friend_demographics`. (Issue #75)

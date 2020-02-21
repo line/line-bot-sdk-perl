@@ -16,6 +16,7 @@ my $json = <<JSON;
  "events":[
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -30,6 +31,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"group",
@@ -45,6 +47,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"room",
@@ -60,6 +63,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"group",
@@ -73,6 +77,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"room",
@@ -86,6 +91,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"room",
@@ -99,6 +105,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -116,6 +123,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -131,6 +139,7 @@ my $json = <<JSON;
   },
   {
    "type":"follow",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -140,6 +149,7 @@ my $json = <<JSON;
   },
   {
    "type":"unfollow",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -148,6 +158,7 @@ my $json = <<JSON;
   },
   {
    "type":"join",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -157,6 +168,7 @@ my $json = <<JSON;
   },
   {
    "type":"leave",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -165,6 +177,7 @@ my $json = <<JSON;
   },
   {
    "type":"postback",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -177,6 +190,7 @@ my $json = <<JSON;
   },
   {
    "type":"beacon",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -191,6 +205,7 @@ my $json = <<JSON;
   },
   {
    "type":"message",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"user",
@@ -206,6 +221,7 @@ my $json = <<JSON;
   },
   {
    "type":"memberJoined",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"group",
@@ -215,6 +231,7 @@ my $json = <<JSON;
   },
   {
    "type":"memberLeft",
+   "mode":"active",
    "timestamp":12345678901234,
    "source":{
     "type":"group",
@@ -263,6 +280,7 @@ my $json = <<JSON;
   {
     "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
     "type": "message",
+    "mode": "active",
     "timestamp": 1462629479859,
     "source": {
       "type": "user",
@@ -281,6 +299,7 @@ my $json = <<JSON;
   },
   {
     "type": "message",
+    "mode": "active",
     "timestamp": 1462629479859,
     "source": {
       "type": "user",
@@ -298,6 +317,7 @@ my $json = <<JSON;
   },
   {
     "type": "message",
+    "mode": "active",
     "timestamp": 1462629479859,
     "source": {
       "type": "user",
@@ -317,14 +337,13 @@ my $json = <<JSON;
 }
 JSON
 
-
 subtest 'validate_signature' => sub {
     subtest 'failed' => sub {
         ok(! LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, ''));
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, '+Kj2v6lADqzJ26ce9o5GDs/N3q5LqSrMoT+b3gDaMjQ='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 's9XZ23g7U1vOL7WESam0DY/IRu4LkIxPSezfkPEq1R0='));
     };
 };
 
@@ -337,6 +356,7 @@ subtest 'parse_events_json' => sub {
         subtest 'text' => sub {
             my $event = $events->[0];
             is $event->message_type, 'text';
+            is $event->mode, 'active';
             is $event->timestamp, 12345678901234;
             ok $event->is_user_event;
             is $event->user_id, 'userid';
@@ -348,18 +368,21 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'text group' => sub {
             my $event = $events->[1];
+            is $event->mode, 'active';
             ok $event->is_group_event;
             is $event->group_id, 'groupid';
             is $event->user_id, 'userid';
         };
         subtest 'text room' => sub {
             my $event = $events->[2];
+            is $event->mode, 'active';
             ok $event->is_room_event;
             is $event->room_id, 'roomid';
             is $event->user_id, 'userid';
         };
         subtest 'image (without contentProvider)' => sub {
             my $event = $events->[3];
+            is $event->mode, 'active';
             is $event->message_type, 'image';
             ok $event->is_group_event;
             is $event->group_id, 'groupid';
@@ -369,6 +392,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'video without contentProvider' => sub {
             my $event = $events->[4];
+            is $event->mode, 'active';
             is $event->message_type, 'video';
             ok $event->is_room_event;
             is $event->room_id, 'roomid';
@@ -379,6 +403,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'audio without contentProvider' => sub {
             my $event = $events->[5];
+            is $event->mode, 'active';
             is $event->message_type, 'audio';
             ok $event->is_audio_message;
             is $event->reply_token, 'replytoken';
@@ -387,6 +412,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'location' => sub {
             my $event = $events->[6];
+            is $event->mode, 'active';
             is $event->message_type, 'location';
             ok $event->is_location_message;
             is $event->reply_token, 'replytoken';
@@ -397,6 +423,7 @@ subtest 'parse_events_json' => sub {
         };
         subtest 'sticker' => sub {
             my $event = $events->[7];
+            is $event->mode, 'active';
             is $event->message_type, 'sticker';
             ok $event->is_sticker_message;
             is $event->reply_token, 'replytoken';
@@ -407,24 +434,28 @@ subtest 'parse_events_json' => sub {
 
     subtest 'follow' => sub {
         my $event = $events->[8];
+        is $event->mode, 'active';
         ok $event->is_follow_event;
         is $event->reply_token, 'replytoken';
     };
 
     subtest 'unfollow' => sub {
         my $event = $events->[9];
+        is $event->mode, 'active';
         ok $event->is_unfollow_event;
         is $event->reply_token, undef;
     };
 
     subtest 'join' => sub {
         my $event = $events->[10];
+        is $event->mode, 'active';
         ok $event->is_join_event;
         is $event->reply_token, 'replytoken';
     };
 
     subtest 'leave' => sub {
         my $event = $events->[11];
+        is $event->mode, 'active';
         ok $event->is_leave_event;
         is $event->reply_token, undef;
     };
@@ -500,6 +531,7 @@ subtest 'parse_events_json' => sub {
     subtest 'video with contentProvider' => sub {
         my $event = $events->[20];
 
+        is $event->mode, 'active';
         is $event->message_type, 'video';
         ok $event->content_provider;
 
@@ -513,6 +545,7 @@ subtest 'parse_events_json' => sub {
     subtest 'image with contentProvider' => sub {
         my $event = $events->[21];
 
+        is $event->mode, 'active';
         is $event->message_type, 'image';
         ok $event->content_provider;
         is_deeply $event->content_provider, {
@@ -525,6 +558,7 @@ subtest 'parse_events_json' => sub {
     subtest 'audio with contentProvider' => sub {
         my $event = $events->[22];
 
+        is $event->mode, 'active';
         is $event->message_type, 'audio';
         ok $event->content_provider;
         is_deeply $event->content_provider, {
