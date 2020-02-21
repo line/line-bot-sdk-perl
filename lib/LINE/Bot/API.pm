@@ -620,7 +620,7 @@ Get user profile information.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
 
-=head2 C<< get_friend_demographics>>
+=head2 C<< get_friend_demographics >>
 
 Retrieves the demographic attributes for a LINE Official Account's friends.
 
