@@ -2,6 +2,7 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
         - Add `API#get_number_of_message_deliveries`.
+        - Add `API#get_friend_demographics`.
         - Removed Not used code.
 
 1.14  2020-02-07 17:17:42 JST
