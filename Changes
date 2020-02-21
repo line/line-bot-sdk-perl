@@ -1,8 +1,9 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
-        - Add method: get_number_of_followers. (PR #75)
-        - Add `API#get_number_of_message_deliveries`. (PR #75)
+        - Add method: get_number_of_followers. (Issue #75)
+        - Add `API#get_number_of_message_deliveries`. (Issue #75)
+        - Add `API#get_friend_demographics`. (Issue #75)
 
 1.14  2020-02-07 17:17:42 JST
         - Requires Type::Tiny at least 1.004000. (PR #97)
