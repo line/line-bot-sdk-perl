@@ -8,6 +8,7 @@ use LINE::Bot::API::Client;
 use LINE::Bot::API::Event;
 use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
+use LINE::Bot::API::Response::FriendDemographics;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::NumberOfMessageDeliveries;
 use LINE::Bot::API::Response::Profile;
@@ -150,6 +151,12 @@ sub leave_group {
     my($self, $group_id) = @_;
     my $res = $self->request(post => "group/$group_id/leave", +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub get_friend_demographics {
+    my($self) = @_;
+    my $res = $self->request(get => "insight/demographic");
+    LINE::Bot::API::Response::FriendDemographics->new(%{ $res });
 }
 
 sub get_target_limit_for_additional_messages {
@@ -585,6 +592,12 @@ Get user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
+
+=head2 C<< get_friend_demographics>>
+
+Retrieves the demographic attributes for a LINE Official Account's friends.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-demographic>
 
 =head2 C<< get_group_member_profile($group_id, $user_id) >>
 
