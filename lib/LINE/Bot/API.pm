@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.14';
+our $VERSION = '1.15';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
@@ -620,7 +620,7 @@ Get user profile information.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
 
-=head2 C<< get_friend_demographics>>
+=head2 C<< get_friend_demographics >>
 
 Retrieves the demographic attributes for a LINE Official Account's friends.
 
