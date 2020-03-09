@@ -117,7 +117,7 @@ sub broadcast {
 
 sub get_message_content {
     my($self, $message_id, %options) = @_;
-    my $res = $self->request_content(
+    my $res = $self->request(
         'contents_download' => "message/$message_id/content",
         %options
     );
