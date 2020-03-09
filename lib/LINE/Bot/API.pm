@@ -305,7 +305,7 @@ sub upload_rich_menu_image {
     }
 
     my $res = $self->{client}->post_image(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$rich_menu_id/content",
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content",
         [
             'Content-Type' => $content_type,
         ],
@@ -324,7 +324,7 @@ sub download_rich_menu_image {
     my ($self, $rich_menu_id) = @_;
 
     return $self->{client}->get_content(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$rich_menu_id/content"
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content"
     );
 }
 
