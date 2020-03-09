@@ -25,7 +25,7 @@ use LINE::Bot::API::Response::NumberOfFollowers;
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
-    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/',
+    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
 };
 use Furl;
 use Carp 'croak';
@@ -117,7 +117,7 @@ sub broadcast {
 
 sub get_message_content {
     my($self, $message_id, %options) = @_;
-    my $res = $self->request(
+    my $res = $self->request_content(
         'contents_download' => "message/$message_id/content",
         %options
     );
