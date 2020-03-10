@@ -25,7 +25,7 @@ use LINE::Bot::API::Response::NumberOfFollowers;
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
-    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/',
+    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
 };
 use Furl;
 use Carp 'croak';
@@ -305,7 +305,7 @@ sub upload_rich_menu_image {
     }
 
     my $res = $self->{client}->post_image(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$rich_menu_id/content",
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content",
         [
             'Content-Type' => $content_type,
         ],
@@ -324,7 +324,7 @@ sub download_rich_menu_image {
     my ($self, $rich_menu_id) = @_;
 
     return $self->{client}->get_content(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$rich_menu_id/content"
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content"
     );
 }
 
