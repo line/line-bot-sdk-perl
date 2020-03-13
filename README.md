@@ -130,7 +130,7 @@ See also the LINE Developers API reference of thi smethod: [https://developers.l
 
 ## `parse_events_from_json($json)`
 
-Parse webhook event objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event) instances.
+Parse webhook event objects and build [LINE::Bot::API::Event](https://metacpan.org/pod/LINE%3A%3ABot%3A%3AAPI%3A%3AEvent) instances.
 
     my $req = Plack::Request->new( ... );
     my $events = $bot->parse_events_from_json($req->content);
@@ -715,6 +715,6 @@ https://opensource.org/licenses/Artistic-2.0
 
 # SEE ALSO
 
-[LINE::Bot::API::Event](https://metacpan.org/pod/LINE::Bot::API::Event),
+[LINE::Bot::API::Event](https://metacpan.org/pod/LINE%3A%3ABot%3A%3AAPI%3A%3AEvent),
 [https://developers.line.biz/](https://developers.line.biz/),
 [https://at.line.me/](https://at.line.me/)
