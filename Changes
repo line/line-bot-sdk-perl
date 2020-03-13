@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.16  2020-03-13 17:27:04 JST
         - Fixed bug (Issue #108, PR #112)
 
 1.15  2020-02-21 17:55:40 JST
