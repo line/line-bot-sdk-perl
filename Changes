@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Fixed bug (Issue #108, PR #112)
 
 1.15  2020-02-21 17:55:40 JST
         - Add an accessor to the "mode" attribute in Webhook Events. (PR #101)
