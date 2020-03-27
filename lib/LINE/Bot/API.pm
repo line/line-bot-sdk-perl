@@ -1,14 +1,16 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.12';
+our $VERSION = '1.16';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Event;
 use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
+use LINE::Bot::API::Response::FriendDemographics;
 use LINE::Bot::API::Response::NumberOfSentMessages;
+use LINE::Bot::API::Response::NumberOfMessageDeliveries;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::GroupMemberProfile;
 use LINE::Bot::API::Response::RoomMemberProfile;
@@ -18,12 +20,13 @@ use LINE::Bot::API::Response::RichMenuList;
 use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
+use LINE::Bot::API::Response::NumberOfFollowers;
 use LINE::Bot::API::Types qw(RegisterScenarioSetRequest);
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
-    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/',
+    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
 };
 use Furl;
 use Carp 'croak';
@@ -152,6 +155,12 @@ sub leave_group {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub get_friend_demographics {
+    my($self) = @_;
+    my $res = $self->request(get => "insight/demographic");
+    LINE::Bot::API::Response::FriendDemographics->new(%{ $res });
+}
+
 sub get_target_limit_for_additional_messages {
     my($self, $date) = @_;
     my $res = $self->request(get => "message/quota");
@@ -186,6 +195,14 @@ sub get_number_of_send_broadcast_messages {
     my($self, $date) = @_;
     my $res = $self->request(get => "message/delivery/broadcast?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfSentMessages->new(%{ $res });
+}
+
+sub get_number_of_message_deliveries {
+    my($self, $opts) = @_;
+    my $date = $opts->{date} or croak "get_number_of_message_deliveries: Missing a `date` parameter.";
+
+    my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
+    LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
 
 sub validate_signature {
@@ -282,18 +299,18 @@ sub unlink_rich_menu_from_multiple_users {
 }
 
 sub upload_rich_menu_image {
-    my ($self, $richMenuId, $contentType, $filePath) = @_;
+    my ($self, $rich_menu_id, $content_type, $file_path) = @_;
 
-    if (!$contentType) {
-        croak 'Need ContentType';
+    if (!$content_type) {
+        croak 'Need content_type';
     }
 
     my $res = $self->{client}->post_image(
-        $self->{content_api_endpoint} . "v2/bot/richmenu/$richMenuId/content",
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content",
         [
-            'Content-Type' => $contentType,
+            'Content-Type' => $content_type,
         ],
-        $filePath
+        $file_path
     );
 
     if ($res->{http_status} eq '200') {
@@ -302,6 +319,14 @@ sub upload_rich_menu_image {
         return LINE::Bot::API::Response::Error->new(%{ $res });
     }
 
+}
+
+sub download_rich_menu_image {
+    my ($self, $rich_menu_id) = @_;
+
+    return $self->{client}->get_content(
+        $self->{content_api_endpoint} . "richmenu/$rich_menu_id/content"
+    );
 }
 
 sub issue_channel_access_token {
@@ -364,6 +389,13 @@ sub register_scenario_set {
     }
 }
 
+sub get_number_of_followers {
+    my ($self, $opts) = @_;
+    my $date = $opts->{date} or croak "get_number_of_followers: Missing a `date` parameter.";
+
+    my $res = $self->request(get => "insight/followers?date=${date}");
+    LINE::Bot::API::Response::NumberOfFollowers->new(%{ $res });
+}
 
 1;
 __END__
@@ -574,6 +606,29 @@ Gets the number of messages sent in the current month.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-consumption>
 
+=head2 C<< get_number_of_message_deliveries({ date => ... }) >>
+
+Get the number of messages sent from LINE official account on a specified day.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages>
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { date => "20191231" }
+
+The formate of date is "yyyyMMdd", that is, year in 4 digits, month in
+2 digits, and date-of-month in 2 digits.
+
+The return value C<$res> is a response object with the following read-only accessors
+(see the API documentation for the meaning of each.)
+
+    $res->status();     #=> Str
+    $res->broadcast();  #=> Num
+    $res->targeting();  #=> Num
+
+Notice that the "status" does not mean HTTP status. To inspect actual
+HTTP status, invoke C<$res->http_status()>.
+
 =head2 C<< get_profile($user_id) >>
 
 Get user profile information.
@@ -587,6 +642,12 @@ Get user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
+
+=head2 C<< get_friend_demographics >>
+
+Retrieves the demographic attributes for a LINE Official Account's friends.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-demographic>
 
 =head2 C<< get_group_member_profile($group_id, $user_id) >>
 
@@ -777,6 +838,32 @@ The argument is a HashRef with one pair of mandatary key-values;
     { access_token => "..." }
 
 Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< get_number_of_followers({ date => "..." }) >>
+
+This method corresponds to the API of: L<Get number of followers|https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers>
+
+The argument is a HashRef with one pair of mandatary key-values;
+
+    { date => "20191231" }
+
+The formate of date is "yyyyMMdd", that is, year in 4 digits, month in
+2 digits, and date-of-month in 2 digits.
+
+Upon successful invocation, a 200 OK HTTP response is
+returned. Otherwise, you my examine the "error" attribute and
+"error_description" attribute for more information about the error.
+
+The return value C<$res> is a response object with the following read-only accessors
+(see the API documentation for the meaning of each.)
+
+    $res->status();          #=> Str, one of: "ready", "unready", "out_of_service"
+    $res->followers();       #=> Num
+    $res->targetedReaches(); #=> Num
+    $res->blocks();          #=> Num
+
+Notice that the "status" does not mean HTTP status. To inspect actual
+HTTP status, invoke C<$res->http_status()>.
 
 =head1 How to build a send message object
 
@@ -1024,9 +1111,15 @@ You can use a helper module for the template type.
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
 
-=head1 COPYRIGHT & LICENSE
+=head1 AUTHORS
 
-Copyright 2016-2019 LINE Corporation
+LINE Corporation.
+
+=head1 COPYRIGHT
+
+Copyright 2016-2020
+
+=head1 LICENSE
 
 This Software Development Kit is licensed under The Artistic License 2.0.
 You may obtain a copy of the License at
