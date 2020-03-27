@@ -36,11 +36,11 @@ sub create_audience_for_uploading {
     my ($self, $opts) = @_;
 
     my $res = $self->request(post => 'audienceGroup/upload', +{
-        description => $opts->{description},
-        isIfaAudience => $opts->{isIfaAudience},
-        uploadDescription => $opts->{uploadDescription},
-        audiences => $opts->{audiences},
-        # audiences[].id => $opts->{audiences_id},
+        'description' => $opts->{description},
+        'isIfaAudience' => $opts->{isIfaAudience},
+        'uploadDescription' => $opts->{uploadDescription},
+        'audiences' => $opts->{audiences},
+        'audiences[].id' => $opts->{audiences_id},
     });
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
 }
