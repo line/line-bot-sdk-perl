@@ -69,4 +69,9 @@ Creates an audience for uploading user IDs.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
+=head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
+Create audience for click-based retargeting.
+
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-click-audience-group>
+
 =cut
