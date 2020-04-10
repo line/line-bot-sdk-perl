@@ -4,6 +4,7 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::AudienceGroup;
+use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -43,6 +44,17 @@ sub create_audience_for_uploading {
         'audiences[].id' => $opts->{audiences_id},
     });
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
+}
+
+sub create_audience_for_click_based_retartgeting {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(post => 'audienceGroup/click', +{
+        'description' => $opts->{description},
+        'requestId' => $opts->{requestId},
+        'clickUrl' => $opts->{clickUrl},
+    });
+    LINE::Bot::API::Response::AudienceGroupForClickRetargeting->new(%{ $res });
 }
 
 1;
