@@ -6,6 +6,7 @@ use t::Util;
 
 use LINE::Bot::Audience;
 use Furl;
+use JSON::XS;
 
 my $bot = LINE::Bot::Audience->new(
     channel_secret       => 'testsecret',
@@ -16,7 +17,10 @@ subtest '#create_audience_for_uploading' => sub {
     my $content_type = 'application/json';
 
     send_request {
-        my $res = $bot->create_audience_for_uploading();
+        my $res = $bot->create_audience_for_uploading({
+            description => 'audienceGroupName',
+            isIfaAudience => JSON::XS::false,
+        });
         ok $res->is_success;
         is $res->http_status, 200;
     } receive_request {
@@ -26,6 +30,12 @@ subtest '#create_audience_for_uploading' => sub {
 
         my %headers = @{ $args{headers} };
         is $headers{'Content-Type'}, 'application/json';
+
+        my $content = decode_json($args{content});
+        eq_hash $content, {
+            description => 'audienceGroupName',
+            isIfaAudience => JSON::XS::false,
+        };
 
         +{}
     }
