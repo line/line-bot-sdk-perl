@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
-use LINE::Bot::API::Response::AudienceGroup;
+use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 
 use constant {
@@ -43,7 +43,7 @@ sub create_audience_for_uploading {
         'audiences' => $opts->{audiences},
         'audiences[].id' => $opts->{audiences_id},
     });
-    LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
+    LINE::Bot::API::Response::AudienceGroupForUploadingUserId->new(%{ $res });
 }
 
 sub create_audience_for_click_based_retartgeting {
