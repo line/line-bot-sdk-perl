@@ -65,12 +65,14 @@ __END__
 LINE::Bot::Audience
 
 =head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audience => [...], audiences_id => "..." }) >>
-Creates an audience for uploading user IDs.
+Creates an audience for uploading user IDs. You can create up to 1,000 audiences.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
 =head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
-Create audience for click-based retargeting.
+Creates an audience for click-based retargeting. You can create up to 1,000 audiences.
+A click-based retargeting audience is a collection of users who have clicked a URL contained in a broadcast or narrowcast message.
+Use a request ID to identify the message. The message is sent to any user who has clicked at least one link.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-click-audience-group>
 
