@@ -88,8 +88,6 @@ Use a request ID to identify the message. The message is sent to any user who ha
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-click-audience-group>
 
 =head1 C<< create_audience_for_impression_based_retargeting({ description => "...", requestId => "..." }) >>
-Create audience for impression-based retargeting.
-
 Creates an audience for impression-based retargeting. You can create up to 1,000 audiences.
 An impression-based retargeting audience is a collection of users who have viewed a broadcast or narrowcast message.
 Use a request ID to specify the message. The audience will include any user who has viewed at least one message bubble.
