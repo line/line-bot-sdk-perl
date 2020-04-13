@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
+use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::AudienceGroup;
 
 use constant {
@@ -30,6 +31,16 @@ sub request {
         $self->{messaging_api_endpoint} .  $path,
         @payload,
     );
+}
+
+sub rename_audience {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(post => 'audienceGroup/'. $opts->{audience_group_id} . '/updateDescription', +{
+        'description' => $opts->{description},
+    });
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub create_audience_for_uploading {
