@@ -13,11 +13,11 @@ my $bot = LINE::Bot::Audience->new(
     channel_access_token => 'ACCESS_TOKEN',
 );
 
-subtest '#create_audience_for_impression_base_retargeting' => sub {
+subtest '#create_audience_for_impression_based_retargeting' => sub {
     my $content_type = 'application/json';
 
     send_request {
-        my $res = $bot->create_audience_for_impression_base_retargeting({
+        my $res = $bot->create_audience_for_impression_based_retargeting({
             description => 'audienceGroupName',
             requestId => '12222',
         });
