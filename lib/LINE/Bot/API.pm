@@ -616,6 +616,7 @@ Get user profile information.
         say $ret->user_id;
         say $ret->picture_url;
         say $ret->status_message;
+        say $ret->language;
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
