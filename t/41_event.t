@@ -4,6 +4,9 @@ use Test::More;
 use lib 't/lib';
 use t::Util;
 
+use Digest::SHA 'hmac_sha256';
+use MIME::Base64 'encode_base64';
+
 use LINE::Bot::API::Event;
 
 my $config = +{
@@ -332,6 +335,59 @@ my $json = <<JSON;
         "originalContentUrl": "https://example.com/original.mp3"
       }
     }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "type": "scenarioResult",
+      "deviceId": "deviceid",
+      "result": {
+          "scenarioId": "scenarioid",
+          "revision": 2,
+          "startTime": 1547817845950,
+          "endTime": 1547817845952,
+          "resultCode": "success",
+          "bleNotificationPayload": "AQ==",
+          "actionResults": [
+              {
+                  "type": "binary",
+                  "data": "/w=="
+              },
+              {
+                  "type": "void"
+              }
+          ]
+      }
+    }
+  },
+  {
+    "type": "things",
+    "replyToken": "replytoken",
+    "timestamp": 12345678901234,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "things": {
+      "type": "scenarioResult",
+      "deviceId": "deviceid",
+      "result": {
+          "scenarioId": "scenarioid",
+          "revision": 2,
+          "startTime": 1547817845950,
+          "endTime": 1547817845952,
+          "resultCode": "gatt_error",
+          "errorReason": "foo bar",
+          "bleNotificationPayload": null,
+          "actionResults": null
+      }
+    }
   }
  ]
 }
@@ -343,14 +399,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 's9XZ23g7U1vOL7WESam0DY/IRu4LkIxPSezfkPEq1R0='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, encode_base64(hmac_sha256($json, $config->{channel_secret}))));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 23;
+    is scalar(@{ $events }), 25;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -513,6 +569,50 @@ subtest 'parse_events_json' => sub {
             is $event->reply_token, 'replytoken';
             is $event->things_device_id, 'deviceid';
             is $event->things_type, 'unlink';
+        };
+        subtest 'scenarioResult' => sub {
+            my $event = $events->[23];
+            ok $event->is_things_event;
+            ok $event->is_scenario_result;
+            is $event->reply_token, 'replytoken';
+            is $event->things_device_id, 'deviceid';
+            is $event->things_type, 'scenarioResult';
+
+            is $event->scenario_id, 'scenarioid';
+            is $event->revision, 2;
+            is $event->start_time, 1547817845950;
+            is $event->end_time, 1547817845952;
+            is $event->result_code, 'success';
+            is $event->ble_notification_payload, 'AQ==';
+
+            my $action_results = $event->action_results;
+            is scalar @$action_results, 2;
+            my $binary_action = $action_results->[0];
+            my $void_action = $action_results->[1];
+
+            ok $binary_action->isa('LINE::Bot::API::Event::Things::ActionResult::Binary');
+            ok $void_action->isa('LINE::Bot::API::Event::Things::ActionResult::Void');
+
+            is $binary_action->data, '/w==';
+        };
+        subtest 'scenarioResult with error' => sub {
+            my $event = $events->[24];
+            ok $event->is_things_event;
+            ok $event->is_scenario_result;
+            is $event->reply_token, 'replytoken';
+            is $event->things_device_id, 'deviceid';
+            is $event->things_type, 'scenarioResult';
+
+            is $event->scenario_id, 'scenarioid';
+            is $event->revision, 2;
+            is $event->start_time, 1547817845950;
+            is $event->end_time, 1547817845952;
+            is $event->result_code, 'gatt_error';
+            is $event->error_reason, 'foo bar';
+            is $event->ble_notification_payload, undef;
+
+            my $action_results = $event->action_results;
+            is scalar @$action_results, 0;
         };
     };
 
