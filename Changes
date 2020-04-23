@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add method: Audience#delete_audience. (PR#124)
 
 1.16  2020-03-13 17:27:04 JST
         - Fixed bug (Issue #108, PR #112)
