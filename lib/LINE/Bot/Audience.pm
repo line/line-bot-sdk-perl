@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
+use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::AudienceGroup;
 
 use constant {
@@ -45,6 +46,13 @@ sub create_audience_for_uploading {
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
 }
 
+sub delete_audience {
+    my ($self, $ops) = @_;
+
+    my $res = $self->request(delete => 'audienceGroup/' . $ops->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -56,5 +64,9 @@ LINE::Bot::Audience
 Creates an audience for uploading user IDs.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
+
+=head1 C<< delete_audience({ audienceGroupId => "..." }) >>
+Deletes an audience.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
 
 =cut
