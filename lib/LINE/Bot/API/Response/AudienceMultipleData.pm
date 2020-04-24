@@ -22,7 +22,7 @@ sub page                                    { $_[0]->{page} }
 sub size                                    { $_[0]->{size} }
 
 # Aliases
-sub audience_group                          { $_[0]->{audienceGroups} }
+sub audience_groups                         { $_[0]->{audienceGroups} }
 sub has_next_page                           { $_[0]->{hasNextPage} }
 sub total_count                             { $_[0]->{totalCount} }
 sub read_write_audience_group_total_count   { $_[0]->{readWriteAudienceGroupTotalCount} }
