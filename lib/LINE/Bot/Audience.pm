@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
+use LINE::Bot::API::Response::AudienceData;
 use LINE::Bot::API::Response::AudienceGroup;
 
 use constant {
@@ -43,6 +44,13 @@ sub create_audience_for_uploading {
         'audiences[].id' => $opts->{audiences_id},
     });
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
+}
+
+sub get_audience_data {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(get => 'audienceGroup/' . $opts->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::AudienceData->new(%{ $res });
 }
 
 1;
