@@ -65,4 +65,12 @@ Creates an audience for uploading user IDs.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
+=head1 C<< get_audience_data({ audienceGroupId => "..." }) >>
+Gets audience data.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-audience-group>
+
+About response, prepared some alias of snake_case on LINE::Bot::API::Response::AudienceData.
+"jobs" is a part of response object, and it is array of hash.
+See also detail response: L<https://developers.line.biz/en/reference/messaging-api/#response-25>
+
 =cut
