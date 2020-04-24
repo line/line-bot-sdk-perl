@@ -4,6 +4,7 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::AudienceGroup;
+use LINE::Bot::API::Response::AudienceAuthorityLevel;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -45,6 +46,13 @@ sub create_audience_for_uploading {
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
 }
 
+sub get_authority_level {
+    my ($self) = @_;
+
+    my $res = $self->request(get => 'audienceGroup/authorityLevel', +{});
+    LINE::Bot::API::Response::AudienceAuthorityLevel->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -56,5 +64,9 @@ LINE::Bot::Audience
 Creates an audience for uploading user IDs.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
+
+=head1 C<< get_authority_level() >>
+Get the authority level of the audience
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-authority-level>
 
 =cut
