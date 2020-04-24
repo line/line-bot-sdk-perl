@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
+use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::AudienceGroup;
 
 use constant {
@@ -43,6 +44,15 @@ sub create_audience_for_uploading {
         'audiences[].id' => $opts->{audiences_id},
     });
     LINE::Bot::API::Response::AudienceGroup->new(%{ $res });
+}
+
+sub update_authority_level {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(put => 'audienceGroup/authorityLevel', +{
+        'authorityLevel' => $opts->{authorityLevel},
+    });
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 1;
