@@ -5,6 +5,7 @@ use warnings;
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
+use LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -57,6 +58,16 @@ sub create_audience_for_click_based_retartgeting {
     LINE::Bot::API::Response::AudienceGroupForClickRetargeting->new(%{ $res });
 }
 
+sub create_audience_for_impression_based_retargeting {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(post => 'audienceGroup/imp', +{
+        'description' => $opts->{description},
+        'requestId' => $opts->{requestId},
+    });
+    LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -75,5 +86,12 @@ A click-based retargeting audience is a collection of users who have clicked a U
 Use a request ID to identify the message. The message is sent to any user who has clicked at least one link.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-click-audience-group>
+
+=head1 C<< create_audience_for_impression_based_retargeting({ description => "...", requestId => "..." }) >>
+Creates an audience for impression-based retargeting. You can create up to 1,000 audiences.
+An impression-based retargeting audience is a collection of users who have viewed a broadcast or narrowcast message.
+Use a request ID to specify the message. The audience will include any user who has viewed at least one message bubble.
+
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-imp-audience-group>
 
 =cut
