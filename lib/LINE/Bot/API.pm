@@ -21,6 +21,7 @@ use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 use LINE::Bot::API::Response::NumberOfFollowers;
+use LINE::Bot::API::Response::UserInteractionStatistics;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -372,6 +373,14 @@ sub get_number_of_followers {
 
     my $res = $self->request(get => "insight/followers?date=${date}");
     LINE::Bot::API::Response::NumberOfFollowers->new(%{ $res });
+}
+
+sub get_user_interaction_statistics {
+    my ($self, $opts) = @_;
+    my $requestId = $opts->{requestId} or croak "get_user_interaction_statistics: Missing a `requestId` parameter.";
+
+    my $res = $self->request(get => "insight/message/event?requestId=${requestId}");
+    LINE::Bot::API::Response::UserInteractionStatistics->new(%{ $res });
 }
 
 1;
@@ -841,6 +850,12 @@ The return value C<$res> is a response object with the following read-only acces
 
 Notice that the "status" does not mean HTTP status. To inspect actual
 HTTP status, invoke C<$res->http_status()>.
+
+=head2 C<< get_user_interaction_statistics({ requestId => "..." }) >>
+
+Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-message-event>
 
 =head1 How to build a send message object
 
