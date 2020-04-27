@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add method: Audience#create_audience_for_click_based_retartgeting. (PR#115)
         - Add `API#get_user_interaction_statistics`. (Issue #86)
 
 1.16  2020-03-13 17:27:04 JST
