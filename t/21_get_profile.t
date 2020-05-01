@@ -22,6 +22,7 @@ send_request {
     is $res->user_id, 'userId';
     is $res->picture_url, 'http://example.com/abcdefghijklmn';
     is $res->status_message, 'Hello, LINE!';
+    is $res->language, 'en';
 } receive_request {
     my %args = @_;
     is $args{method}, 'GET';
@@ -32,6 +33,7 @@ send_request {
         userId        => 'userId',
         pictureUrl    => 'http://example.com/abcdefghijklmn',
         statusMessage => 'Hello, LINE!',
+        language      => 'en',
     };
 };
 
