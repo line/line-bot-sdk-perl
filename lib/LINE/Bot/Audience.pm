@@ -77,6 +77,13 @@ sub update_authority_level {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub delete_audience {
+    my ($self, $ops) = @_;
+
+    my $res = $self->request(delete => 'audienceGroup/' . $ops->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -100,7 +107,13 @@ Creates an audience for uploading user IDs. 'audiences' is a part of this method
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
+=head1 C<< delete_audience({ audienceGroupId => "..." }) >>
+
+Deletes an audience.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
+
 =head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
+
 Creates an audience for click-based retargeting. You can create up to 1,000 audiences.
 A click-based retargeting audience is a collection of users who have clicked a URL contained in a broadcast or narrowcast message.
 Use a request ID to identify the message. The message is sent to any user who has clicked at least one link.
@@ -108,6 +121,7 @@ Use a request ID to identify the message. The message is sent to any user who ha
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-click-audience-group>
 
 =head1 C<< create_audience_for_impression_based_retargeting({ description => "...", requestId => "..." }) >>
+
 Creates an audience for impression-based retargeting. You can create up to 1,000 audiences.
 An impression-based retargeting audience is a collection of users who have viewed a broadcast or narrowcast message.
 Use a request ID to specify the message. The audience will include any user who has viewed at least one message bubble.
