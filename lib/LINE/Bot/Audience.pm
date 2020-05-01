@@ -3,11 +3,12 @@ use strict;
 use warnings;
 
 use LINE::Bot::API::Client;
-use LINE::Bot::API::Response::AudienceData;
 use LINE::Bot::API::Response::Common;
+use LINE::Bot::API::Response::AudienceData;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 use LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting;
+use LINE::Bot::API::Response::AudienceAuthorityLevel;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -93,6 +94,13 @@ sub delete_audience {
     LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
+sub get_authority_level {
+    my ($self) = @_;
+
+    my $res = $self->request(get => 'audienceGroup/authorityLevel', +{});
+    LINE::Bot::API::Response::AudienceAuthorityLevel->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -156,5 +164,10 @@ An impression-based retargeting audience is a collection of users who have viewe
 Use a request ID to specify the message. The audience will include any user who has viewed at least one message bubble.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-imp-audience-group>
+
+=head1 C<< get_authority_level() >>
+
+Get the authority level of the audience
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-authority-level>
 
 =cut
