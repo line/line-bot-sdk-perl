@@ -4,7 +4,6 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::AudienceData;
-use LINE::Bot::API::Response::AudienceGroup;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 use LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting;
