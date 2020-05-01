@@ -2,6 +2,7 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
         - Add 'language' accessor to Profile response.
+        - Add method: Audience#rename_audience. (PR #117)
         - Support the use of LINE Emojis in Text messages.
         - Add method: Audience#delete_audience. (PR#124)
         - Add method: create_audience_for_uploading.
