@@ -21,6 +21,7 @@ use LINE::Bot::API::Response::TargetLimit;
 use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 use LINE::Bot::API::Response::NumberOfFollowers;
+use LINE::Bot::API::Response::UserInteractionStatistics;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -374,6 +375,14 @@ sub get_number_of_followers {
     LINE::Bot::API::Response::NumberOfFollowers->new(%{ $res });
 }
 
+sub get_user_interaction_statistics {
+    my ($self, $opts) = @_;
+    my $requestId = $opts->{requestId} or croak "get_user_interaction_statistics: Missing a `requestId` parameter.";
+
+    my $res = $self->request(get => "insight/message/event?requestId=${requestId}");
+    LINE::Bot::API::Response::UserInteractionStatistics->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -616,6 +625,7 @@ Get user profile information.
         say $ret->user_id;
         say $ret->picture_url;
         say $ret->status_message;
+        say $ret->language;
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-profile>
@@ -842,6 +852,12 @@ The return value C<$res> is a response object with the following read-only acces
 Notice that the "status" does not mean HTTP status. To inspect actual
 HTTP status, invoke C<$res->http_status()>.
 
+=head2 C<< get_user_interaction_statistics({ requestId => "..." }) >>
+
+Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
+
+See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-message-event>
+
 =head1 How to build a send message object
 
 See the LINE Developers API reference about L<Message objects|https://developers.line.biz/en/reference/messaging-api/#message-objects>
@@ -867,6 +883,27 @@ Build a text type object.
         text => 'Closing the distance',
     );
     $bot->reply_message($reply_token, $messages->build);
+
+Build a text message with emojis inside:
+
+    my $message = LINE::Bot::API::Builder::SendMessage->new();
+    $message->add_text(
+        text => '$ LINE Emoji $',
+        emojis => [
+            +{
+                "index" => 0,
+                "productId" => "5ac1bfd5040ab15980c9b435",
+                "emojiId" => "001"
+            },
+            +{
+                "index" => 13,
+                "productId" => "5ac1bfd5040ab15980c9b435",
+                "emojiId" => "002"
+            }
+        ]
+    );
+
+Since 2020/04/16, text messages may contain LINE emojis. They are identified by (productId, emojiId). For more details about possible values as well as how to use these emojis, please read: L<https://developers.line.biz/en/reference/messaging-api/#text-message> first.
 
 =head2 Image type
 

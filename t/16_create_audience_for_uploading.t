@@ -6,6 +6,7 @@ use t::Util;
 
 use LINE::Bot::Audience;
 use Furl;
+use JSON::XS;
 
 my $bot = LINE::Bot::Audience->new(
     channel_secret       => 'testsecret',
@@ -13,22 +14,73 @@ my $bot = LINE::Bot::Audience->new(
 );
 
 subtest '#create_audience_for_uploading' => sub {
-    my $content_type = 'application/json';
+    subtest 'only required paraemter' => sub {
+        send_request {
+            my $res = $bot->create_audience_for_uploading({
+                description => 'sample text',
+                isIfaAudience => JSON::XS::false,
+                audiences => [
+                    {
+                        id => 123,
+                    },
+                ],
+            });
+            ok $res->is_success;
+            is $res->http_status, 200;
+        } receive_request {
+            my %args = @_;
+            is $args{method}, 'POST';
+            is $args{url}, 'https://api.line.me/v2/bot/audienceGroup/upload';
 
-    send_request {
-        my $res = $bot->create_audience_for_uploading();
-        ok $res->is_success;
-        is $res->http_status, 200;
-    } receive_request {
-        my %args = @_;
-        is $args{method}, 'POST';
-        is $args{url}, 'https://api.line.me/v2/bot/audienceGroup/upload';
+            my %headers = @{ $args{headers} };
+            is $headers{'Content-Type'}, 'application/json';
 
-        my %headers = @{ $args{headers} };
-        is $headers{'Content-Type'}, 'application/json';
+            my $content = decode_json($args{content} // '');
+            is $content->{description}, 'sample text';
+            ok !$content->{isIfaAudience};
+            is @{ $content->{audiences} }, 1;
+            is $content->{audiences}->[0]->{id}, 123;
 
-        +{}
-    }
+            +{}
+        };
+    };
+    
+    subtest 'full parameter' => sub {
+        send_request {
+            my $res = $bot->create_audience_for_uploading({
+                description => 'sample text',
+                isIfaAudience => JSON::XS::true,
+                uploadDescription => 'sample text',
+                audiences => [
+                    {
+                        id => 123,
+                    },
+                    {
+                        id => 124,
+                    },
+                ],
+            });
+            ok $res->is_success;
+            is $res->http_status, 200;
+        } receive_request {
+            my %args = @_;
+            is $args{method}, 'POST';
+            is $args{url}, 'https://api.line.me/v2/bot/audienceGroup/upload';
+
+            my %headers = @{ $args{headers} };
+            is $headers{'Content-Type'}, 'application/json';
+
+            my $content = decode_json($args{content} // '');
+            is $content->{description}, 'sample text';
+            ok $content->{isIfaAudience};
+            is $content->{uploadDescription}, 'sample text';
+            is @{ $content->{audiences} }, 2;
+            is $content->{audiences}->[0]->{id}, 123;
+            is $content->{audiences}->[1]->{id}, 124;
+
+            +{}
+        };
+    };
 };
 
 done_testing();
