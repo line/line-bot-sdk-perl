@@ -146,11 +146,14 @@ sub put {
         $json,
     );
 
-    unless ($res_content && $res_content =~ /^\{.*\}$/) {
-        croak 'LINE Messaging API error: ' . $res_content;
+    my $ret;
+    eval {
+        $ret = $JSON->decode($res_content);
+    };
+    if (my $error = $@) {
+        croak 'LINE Messaging API error: ' . $error;
     }
 
-    my $ret = $JSON->decode($res_content);
     $ret->{http_status} = $res_status;
     $ret->{http_headers} = Furl::Headers->new($res_headers);
     $ret;
