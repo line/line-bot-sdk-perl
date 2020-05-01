@@ -2,6 +2,7 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
         - Add method: Audience#get_audience_data. (PR#125)
+        - Support the use of LINE Emojis in Text messages.
         - Add method: Audience#delete_audience. (PR#124)
         - Add method: create_audience_for_uploading.
         - Add method: Audience#create_audience_for_click_based_retartgeting. (PR#115)
