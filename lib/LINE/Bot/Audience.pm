@@ -42,7 +42,6 @@ sub create_audience_for_uploading {
         'isIfaAudience' => $opts->{isIfaAudience},
         'uploadDescription' => $opts->{uploadDescription},
         'audiences' => $opts->{audiences},
-        'audiences[].id' => $opts->{audiences_id},
     });
     LINE::Bot::API::Response::AudienceGroupForUploadingUserId->new(%{ $res });
 }
@@ -75,8 +74,19 @@ __END__
 
 LINE::Bot::Audience
 
-=head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audience => [...], audiences_id => "..." }) >>
-Creates an audience for uploading user IDs. You can create up to 1,000 audiences.
+=head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audiences => [{ id => "..." }, ... ] }) >>
+
+Creates an audience for uploading user IDs. 'audiences' is a part of this method argument, and this argument need to be ArrayRef like below.
+
+    [
+        {
+            id => 123
+        },
+        {
+            id => 124
+        }
+    ]
+
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
