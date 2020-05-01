@@ -173,7 +173,7 @@ declare BeaconEvent => as Dict[
     replyToken => NonEmptyStr,
     beacon     => Dict[
         hwid => NonEmptyStr,
-        type => Enum["enter", "leave", "banner"],
+        type => Enum["enter", "leave", "banner", "stay"],
         dm   => Optional[Str],
     ],
     @__common__,
