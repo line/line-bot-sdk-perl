@@ -66,6 +66,7 @@ Creates an audience for uploading user IDs.
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
 =head1 C<< delete_audience({ audienceGroupId => "..." }) >>
+
 Deletes an audience.
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
 
