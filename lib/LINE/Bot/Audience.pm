@@ -36,6 +36,16 @@ sub request {
     );
 }
 
+sub rename_audience {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(post => 'audienceGroup/'. $opts->{audience_group_id} . '/updateDescription', +{
+        'description' => $opts->{description},
+    });
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub create_audience_for_uploading {
     my ($self, $opts) = @_;
 
@@ -89,6 +99,16 @@ __END__
 =head1 NAME
 
 LINE::Bot::Audience
+
+=head1 C<< rename_audience({ description => "...", audience_group_id => "..." }) >>
+
+Renames an existing audience.
+
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-description-audience-group>
+
+=head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audience => [...], audiences_id => "..." }) >>
+
+Creates an audience for uploading user IDs.
 
 =head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audiences => [{ id => "..." }, ... ] }) >>
 
