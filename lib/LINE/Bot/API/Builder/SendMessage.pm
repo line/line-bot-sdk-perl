@@ -23,6 +23,9 @@ sub add_text {
     $self->add(+{
         type => 'text',
         text => $args{text},
+        $args{emojis} ? (
+            emojis => $args{emojis},
+        ):(),
     });
 }
 

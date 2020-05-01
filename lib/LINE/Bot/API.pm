@@ -884,6 +884,27 @@ Build a text type object.
     );
     $bot->reply_message($reply_token, $messages->build);
 
+Build a text message with emojis inside:
+
+    my $message = LINE::Bot::API::Builder::SendMessage->new();
+    $message->add_text(
+        text => '$ LINE Emoji $',
+        emojis => [
+            +{
+                "index" => 0,
+                "productId" => "5ac1bfd5040ab15980c9b435",
+                "emojiId" => "001"
+            },
+            +{
+                "index" => 13,
+                "productId" => "5ac1bfd5040ab15980c9b435",
+                "emojiId" => "002"
+            }
+        ]
+    );
+
+Since 2020/04/16, text messages may contain LINE emojis. They are identified by (productId, emojiId). For more details about possible values as well as how to use these emojis, please read: L<https://developers.line.biz/en/reference/messaging-api/#text-message> first.
+
 =head2 Image type
 
 Build an image type object.
