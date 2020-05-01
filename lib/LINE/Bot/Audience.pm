@@ -4,9 +4,11 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::Common;
+use LINE::Bot::API::Response::AudienceData;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 use LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting;
+use LINE::Bot::API::Response::AudienceAuthorityLevel;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -33,6 +35,16 @@ sub request {
         $self->{messaging_api_endpoint} .  $path,
         @payload,
     );
+}
+
+sub rename_audience {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(post => 'audienceGroup/'. $opts->{audience_group_id} . '/updateDescription', +{
+        'description' => $opts->{description},
+    });
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
 }
 
 sub create_audience_for_uploading {
@@ -68,11 +80,34 @@ sub create_audience_for_impression_based_retargeting {
     LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting->new(%{ $res });
 }
 
+sub get_audience_data {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(get => 'audienceGroup/' . $opts->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::AudienceData->new(%{ $res });
+}
+
+sub update_authority_level {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(put => 'audienceGroup/authorityLevel', +{
+        'authorityLevel' => $opts->{authorityLevel},
+    });
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub delete_audience {
     my ($self, $ops) = @_;
 
     my $res = $self->request(delete => 'audienceGroup/' . $ops->{audienceGroupId}, +{});
     LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub get_authority_level {
+    my ($self) = @_;
+
+    my $res = $self->request(get => 'audienceGroup/authorityLevel', +{});
+    LINE::Bot::API::Response::AudienceAuthorityLevel->new(%{ $res });
 }
 
 1;
@@ -81,6 +116,16 @@ __END__
 =head1 NAME
 
 LINE::Bot::Audience
+
+=head1 C<< rename_audience({ description => "...", audience_group_id => "..." }) >>
+
+Renames an existing audience.
+
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-description-audience-group>
+
+=head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audience => [...], audiences_id => "..." }) >>
+
+Creates an audience for uploading user IDs.
 
 =head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audiences => [{ id => "..." }, ... ] }) >>
 
@@ -98,9 +143,19 @@ Creates an audience for uploading user IDs. 'audiences' is a part of this method
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
+=head1 C<< get_audience_data({ audienceGroupId => "..." }) >>
+
+Gets audience data.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-audience-group>
+
+About response, prepared some alias of snake_case on LINE::Bot::API::Response::AudienceData.
+"jobs" is a part of response object, and it is array of hash.
+See also detail response: L<https://developers.line.biz/en/reference/messaging-api/#response-25>
+
 =head1 C<< delete_audience({ audienceGroupId => "..." }) >>
 
 Deletes an audience.
+
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
 
 =head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
@@ -118,5 +173,10 @@ An impression-based retargeting audience is a collection of users who have viewe
 Use a request ID to specify the message. The audience will include any user who has viewed at least one message bubble.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-imp-audience-group>
+
+=head1 C<< get_authority_level() >>
+
+Get the authority level of the audience
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-authority-level>
 
 =cut

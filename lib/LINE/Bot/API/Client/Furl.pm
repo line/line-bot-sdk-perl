@@ -132,6 +132,33 @@ sub post_image {
     $ret;
 }
 
+sub put {
+    my($self, $url, $data) = @_;
+
+    my $json = $JSON->encode($data);
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->put(
+        $url,
+        [
+            $self->credentials,
+            'Content-Type'   => 'application/json',
+            'Content-Length' => length($json),
+        ],
+        $json,
+    );
+
+    my $ret;
+    eval {
+        $ret = $JSON->decode($res_content);
+    };
+    if (my $error = $@) {
+        croak 'LINE Messaging API error: ' . $error;
+    }
+
+    $ret->{http_status} = $res_status;
+    $ret->{http_headers} = Furl::Headers->new($res_headers);
+    $ret;
+}
+
 sub delete {
     my($self, $url) = @_;
 
