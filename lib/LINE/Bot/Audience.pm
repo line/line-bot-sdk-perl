@@ -75,6 +75,7 @@ Creates an audience for uploading user IDs.
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
 
 =head1 C<< get_data_for_multiple_audience({ page => "...", description => "...", status => "IN_PROGRESS|READY|FAILED|EXPIRED", size => "...",  includesExternalPublicGroups => "true|false", createRoute => "OA_MANAGER|MESSAGING_API" }) >>
+
 Gets data for more than one audience.
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-audience-groups>
 
