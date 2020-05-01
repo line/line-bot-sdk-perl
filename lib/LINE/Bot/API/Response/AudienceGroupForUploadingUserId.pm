@@ -1,11 +1,11 @@
-package LINE::Bot::API::Response::AudienceGroup;
+package LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use strict;
 use warnings;
 use parent 'LINE::Bot::API::Response::Common';
 
 =head1 NAME
 
-LINE::Bot::API::Response::AudienceGroup
+LINE::Bot::API::Response::AudienceGroupForUploadingUserId
 
 =head1 DESCRIPTION
 
