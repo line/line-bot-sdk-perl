@@ -64,6 +64,7 @@ __END__
 LINE::Bot::Audience
 
 =head1 C<< rename_audience({ description => "...", audience_group_id => "..." }) >>
+
 Renames an existing audience.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-description-audience-group>
