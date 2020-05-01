@@ -87,6 +87,15 @@ sub get_audience_data {
     LINE::Bot::API::Response::AudienceData->new(%{ $res });
 }
 
+sub update_authority_level {
+    my ($self, $opts) = @_;
+
+    my $res = $self->request(put => 'audienceGroup/authorityLevel', +{
+        'authorityLevel' => $opts->{authorityLevel},
+    });
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub delete_audience {
     my ($self, $ops) = @_;
 
