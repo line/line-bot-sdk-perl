@@ -4,6 +4,7 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::AudienceData;
+use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
 use LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting;
@@ -75,6 +76,13 @@ sub get_audience_data {
     LINE::Bot::API::Response::AudienceData->new(%{ $res });
 }
 
+sub delete_audience {
+    my ($self, $ops) = @_;
+
+    my $res = $self->request(delete => 'audienceGroup/' . $ops->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -106,6 +114,12 @@ See also the API reference of this method: L<https://developers.line.biz/en/refe
 About response, prepared some alias of snake_case on LINE::Bot::API::Response::AudienceData.
 "jobs" is a part of response object, and it is array of hash.
 See also detail response: L<https://developers.line.biz/en/reference/messaging-api/#response-25>
+
+=head1 C<< delete_audience({ audienceGroupId => "..." }) >>
+
+Deletes an audience.
+
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
 
 =head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
 
