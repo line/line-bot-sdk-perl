@@ -78,6 +78,13 @@ sub create_audience_for_impression_based_retargeting {
     LINE::Bot::API::Response::AudienceGroupForImpressionRetargeting->new(%{ $res });
 }
 
+sub delete_audience {
+    my ($self, $ops) = @_;
+
+    my $res = $self->request(delete => 'audienceGroup/' . $ops->{audienceGroupId}, +{});
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -110,6 +117,11 @@ Creates an audience for uploading user IDs. 'audiences' is a part of this method
 
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
+
+=head1 C<< delete_audience({ audienceGroupId => "..." }) >>
+
+Deletes an audience.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#delete-audience-group>
 
 =head1 C<< create_audience_for_click_based_retartgeting({ description => "...", requestId => "...", clickUrl => "..." }) >>
 
