@@ -16,7 +16,8 @@ use constant {
 };
 use Furl;
 use Carp 'croak';
-use URI::Escape;
+use URI;
+use URI::QueryParam;
 
 sub new {
     my($class, %args) = @_;
@@ -115,15 +116,15 @@ sub get_authority_level {
 sub get_data_for_multiple_audience {
     my ($self, $opts) = @_;
 
-    my $param = [];
-    push @$param, 'page=' . ($opts->{page} // 1);
-    push @$param, 'description=' . uri_escape_utf8($opts->{description} // '');
-    push @$param, 'status=' . uri_escape_utf8($opts->{status} // '');
-    push @$param, 'size=' .  ($opts->{size} // 20);
-    push @$param, 'includesExternalPublicGroups=' . ($opts->{includesExternalPublicGroups} // '');
-    push @$param, 'createRoute=' . ($opts->{createRoute} // '');
+    my $uri = URI->new('audienceGroup/list');
+    $uri->query_param(page => $opts->{page} // 1);
+    $uri->query_param(description => $opts->{description} // '');
+    $uri->query_param(status => $opts->{status} // '');
+    $uri->query_param(size => $opts->{size} // 20);
+    $uri->query_param(includesExternalPublicGroups => $opts->{includesExternalPublicGroups} // '');
+    $uri->query_param(createRoute => $opts->{createRoute} // '');
 
-    my $res = $self->request(get => 'audienceGroup/list?' . join('&', @$param));
+    my $res = $self->request(get => $uri->as_string);
     LINE::Bot::API::Response::AudienceMultipleData->new(%{ $res });
 }
 
