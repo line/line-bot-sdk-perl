@@ -1,4 +1,4 @@
-package LINE::Bot::Narrowcast;
+package LINE::Bot::Message::Narrowcast;
 use strict;
 use warnings;
 
@@ -9,7 +9,7 @@ use constant {
 };
 
 sub new {
-    my($class, %args) = @_;
+    my ($class, %args) = @_;
 
     my $client = LINE::Bot::API::Client->new(%args);
     bless {
