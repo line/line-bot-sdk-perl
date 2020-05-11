@@ -4,6 +4,7 @@ use warnings;
 
 use LINE::Bot::API::Client;
 use LINE::Bot::API::Response::Common;
+use LINE::Bot::API::Response::AudienceMultipleData;
 use LINE::Bot::API::Response::AudienceData;
 use LINE::Bot::API::Response::AudienceGroupForUploadingUserId;
 use LINE::Bot::API::Response::AudienceGroupForClickRetargeting;
@@ -15,6 +16,8 @@ use constant {
 };
 use Furl;
 use Carp 'croak';
+use URI;
+use URI::QueryParam;
 
 sub new {
     my($class, %args) = @_;
@@ -110,6 +113,21 @@ sub get_authority_level {
     LINE::Bot::API::Response::AudienceAuthorityLevel->new(%{ $res });
 }
 
+sub get_data_for_multiple_audience {
+    my ($self, $opts) = @_;
+
+    my $uri = URI->new('audienceGroup/list');
+    $uri->query_param(page => $opts->{page} // 1);
+    $uri->query_param(description => $opts->{description} // '');
+    $uri->query_param(status => $opts->{status} // '');
+    $uri->query_param(size => $opts->{size} // 20);
+    $uri->query_param(includesExternalPublicGroups => $opts->{includesExternalPublicGroups} // '');
+    $uri->query_param(createRoute => $opts->{createRoute} // '');
+
+    my $res = $self->request(get => $uri->as_string);
+    LINE::Bot::API::Response::AudienceMultipleData->new(%{ $res });
+}
+
 1;
 __END__
 
@@ -142,6 +160,11 @@ Creates an audience for uploading user IDs. 'audiences' is a part of this method
 
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group>
+
+=head1 C<< get_data_for_multiple_audience({ page => "...", description => "...", status => "IN_PROGRESS|READY|FAILED|EXPIRED", size => "...",  includesExternalPublicGroups => "true|false", createRoute => "OA_MANAGER|MESSAGING_API" }) >>
+
+Gets data for more than one audience.
+See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-audience-groups>
 
 =head1 C<< get_audience_data({ audienceGroupId => "..." }) >>
 
@@ -178,5 +201,6 @@ See also the API reference of this method: L<https://developers.line.biz/en/refe
 
 Get the authority level of the audience
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-authority-level>
+
 
 =cut
