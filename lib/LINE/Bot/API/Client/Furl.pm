@@ -14,6 +14,28 @@ use LINE::Bot::API::Client;
 our @CARP_NOT = qw( LINE::Bot::API::Client::Furl LINE::Bot::API::Client LINE::Bot::API);
 my $JSON = JSON::XS->new->utf8;
 
+sub __decode_response_body {
+    my ($response_body) = @_;
+
+    unless ($response_body) {
+        croak 'LINE Messaging API error: response body is empty.';
+    }
+
+    my ($ret, $error);
+    eval {
+        $ret = $JSON->decode($response_body);
+        1;
+    } or do {
+        $error = $@;
+    };
+
+    if ($error) {
+        croak 'LINE Messaging API error: ' . $error . '. response_body=' . $response_body;
+    }
+
+    return $ret;
+}
+
 sub new {
     my($class, %args) = @_;
 
@@ -45,11 +67,8 @@ sub get {
             $self->credentials,
         ],
     );
-    unless ($res_content && $res_content =~ /^\{.+\}$/) {
-        croak 'LINE Messaging API error: ' . $res_content;
-    }
 
-    my $ret = $JSON->decode($res_content);
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret;
 }
@@ -81,11 +100,7 @@ sub post {
         $json,
     );
 
-    unless ($res_content && $res_content =~ /^\{.*\}$/) {
-        croak 'LINE Messaging API error: ' . $res_content;
-    }
-
-    my $ret = $JSON->decode($res_content);
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret->{http_headers} = Furl::Headers->new($res_headers);
     $ret;
@@ -103,7 +118,7 @@ sub post_form {
         $data,
     );
 
-    my $ret = $JSON->decode($res_content);
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret;
 }
@@ -127,7 +142,7 @@ sub post_image {
 
     close $fh;
 
-    my $ret = $JSON->decode($res_content);
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret;
 }
@@ -146,14 +161,7 @@ sub put {
         $json,
     );
 
-    my $ret;
-    eval {
-        $ret = $JSON->decode($res_content);
-    };
-    if (my $error = $@) {
-        croak 'LINE Messaging API error: ' . $error;
-    }
-
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret->{http_headers} = Furl::Headers->new($res_headers);
     $ret;
@@ -168,11 +176,8 @@ sub delete {
             $self->credentials,
         ],
     );
-    unless ($res_content && $res_content =~ /^\{.*\}$/) {
-        croak 'LINE Messaging API error: ' . $res_content;
-    }
 
-    my $ret = $JSON->decode($res_content);
+    my $ret = __decode_response_body($res_content);
     $ret->{http_status} = $res_status;
     $ret;
 }
@@ -192,10 +197,6 @@ sub contents_download {
     );
     unless ($res_status eq '200') {
         carp "LINE Messaging API contents_download error: $res_status $url\n\tcontent=$res_content";
-
-        my $ret = $JSON->decode($res_content);
-        $ret->{http_status} = $res_status;
-        return $ret;
     }
 
     +{
