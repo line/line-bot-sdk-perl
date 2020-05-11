@@ -1,4 +1,4 @@
-package LINE::Bot::Message::Narrowcast::Response::NarrowcastStatus;
+package LINE::Bot::API::Response::NarrowcastStatus;
 use strict;
 use warnings;
 use parent 'LINE::Bot::API::Response::Common';
@@ -6,7 +6,7 @@ use parent 'LINE::Bot::API::Response::Common';
 
 =head1 NAME
 
-LINE::Bot::Message::Narrowcast::Response::NarrowcastStatus
+LINE::Bot::API::Response::NarrowcastStatus
 
 =head1 DESCRIPTION
 
