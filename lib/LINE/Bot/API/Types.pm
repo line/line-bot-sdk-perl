@@ -4,7 +4,7 @@ use warnings;
 
 use Type::Library -base;
 use Type::Utils -all;
-use Types::Standard qw<Str Int Num Bool Dict Enum Optional ArrayRef HashRef>;
+use Types::Standard qw<Str Num Dict Enum Optional ArrayRef HashRef>;
 use Types::Common::Numeric qw< PositiveOrZeroInt PositiveOrZeroNum >;
 use Types::Common::String qw< StrLength NonEmptyStr >;
 
