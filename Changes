@@ -11,7 +11,7 @@ Revision history for Perl extension LINE::Bot::API
         - Add method: Audience#create_audience_for_impression_based_retargeting. (PR#116)
         - Add `API#get_user_interaction_statistics`. (Issue #86)
         - Add method: Narrowcast#send_message, Narrocast#get_narrowcast_message_status. (PR#134)
-        - Changed accepting parameter "sender" at SendMessage.pm (Issue #113 PR#140)
+
 1.16  2020-03-13 17:27:04 JST
         - Fixed bug (Issue #108, PR #112)
 
