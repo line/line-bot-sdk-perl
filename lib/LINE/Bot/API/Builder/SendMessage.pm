@@ -23,6 +23,7 @@ sub add_text {
     $self->add(+{
         type => 'text',
         text => $args{text},
+        sender => $args{sender},
         $args{emojis} ? (
             emojis => $args{emojis},
         ):(),
@@ -33,6 +34,7 @@ sub add_image {
     my($self, %args) = @_;
     $self->add(+{
         type               => 'image',
+        sender             => $args{sender},
         originalContentUrl => $args{image_url},
         previewImageUrl    => $args{preview_url},
     });
@@ -42,6 +44,7 @@ sub add_video {
     my($self, %args) = @_;
     $self->add(+{
         type               => 'video',
+        sender             => $args{sender},
         originalContentUrl => $args{video_url},
         previewImageUrl    => $args{preview_url},
     });
@@ -51,6 +54,7 @@ sub add_audio {
     my($self, %args) = @_;
     $self->add(+{
         type               => 'audio',
+        sender             => $args{sender},
         originalContentUrl => $args{audio_url},
         duration           => $args{duration},
     });
@@ -60,6 +64,7 @@ sub add_location {
     my($self, %args) = @_;
     $self->add(+{
         type      => 'location',
+        sender    => $args{sender},
         title     => $args{title},
         address   => $args{address},
         latitude  => $args{latitude},
@@ -71,6 +76,7 @@ sub add_sticker {
     my($self, %args) = @_;
     $self->add(+{
         type      => 'sticker',
+        sender    => $args{sender},
         packageId => $args{package_id},
         stickerId => $args{sticker_id},
     });
