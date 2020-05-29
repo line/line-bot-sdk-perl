@@ -13,7 +13,7 @@ my $bot = LINE::Bot::API->new(
 );
 
 my $builder = LINE::Bot::API::Builder::SendMessage->new;
-$builder->add_text( text => 'hello!' );
+$builder->add_text( text => 'hello!', sender=> {name => 'Cony', iconUrl => 'https://line.me/conyprof'} );
 
 subtest 'success' => sub {
     send_request {
