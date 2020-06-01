@@ -19,15 +19,15 @@ subtest '#send_message' => sub {
     # this parameter is from https://developers.line.biz/ja/reference/messaging-api/#send-narrowcast-message
     send_request {
         my $res = $bot->send_message(
-            (
+            [
                 {
                     type => 'text',
                     text => 'test message',
-                },
-            ),
+                }
+            ],
             {
                 type => 'operator',
-                and => (
+                and => [
                     {
                         type => 'audience',
                         audienceGroupId => 5614991017776,
@@ -39,17 +39,17 @@ subtest '#send_message' => sub {
                             audienceGroupId => 4389303728991,
                         },
                     },
-                ),
+                ],
             },
             {
                 type => 'operator',
-                or => (
+                or => [
                     {
                         type => 'operator',
-                        and => (
+                        and => [
                             {
                                 type => 'gender',
-                                oneOf => ('male', 'female'),
+                                oneOf => ['male', 'female'],
                             },
                             {
                                 type => 'age',
@@ -58,22 +58,22 @@ subtest '#send_message' => sub {
                             },
                             {
                                 type => 'appType',
-                                oneOf => ('android', 'ios'),
+                                oneOf => ['android', 'ios'],
                             },
                             {
                                 type => 'area',
-                                oneOf => ('jp_23', 'jp_05'),
+                                oneOf => ['jp_23', 'jp_05'],
                             },
                             {
                                 type => 'subscriptionPeriod',
                                 gte => 'day_7',
                                 lt => 'day_30',
                             },
-                        ),
+                        ],
                     },
                     {
                         type => 'operator',
-                        and => (
+                        and => [
                             {
                                 type => 'age',
                                 gte => 'age_35',
@@ -83,12 +83,12 @@ subtest '#send_message' => sub {
                                 type => 'operator',
                                 not => {
                                     type => 'gender',
-                                    oneOf => ('male'),
+                                    oneOf => ['male'],
                                 },
                             },
-                        ),
+                        ],
                     },
-                ),
+                ],
             },
         );
         ok $res->is_success;
@@ -103,15 +103,13 @@ subtest '#send_message' => sub {
 
         my $content = decode_json($args{content});
         eq_hash $content, {
-            messages => (
-                {
-                    type => 'text',
-                    text => 'test message',
-                },
-            ),
+            messages => [{
+                type => 'text',
+                text => 'test message',
+            }],
             recipient => {
                 type => 'operator',
-                and => (
+                and => [
                     {
                         type => 'audience',
                         audienceGroupId => 5614991017776,
@@ -123,18 +121,18 @@ subtest '#send_message' => sub {
                             audienceGroupId => 4389303728991,
                         },
                     },
-                ),
+                ],
             },
             filter => {
                 demographic => {
                     type => 'operator',
-                    or => (
+                    or => [
                         {
                             type => 'operator',
-                            and => (
+                            and => [
                                 {
                                     type => 'gender',
-                                    oneOf => ('male', 'female'),
+                                    oneOf => ['male', 'female'],
                                 },
                                 {
                                     type => 'age',
@@ -143,22 +141,22 @@ subtest '#send_message' => sub {
                                 },
                                 {
                                     type => 'appType',
-                                    oneOf => ('android', 'ios'),
+                                    oneOf => ['android', 'ios'],
                                 },
                                 {
                                     type => 'area',
-                                    oneOf => ('jp_23', 'jp_05'),
+                                    oneOf => ['jp_23', 'jp_05'],
                                 },
                                 {
                                     type => 'subscriptionPeriod',
                                     gte => 'day_7',
                                     lt => 'day_30',
                                 },
-                            ),
+                            ],
                         },
                         {
                             type => 'operator',
-                            and => (
+                            and => [
                                 {
                                     type => 'age',
                                     gte => 'age_35',
@@ -168,12 +166,12 @@ subtest '#send_message' => sub {
                                     type => 'operator',
                                     not => {
                                         type => 'gender',
-                                        oneOf => ('male'),
+                                        oneOf => ['male'],
                                     },
                                 },
-                            ),
+                            ],
                         },
-                    ),
+                    ],
                 }
             },
             limit => {
@@ -181,8 +179,7 @@ subtest '#send_message' => sub {
             },
         };
 
-        +{
-        }
+        +{};
     }
 };
 
