@@ -657,6 +657,19 @@ Get group user profile information.
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile>
 
+=head2 C<< get_group_summary($group_id) >>
+
+Gets the group ID, group name, and group icon URL of a group where the LINE Official Account is a member.
+
+    my $ret = $bot->get_group_summary($group_id);
+    if ($ret->is_success) {
+        say $ret->group_id;
+        say $ret->group_name;
+        say $ret->picture_url;
+    }
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-group-summary>
+
 =head2 C<< get_room_member_profile($room_id, $user_id) >>
 
 Get room user profile information.
