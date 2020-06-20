@@ -11,7 +11,7 @@ Revision history for Perl extension LINE::Bot::API
         - Add method: Audience#create_audience_for_impression_based_retargeting. (PR#116)
         - Add `API#get_user_interaction_statistics`. (Issue #86)
         - Add method: Narrowcast#send_message, Narrocast#get_narrowcast_message_status. (PR#134)
-        - Add method: get_group_summary (Issue#141, PR#142)
+        - Add method: get_group_summary, get_member_in_group_count, get_member_in_room_count (Issue#141, PR#142)
 
 1.16  2020-03-13 17:27:04 JST
         - Fixed bug (Issue #108, PR #112)
