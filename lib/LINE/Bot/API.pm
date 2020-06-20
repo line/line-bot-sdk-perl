@@ -218,7 +218,7 @@ sub get_member_in_group_count {
     my ($self, $group_id) = @_;
 
     my $res = $self->request(get => "group/${group_id}/members/count", +{});
-    LINE::Bot::API::Response::GroupSummary->new(%{ $res });
+    LINE::Bot::API::Response::Count->new(%{ $res });
 }
 
 sub get_group_summary {

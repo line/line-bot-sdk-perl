@@ -9,17 +9,14 @@ LINE::Bot::API::Response::GroupSummary
 
 =head1 DESCRIPTION
 
-This class correspond to below.
-- "Get group summary" : See also L<https://developers.line.biz/en/reference/messaging-api/#get-group-id-response>
-- "Get members in group count" : See also L<https://developers.line.biz/en/reference/messaging-api/#get-members-group-count>
+This class correspond to the "Get group summary" response as described in
+this page : L<https://developers.line.biz/en/reference/messaging-api/#get-group-id-response>
 
 =cut
 
 sub groupId     { $_[0]->{groupId} }
 sub groupName   { $_[0]->{groupName} }
 sub pictureUrl  { $_[0]->{pictureUrl} }
-
-sub count       { $_[0]->{count} }
 
 # Aliases
 sub group_id    { $_[0]->{groupId} }
