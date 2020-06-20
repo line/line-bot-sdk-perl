@@ -205,7 +205,7 @@ sub get_number_of_message_deliveries {
     my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
-sub get_number_in_group_count {
+sub get_member_in_group_count {
     my ($self, $group_id) = @_;
 
     my $res = $self->request(get => "group/${group_id}/members/count", +{});
@@ -662,6 +662,18 @@ Get group user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile>
+
+=head2 C<< get_member_in_group_count($group_id) >>
+
+Gets the count of members in a group. You can get the member in group count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.
+
+    my $ret = $bot->get_member_in_group_count($group_id);
+    if ($ret->is_success) {
+        say $ret->count;
+    }
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-members-group-count>
+
 
 =head2 C<< get_group_summary($group_id) >>
 

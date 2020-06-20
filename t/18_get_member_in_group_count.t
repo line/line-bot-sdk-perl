@@ -13,9 +13,9 @@ my $bot = LINE::Bot::API->new(
     channel_access_token => 'ACCESS_TOKEN',
 );
 
-subtest '#get_number_in_group_count' => sub {
+subtest '#get_member_in_group_count' => sub {
     send_request {
-        my $res = $bot->get_number_in_group_count('1234567890');
+        my $res = $bot->get_member_in_group_count('1234567890');
         ok $res->is_success;
         is $res->http_status, 200;
 
