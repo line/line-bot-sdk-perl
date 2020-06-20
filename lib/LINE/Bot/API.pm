@@ -8,6 +8,7 @@ use LINE::Bot::API::Client;
 use LINE::Bot::API::Event;
 use LINE::Bot::API::Response::Common;
 use LINE::Bot::API::Response::Content;
+use LINE::Bot::API::Response::Count;
 use LINE::Bot::API::Response::FriendDemographics;
 use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::NumberOfMessageDeliveries;
@@ -205,6 +206,14 @@ sub get_number_of_message_deliveries {
     my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
+
+sub get_member_in_room_count {
+    my ($self, $room_id) = @_;
+
+    my $res = $self->request(get => "room/${room_id}/members/count", +{});
+    LINE::Bot::API::Response::Count->new(%{ $res });
+}
+
 sub get_member_in_group_count {
     my ($self, $group_id) = @_;
 
@@ -662,6 +671,18 @@ Get group user profile information.
     }
 
 See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile>
+
+=head2 C<< get_member_in_room_count($room_id) >>
+
+Gets the count of members in a room. You can get the member in room count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.
+
+    my $ret = $bot->get_member_in_room_count($room_id);
+    if ($ret->is_success) {
+        say $ret->count;
+    }
+
+See also the LINE Developers API reference of this method:  L<https://developers.line.biz/en/reference/messaging-api/#get-members-room-count>
+
 
 =head2 C<< get_member_in_group_count($group_id) >>
 
