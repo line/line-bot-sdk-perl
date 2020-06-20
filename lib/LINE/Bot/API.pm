@@ -13,6 +13,7 @@ use LINE::Bot::API::Response::NumberOfSentMessages;
 use LINE::Bot::API::Response::NumberOfMessageDeliveries;
 use LINE::Bot::API::Response::Profile;
 use LINE::Bot::API::Response::GroupMemberProfile;
+use LINE::Bot::API::Response::GroupSummary;
 use LINE::Bot::API::Response::RoomMemberProfile;
 use LINE::Bot::API::Response::IssueLinkToken;
 use LINE::Bot::API::Response::RichMenu;
@@ -203,6 +204,13 @@ sub get_number_of_message_deliveries {
 
     my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
+}
+
+sub get_group_summary {
+    my ($self, $group_id) = @_;
+
+    my $res = $self->request(get => "group/${group_id}/summary", +{});
+    LINE::Bot::API::Response::GroupSummary->new(%{ $res });
 }
 
 sub validate_signature {
