@@ -205,6 +205,12 @@ sub get_number_of_message_deliveries {
     my $res = $self->request(get => "insight/message/delivery?date=${date}", +{});
     LINE::Bot::API::Response::NumberOfMessageDeliveries->new(%{ $res });
 }
+sub get_number_in_group_count {
+    my ($self, $group_id) = @_;
+
+    my $res = $self->request(get => "group/${group_id}/members/count", +{});
+    LINE::Bot::API::Response::GroupSummary->new(%{ $res });
+}
 
 sub get_group_summary {
     my ($self, $group_id) = @_;
