@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.17  2020-06-30 14:00:34 JST
         - Add 'language' accessor to Profile response.
         - Add method: Audience#get_audience_data. (PR#125)
         - Add method: Audience#rename_audience. (PR #117)
