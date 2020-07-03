@@ -332,6 +332,28 @@ my $json = <<JSON;
         "originalContentUrl": "https://example.com/original.mp3"
       }
     }
+  },
+  {
+    "type": "message",
+    "mode": "active",
+    "timestamp": 1593766110999,
+    "source": {
+      "type": "user",
+      "userId": "xxxxxxxxx"
+    },
+    "message": {
+      "id": "325709",
+      "type": "text",
+      "text": "Hello, world! (love)",
+      "emojis": [
+        {
+          "index": 14,
+          "length": 6,
+          "productId": "5ac1bfd5040ab15980c9b435",
+          "emojiId": "001"
+        }
+      ]
+    }
   }
  ]
 }
@@ -343,14 +365,14 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 's9XZ23g7U1vOL7WESam0DY/IRu4LkIxPSezfkPEq1R0='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'ylzDvnZ1aUManDkIrQ5KirQK2cscyPRW1LMQABaWtsA='));
     };
 };
 
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($json);
 
-    is scalar(@{ $events }), 23;
+    is scalar(@{ $events }), 24;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -565,6 +587,21 @@ subtest 'parse_events_json' => sub {
             "type" => "external",
             "originalContentUrl" => "https://example.com/original.mp3"
         };
+    };
+
+    subtest 'TextMessage with emoji' => sub {
+        my $event = $events->[23];
+
+        is $event->mode, 'active';
+        is $event->message_type, 'text';
+        is_deeply $event->emojis, [
+            +{
+              "index"=> 14,
+              "length"=> 6,
+              "productId"=> "5ac1bfd5040ab15980c9b435",
+              "emojiId"=> "001"
+            }
+        ];
     };
 };
 
