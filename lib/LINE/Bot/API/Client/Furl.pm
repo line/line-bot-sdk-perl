@@ -87,12 +87,20 @@ sub get_content {
 }
 
 sub post {
-    my($self, $url, $data) = @_;
+    my($self, $url, $headers, $data);
+
+    if (@_ == 3) {
+        ($self, $url, $data) = @_;
+        $headers = [];
+    } elsif (@_ == 4) {
+        ($self, $url, $headers, $data) = @_;
+    }
 
     my $json = $JSON->encode($data);
     my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
         $url,
         [
+            @$headers,
             $self->credentials,
             'Content-Type'   => 'application/json',
             'Content-Length' => length($json),
