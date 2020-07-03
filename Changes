@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add method: get_group_summary, get_member_in_group_count, get_member_in_room_count (Issue#141, PR#142)
 
 1.17  2020-06-30 14:00:34 JST
         - Add 'language' accessor to Profile response.
