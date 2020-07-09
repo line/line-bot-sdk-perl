@@ -29,6 +29,7 @@ use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
     DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
+    DEFAULT_OAUTH2_API_ENDPOINT    => 'https://api.line.me/oauth2/v2.1/',
 };
 use Furl;
 use Carp 'croak';
@@ -45,6 +46,7 @@ sub new {
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
         social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
         content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_API_ENDPOINT,
+        oauth_api_endpoint => $args{oauth_api_endpoint} // DEFAULT_OAUTH2_API_ENDPOINT,
     }, $class;
 }
 
@@ -376,7 +378,7 @@ sub issue_channel_access_token_v2_1 {
     my ($self, $opts) = @_;
 
     my $res = $self->{client}->post_form(
-        $self->{social_api_endpoint} . 'accessToken',
+        $self->{oauth_api_endpoint} . 'token',
         undef,
         [
             grant_type              => 'client_credentials',
@@ -893,6 +895,22 @@ The argument is a HashRef with two pairs of mandatary key-values:
 Both pieces of information can be accquired from the L<channel console|client_id>.
 
 When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", and "token_type" attributes of the response object for future use.
+
+Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< issue_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Issue Channel access token v2.1|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1>
+
+The argument is a HashRef with a pair of mandatary key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method lets you use JWT assertion for authentication.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", "token_type" and "key_id" attributes of the response object for future use.
 
 Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
 
