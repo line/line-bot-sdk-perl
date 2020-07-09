@@ -372,6 +372,26 @@ sub issue_channel_access_token {
     }
 }
 
+sub issue_channel_access_token_v_2_1 {
+    my ($self, $opts) = @_;
+
+    my $res = $self->{client}->post_form(
+        $self->{social_api_endpoint} . 'accessToken',
+        undef,
+        [
+            grant_type    => 'client_credentials',
+            client_id     => $opts->{client_id},
+            client_secret => $opts->{client_secret},
+        ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
 sub revoke_channel_access_token {
     my ($self, $opts) = @_;
 
