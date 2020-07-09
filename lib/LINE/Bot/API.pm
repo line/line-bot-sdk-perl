@@ -372,16 +372,16 @@ sub issue_channel_access_token {
     }
 }
 
-sub issue_channel_access_token_v_2_1 {
+sub issue_channel_access_token_v2_1 {
     my ($self, $opts) = @_;
 
     my $res = $self->{client}->post_form(
         $self->{social_api_endpoint} . 'accessToken',
         undef,
         [
-            grant_type    => 'client_credentials',
-            client_id     => $opts->{client_id},
-            client_secret => $opts->{client_secret},
+            grant_type              => 'client_credentials',
+            client_assertion_type   => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            client_assertion        => $opts->{jwt},
         ]
     );
 
