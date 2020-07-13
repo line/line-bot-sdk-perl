@@ -33,6 +33,7 @@ use constant {
 };
 use Furl;
 use Carp 'croak';
+use URI::Escape;
 
 sub new {
     my($class, %args) = @_;
@@ -385,6 +386,23 @@ sub issue_channel_access_token_v2_1 {
             client_assertion_type   => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
             client_assertion        => $opts->{jwt},
         ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub get_valid_channel_access_token_v2_1 {
+    my ($self, $opts) = @_;
+
+    my $jwt = uri_escape($opts->{jwt});
+    my $assertion_type = uri_escape('urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
+
+    my $res = $self->{client}->get(
+        $self->{oauth_api_endpoint} . 'tokens/kid' . "?client_assertion_type=$assertion_type&client_assertion=$jwt",
     );
 
     if ($res->{http_status} eq '200') {

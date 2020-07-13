@@ -5,6 +5,8 @@ use lib 't/lib';
 use t::Util;
 
 use JSON::XS qw(decode_json);
+use URI::Escape;
+
 use LINE::Bot::API;
 
 
@@ -109,6 +111,46 @@ subtest 'issue channel access token v2.1 (successful case)' => sub {
             expires_in      => 2592000,
             token_type      => 'Bearer',
             key_id          => 'dummy_key_id',
+        };
+    };
+};
+
+subtest 'get valid channel access token v2.1' => sub {
+
+    my $dummy_result = [
+        "U_gdnFYKTWRxxxxDVZexGg",
+        "sDTOzw5wIfWxxxxzcmeQA",
+        "73hDyp3PxGfxxxxD6U5qYA",
+        "FHGanaP79smDxxxxyPrVw",
+        "CguB-0kxxxxdSM3A5Q_UtQ",
+        "G82YP96jhHwyKSxxxx7IFA"
+    ];
+
+    send_request {
+        my $res = $bot->get_valid_channel_access_token_v2_1({ jwt => 'DUMMY_JWT' });
+
+        ok $res->is_success;
+        is $res->http_status, 200;
+
+        is_deeply($res->key_ids, $dummy_result);
+
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'GET';
+
+        my $jwt = uri_escape('DUMMY_JWT');
+        my $assertion_type = uri_escape('urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
+        is $args{url},    'https://api.line.me/oauth2/v2.1/tokens/kid' . "?client_assertion_type=$assertion_type&client_assertion=$jwt";
+
+        return +{
+            key_ids => [
+                "U_gdnFYKTWRxxxxDVZexGg",
+                "sDTOzw5wIfWxxxxzcmeQA",
+                "73hDyp3PxGfxxxxD6U5qYA",
+                "FHGanaP79smDxxxxyPrVw",
+                "CguB-0kxxxxdSM3A5Q_UtQ",
+                "G82YP96jhHwyKSxxxx7IFA"
+            ]
         };
     };
 };
