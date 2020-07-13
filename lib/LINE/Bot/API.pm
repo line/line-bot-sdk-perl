@@ -930,7 +930,23 @@ This method lets you use JWT assertion for authentication.
 
 When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", "token_type" and "key_id" attributes of the response object for future use.
 
-Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< get_valid_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Get all valid channel access token key IDs v2.1|https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1>
+
+The argument is a HashRef with a pair of mandatary key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method is for getting all valid channel access token key IDs.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "key_ids" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
 
 =head2 C<< revoke_channel_access_token({ access_token => "..." }) >>
 
