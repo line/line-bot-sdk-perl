@@ -119,10 +119,10 @@ sub post_form {
 
     if (@_ == 3) {
         ($self, $url, $data) = @_;
-        $headers = [];
     } elsif (@_ == 4) {
         ($self, $url, $headers, $data) = @_;
     }
+    $headers //= [];
 
     my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
         $url,

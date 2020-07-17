@@ -364,7 +364,6 @@ sub issue_channel_access_token {
 
     my $res = $self->{client}->post_form(
         $self->{social_api_endpoint} . 'accessToken',
-        undef,
         [
             grant_type    => 'client_credentials',
             client_id     => $opts->{client_id},
@@ -384,7 +383,6 @@ sub revoke_channel_access_token {
 
     my $res = $self->{client}->post_form(
         $self->{social_api_endpoint} . 'revoke',
-        undef,
         [
             access_token => $opts->{access_token},
         ]
