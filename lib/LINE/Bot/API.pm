@@ -82,10 +82,9 @@ sub reply_message {
 
 sub push_message {
     my($self, $to_id, $messages, $options) = @_;
-    $options //= {};
 
     my @headers = ();
-    if (defined($options->{'retry_key'})) {
+    if ($options && defined($options->{'retry_key'})) {
         push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
     }
 
@@ -101,10 +100,16 @@ sub push_message {
 }
 
 sub multicast {
-    my($self, $to_ids, $messages) = @_;
+    my($self, $to_ids, $messages, $options) = @_;
+
+    my @headers = ();
+    if ($options && defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/multicast',
+        \@headers,
         +{
             to       => $to_ids,
             messages => $messages,
@@ -114,10 +119,16 @@ sub multicast {
 }
 
 sub broadcast {
-    my($self, $messages) = @_;
+    my($self, $messages, $options) = @_;
+
+    my @headers = ();
+    if (defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/broadcast',
+        \@headers,
         +{
             messages => $messages,
         }
@@ -510,39 +521,15 @@ Send push messages to a user, room or group.
 You can get a C<user_id>, C<room_id> or C<group_id> from a L<webhook event object|https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects>
 See the documentation for the C<parse_events_from_json($json)> method.
 
-The last parameter is an HashRef with some specific key-values pairs. At moment 'retry_key' can be given.
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
 
-For example, here's a short snippet to attemp to retry without
-resending duplicate messages:
+For mor detail, read the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-push-message>
 
-    my $k = create_UUID_as_string();
-    my $res = $bot->push_message(
-        $user_id,
-        $message,
-        { 'retry_key' => $k }
-    );
-
-    unless ($res->is_success) {
-        while ($res->http_status ne '409') {
-            sleep(60);
-
-            $res = $bot->push_message(
-                $user_id,
-                $message,
-                { 'retry_key' => $k }
-            );
-        }
-    }
-
-The value of 'retry_key' must be a UUID string. The example above uses
-the C<create_UUID_as_string()> function provided by L<UUID::Tiny> and
-should just work.
-
-See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-push-message>
-
-Reade more about retrying a failed push_message at: L<https://developers.line.biz/en/reference/messaging-api/#retry-api-request>
-
-=head2 C<< multicast([$user_id, ... ], [ $message, ... ]) >>
+=head2 C<< multicast( $user_id, $message, $options ) >>
 
 Send push messages to multiple users.
 
@@ -553,15 +540,27 @@ Send push messages to multiple users.
 You can get a C<user_id> from a L<webhook event object|https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
+
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages>
 
-=head2 C<< broadcast([ $message, ... ]) >>
+=head2 C<< broadcast($message, $options) >>
 
 Sends push messages to multiple users at any time.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );
     $bot->broadcast($messages->build);
+
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
 
 See also the LINE Developers API reference of thi smethod: L<https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message>
 
@@ -1219,6 +1218,43 @@ You can use a helper module for the template type.
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
+
+=head2 Handling Retries
+
+For many methods that sends outgoing messages, the last parameter
+C<$options> is a HashRef with certain key-value pairs.
+
+At the moment, the key 'retry_key' is recognized. It shall be provided
+to retry without causing duplicates.
+
+For example, here's a short snippet to attemp to retry a push_message
+without resending duplicate messages:
+
+    my $k = create_UUID_as_string();
+    my $res = $bot->push_message(
+        $user_id,
+        $message,
+        { 'retry_key' => $k }
+    );
+
+    unless ($res->is_success) {
+        while ($res->http_status ne '409') {
+            sleep(60);
+
+            $res = $bot->push_message(
+                $user_id,
+                $message,
+                { 'retry_key' => $k }
+            );
+        }
+    }
+
+The value of 'retry_key' must be an UUID string. The example above
+uses the C<create_UUID_as_string()> function provided by L<UUID::Tiny>
+and should just work.
+
+The value of 'retry_key' is essentially value of an HTTP header name 'X-Line-Retry-Key'. Read more about retrying a failed push_message at: L<https://developers.line.biz/en/reference/messaging-api/#retry-api-request>
+
 
 =head1 AUTHORS
 
