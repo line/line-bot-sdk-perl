@@ -621,7 +621,7 @@ Get the number of messages sent from LINE official account on a specified day.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
@@ -863,7 +863,7 @@ The mandatory argument C<$user_ids> is an ArrayRef of user ids. The return value
 
 This method corresponds to the API of: L<Issue Channel access token|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token>
 
-The argument is a HashRef with two pairs of mandatary key-values:
+The argument is a HashRef with two pairs of mandatory key-values:
 
     {
         client_id => "...",
@@ -880,7 +880,7 @@ Otherwise, you my examine the "error" attribute and "error_description" attribut
 
 This method corresponds to the API of: L<Revoke channel access token|https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { access_token => "..." }
 
@@ -890,7 +890,7 @@ Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you m
 
 This method corresponds to the API of: L<Get number of followers|https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
