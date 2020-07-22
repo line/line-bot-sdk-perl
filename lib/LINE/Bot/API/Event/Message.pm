@@ -49,6 +49,7 @@ package LINE::Bot::API::Event::Message::Text {
     sub is_text_message { 1 }
 
     sub text { $_[0]->{message}{text} }
+    sub emojis { $_[0]->{message}{emojis} }
 }
 
 package LINE::Bot::API::Event::Message::Image {
