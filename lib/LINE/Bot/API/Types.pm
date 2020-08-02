@@ -34,8 +34,8 @@ my $ContentProvider = Dict [
     originalContentUrl => Optional[NonEmptyStr],
 ];
 
-# https://developers.line.biz/en/reference/messaging-api/#wh-text
-my $TextMessage = declare TextMessage => as Dict[ id => Str, type => Enum["text"], text => StrLength[1,2000] ];
+# https://developers.line.biz/en/reference/messaging-api/#text-message
+my $TextMessage = declare TextMessage => as Dict[ id => Str, type => Enum["text"], text => StrLength[1,5000] ];
 
 # https://developers.line.biz/en/reference/messaging-api/#wh-image
 my $ImageMessage = declare ImageMessage => as Dict[
