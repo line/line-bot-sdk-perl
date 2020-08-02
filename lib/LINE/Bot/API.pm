@@ -920,7 +920,7 @@ Otherwise, you my examine the "error" attribute and "error_description" attribut
 
 This method corresponds to the API of: L<Issue Channel access token v2.1|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1>
 
-The argument is a HashRef with a pair of mandatary key-values:
+The argument is a HashRef with a pair of mandatory key-values:
 
     {
         jwt => "...",
@@ -936,7 +936,7 @@ Otherwise, you may examine the "error" attribute and "error_description" attribu
 
 This method corresponds to the API of: L<Get all valid channel access token key IDs v2.1|https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1>
 
-The argument is a HashRef with a pair of mandatary key-values:
+The argument is a HashRef with a pair of mandatory key-values:
 
     {
         jwt => "...",
