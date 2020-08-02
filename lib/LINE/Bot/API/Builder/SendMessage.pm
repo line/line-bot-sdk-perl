@@ -20,44 +20,86 @@ sub add {
 
 sub add_text {
     my($self, %args) = @_;
-    $self->add(+{
-        type => 'text',
-        text => $args{text},
-        sender => $args{sender},
-        $args{emojis} ? (
-            emojis => $args{emojis},
-        ):(),
-    });
+    if (my $sender = $args{sender} // '') {
+        $self->add(+{
+            type => 'text',
+            text => $args{text},
+            sender => $args{sender},
+            $args{emojis} ? (
+                emojis => $args{emojis},
+            ):(),
+        });
+    } else {
+        $self->add(+{
+            type => 'text',
+            text => $args{text},
+            $args{emojis} ? (
+                emojis => $args{emojis},
+            ):(),
+        });
+    }
+
+    $self;
 }
 
 sub add_image {
     my($self, %args) = @_;
-    $self->add(+{
-        type               => 'image',
-        sender             => $args{sender},
-        originalContentUrl => $args{image_url},
-        previewImageUrl    => $args{preview_url},
-    });
+    if (my $sender = $args{sender}) {
+        $self->add(+{
+            type               => 'image',
+            sender             => $args{sender},
+            originalContentUrl => $args{image_url},
+            previewImageUrl    => $args{preview_url},
+        });
+    } else {
+        $self->add(+{
+            type               => 'image',
+            originalContentUrl => $args{image_url},
+            previewImageUrl    => $args{preview_url},
+        });
+    }
+
+    $self;
 }
 
 sub add_video {
     my($self, %args) = @_;
-    $self->add(+{
-        type               => 'video',
-        sender             => $args{sender},
-        originalContentUrl => $args{video_url},
-        previewImageUrl    => $args{preview_url},
-    });
+    if (my $sender = $args{sender}) {
+        $self->add(+{
+            type               => 'video',
+            sender             => $args{sender},
+            originalContentUrl => $args{video_url},
+            previewImageUrl    => $args{preview_url},
+        });
+    } else {
+        $self->add(+{
+            type               => 'video',
+            originalContentUrl => $args{video_url},
+            previewImageUrl    => $args{preview_url},
+        });
+    }
+
+    $self;
 }
 
 sub add_audio {
     my($self, %args) = @_;
-    $self->add(+{
-        type               => 'audio',
-        sender             => $args{sender},
-        originalContentUrl => $args{audio_url},
-        duration           => $args{duration},
-    });
+    if (my $sender = $args{sender}) {
+        $self->add(+{
+            type               => 'audio',
+            sender             => $args{sender},
+            originalContentUrl => $args{audio_url},
+            duration           => $args{duration},
+        });
+    } else {
+        $self->add(+{
+            type               => 'audio',
+            originalContentUrl => $args{audio_url},
+            duration           => $args{duration},
+        });
+    }
+
+    $self;
 }
 
 sub add_location {
@@ -74,12 +116,22 @@ sub add_location {
 
 sub add_sticker {
     my($self, %args) = @_;
-    $self->add(+{
-        type      => 'sticker',
-        sender    => $args{sender},
-        packageId => $args{package_id},
-        stickerId => $args{sticker_id},
-    });
+    if (my $sender = $args{sender}) {
+        $self->add(+{
+            type      => 'sticker',
+            sender    => $args{sender},
+            packageId => $args{package_id},
+            stickerId => $args{sticker_id},
+        });
+    } else {
+        $self->add(+{
+            type      => 'sticker',
+            packageId => $args{package_id},
+            stickerId => $args{sticker_id},
+        });
+    }
+
+    $self;
 }
 
 # If you want this method to use, I recommend using LINE::Bot::API::Builder::ImagemapMessage class for you.
