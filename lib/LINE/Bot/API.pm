@@ -29,9 +29,11 @@ use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
     DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
+    DEFAULT_OAUTH2_API_ENDPOINT    => 'https://api.line.me/oauth2/v2.1/',
 };
 use Furl;
 use Carp 'croak';
+use URI::Escape;
 
 sub new {
     my($class, %args) = @_;
@@ -45,6 +47,7 @@ sub new {
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
         social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
         content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_API_ENDPOINT,
+        oauth_api_endpoint => $args{oauth_api_endpoint} // DEFAULT_OAUTH2_API_ENDPOINT,
     }, $class;
 }
 
@@ -380,6 +383,43 @@ sub issue_channel_access_token {
             client_id     => $opts->{client_id},
             client_secret => $opts->{client_secret},
         ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub issue_channel_access_token_v2_1 {
+    my ($self, $opts) = @_;
+
+    my $res = $self->{client}->post_form(
+        $self->{oauth_api_endpoint} . 'token',
+        undef,
+        [
+            grant_type              => 'client_credentials',
+            client_assertion_type   => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            client_assertion        => $opts->{jwt},
+        ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub get_valid_channel_access_token_v2_1 {
+    my ($self, $opts) = @_;
+
+    my $jwt = uri_escape($opts->{jwt});
+    my $assertion_type = uri_escape('urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
+
+    my $res = $self->{client}->get(
+        $self->{oauth_api_endpoint} . 'tokens/kid' . "?client_assertion_type=$assertion_type&client_assertion=$jwt",
     );
 
     if ($res->{http_status} eq '200') {
@@ -909,6 +949,38 @@ Both pieces of information can be accquired from the L<channel console|client_id
 When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", and "token_type" attributes of the response object for future use.
 
 Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< issue_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Issue Channel access token v2.1|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1>
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method lets you use JWT assertion for authentication.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", "token_type" and "key_id" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< get_valid_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Get all valid channel access token key IDs v2.1|https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1>
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method is for getting all valid channel access token key IDs.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "key_ids" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
 
 =head2 C<< revoke_channel_access_token({ access_token => "..." }) >>
 
