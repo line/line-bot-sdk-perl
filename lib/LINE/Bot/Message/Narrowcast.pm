@@ -31,10 +31,16 @@ sub request {
 }
 
 sub send_message {
-    my ($self, $messages, $recipient, $demographic, $limit) = @_;
+    my ($self, $messages, $recipient, $demographic, $limit, $options) = @_;
+
+    my @headers = ();
+    if ($options && defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/narrowcast',
+        \@headers,
         +{
             messages => $messages,
             recipient => $recipient,
@@ -65,15 +71,22 @@ __END__
 
 LINE::Bot::Message::Narrowcast
 
-=head1 C<< send_message($messages, $recipient, $demographic, $limit) >>
+=head2 Methods
+
+=head3 C<< send_message($messages, $recipient, $demographic, $limit, $options) >>
 
 Sends a push message to multiple users.
 You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences).
 Messages cannot be sent to groups or rooms.
 
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L<LINE::Bot::API/"Handling Retries"> for the meaning of this particular option.
+
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message>
 
-=head1 C<< get_narrowcast_message_status($request_id) >>
+=head3 C<< get_narrowcast_message_status($request_id) >>
 
 Gets the status of a narrowcast message.
 
