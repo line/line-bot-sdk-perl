@@ -29,9 +29,11 @@ use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
     DEFAULT_SOCIAL_API_ENDPOINT    => 'https://api.line.me/v2/oauth/',
     DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
+    DEFAULT_OAUTH2_API_ENDPOINT    => 'https://api.line.me/oauth2/v2.1/',
 };
 use Furl;
 use Carp 'croak';
+use URI::Escape;
 
 sub new {
     my($class, %args) = @_;
@@ -45,6 +47,7 @@ sub new {
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
         social_api_endpoint    => $args{social_api_endpoint} // DEFAULT_SOCIAL_API_ENDPOINT,
         content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_API_ENDPOINT,
+        oauth_api_endpoint => $args{oauth_api_endpoint} // DEFAULT_OAUTH2_API_ENDPOINT,
     }, $class;
 }
 
@@ -81,10 +84,16 @@ sub reply_message {
 }
 
 sub push_message {
-    my($self, $to_id, $messages) = @_;
+    my($self, $to_id, $messages, $options) = @_;
+
+    my @headers = ();
+    if ($options && defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/push',
+        \@headers,
         +{
             to       => $to_id,
             messages => $messages,
@@ -94,10 +103,16 @@ sub push_message {
 }
 
 sub multicast {
-    my($self, $to_ids, $messages) = @_;
+    my($self, $to_ids, $messages, $options) = @_;
+
+    my @headers = ();
+    if ($options && defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/multicast',
+        \@headers,
         +{
             to       => $to_ids,
             messages => $messages,
@@ -107,10 +122,16 @@ sub multicast {
 }
 
 sub broadcast {
-    my($self, $messages) = @_;
+    my($self, $messages, $options) = @_;
+
+    my @headers = ();
+    if (defined($options->{'retry_key'})) {
+        push @headers, 'X-Line-Retry-Key' => $options->{'retry_key'};
+    }
 
     my $res = $self->request(
         post => 'message/broadcast',
+        \@headers,
         +{
             messages => $messages,
         }
@@ -357,7 +378,6 @@ sub issue_channel_access_token {
 
     my $res = $self->{client}->post_form(
         $self->{social_api_endpoint} . 'accessToken',
-        undef,
         [
             grant_type    => 'client_credentials',
             client_id     => $opts->{client_id},
@@ -372,12 +392,48 @@ sub issue_channel_access_token {
     }
 }
 
+sub issue_channel_access_token_v2_1 {
+    my ($self, $opts) = @_;
+
+    my $res = $self->{client}->post_form(
+        $self->{oauth_api_endpoint} . 'token',
+        undef,
+        [
+            grant_type              => 'client_credentials',
+            client_assertion_type   => 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+            client_assertion        => $opts->{jwt},
+        ]
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub get_valid_channel_access_token_v2_1 {
+    my ($self, $opts) = @_;
+
+    my $jwt = uri_escape($opts->{jwt});
+    my $assertion_type = uri_escape('urn:ietf:params:oauth:client-assertion-type:jwt-bearer');
+
+    my $res = $self->{client}->get(
+        $self->{oauth_api_endpoint} . 'tokens/kid' . "?client_assertion_type=$assertion_type&client_assertion=$jwt",
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Token->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
 sub revoke_channel_access_token {
     my ($self, $opts) = @_;
 
     my $res = $self->{client}->post_form(
         $self->{social_api_endpoint} . 'revoke',
-        undef,
         [
             access_token => $opts->{access_token},
         ]
@@ -494,7 +550,7 @@ See the documentation for the C<parse_events_from_json($json)> method.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-reply-message>
 
-=head2 C<< push_message($user_id|$room_id|$group_id, [ $message, ... ]) >>
+=head2 C<< push_message( $user_id|$room_id|$group_id, $message, $options) >>
 
 Send push messages to a user, room or group.
 
@@ -505,9 +561,15 @@ Send push messages to a user, room or group.
 You can get a C<user_id>, C<room_id> or C<group_id> from a L<webhook event object|https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects>
 See the documentation for the C<parse_events_from_json($json)> method.
 
-See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-push-message>
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
 
-=head2 C<< multicast([$user_id, ... ], [ $message, ... ]) >>
+For mor detail, read the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-push-message>
+
+=head2 C<< multicast( $user_id, $message, $options ) >>
 
 Send push messages to multiple users.
 
@@ -518,15 +580,27 @@ Send push messages to multiple users.
 You can get a C<user_id> from a L<webhook event object|https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects>.
 See the documentation for the C<parse_events_from_json($json)> method.
 
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
+
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages>
 
-=head2 C<< broadcast([ $message, ... ]) >>
+=head2 C<< broadcast($message, $options) >>
 
 Sends push messages to multiple users at any time.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );
     $bot->broadcast($messages->build);
+
+The last parameter C<$options> is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is C<"retry_key">, which requires an
+UUID string for its value. See the section L</"Handling Retries"> for
+the meaning of this particular option.
 
 See also the LINE Developers API reference of thi smethod: L<https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message>
 
@@ -621,7 +695,7 @@ Get the number of messages sent from LINE official account on a specified day.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
@@ -863,7 +937,7 @@ The mandatory argument C<$user_ids> is an ArrayRef of user ids. The return value
 
 This method corresponds to the API of: L<Issue Channel access token|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token>
 
-The argument is a HashRef with two pairs of mandatary key-values:
+The argument is a HashRef with two pairs of mandatory key-values:
 
     {
         client_id => "...",
@@ -876,11 +950,43 @@ When a 200 OK HTTP response is returned, a new token is issued. In this case, yo
 
 Otherwise, you my examine the "error" attribute and "error_description" attribute for more information about the error.
 
+=head2 C<< issue_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Issue Channel access token v2.1|https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1>
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method lets you use JWT assertion for authentication.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access_token", "expires_in", "token_type" and "key_id" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
+
+=head2 C<< get_valid_channel_access_token_v2_1({ jwt => '...' }) >>
+
+This method corresponds to the API of: L<Get all valid channel access token key IDs v2.1|https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1>
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method is for getting all valid channel access token key IDs.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "key_ids" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error_description" attribute for more information about the error.
+
 =head2 C<< revoke_channel_access_token({ access_token => "..." }) >>
 
 This method corresponds to the API of: L<Revoke channel access token|https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { access_token => "..." }
 
@@ -890,7 +996,7 @@ Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you m
 
 This method corresponds to the API of: L<Get number of followers|https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers>
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
@@ -1184,6 +1290,43 @@ You can use a helper module for the template type.
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
+
+=head2 Handling Retries
+
+For many methods that sends outgoing messages, the last parameter
+C<$options> is a HashRef with certain key-value pairs.
+
+At the moment, the key 'retry_key' is recognized. It shall be provided
+to retry without causing duplicates.
+
+For example, here's a short snippet to attemp to retry a push_message
+without resending duplicate messages:
+
+    my $k = create_UUID_as_string();
+    my $res = $bot->push_message(
+        $user_id,
+        $message,
+        { 'retry_key' => $k }
+    );
+
+    unless ($res->is_success) {
+        while ($res->http_status ne '409') {
+            sleep(60);
+
+            $res = $bot->push_message(
+                $user_id,
+                $message,
+                { 'retry_key' => $k }
+            );
+        }
+    }
+
+The value of 'retry_key' must be an UUID string. The example above
+uses the C<create_UUID_as_string()> function provided by L<UUID::Tiny>
+and should just work.
+
+The value of 'retry_key' is essentially value of an HTTP header name 'X-Line-Retry-Key'. Read more about retrying a failed push_message at: L<https://developers.line.biz/en/reference/messaging-api/#retry-api-request>
+
 
 =head1 AUTHORS
 
