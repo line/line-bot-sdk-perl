@@ -1,6 +1,9 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Update Type constraint for the new puper limit of characters in a TextMessage (PR #144)
+        - Add accessor for emoji information in TextMessage (PR #145)
+        - Add support for retrying (PR #146). See https://developers.line.biz/en/reference/messaging-api/#retry-api-request
         - Add method: get_group_summary, get_member_in_group_count, get_member_in_room_count (Issue#141, PR#142)
 
 1.17  2020-06-30 14:00:34 JST
