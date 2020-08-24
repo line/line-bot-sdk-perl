@@ -20,128 +20,88 @@ sub add {
 
 sub add_text {
     my($self, %args) = @_;
-    if (my $sender = $args{sender} // '') {
-        $self->add(+{
-            type => 'text',
-            text => $args{text},
+    $self->add(+{
+        type => 'text',
+        text => $args{text},
+        $args{sender} ? (
             sender => $args{sender},
-            $args{emojis} ? (
-                emojis => $args{emojis},
-            ):(),
-        });
-    } else {
-        $self->add(+{
-            type => 'text',
-            text => $args{text},
-            $args{emojis} ? (
-                emojis => $args{emojis},
-            ):(),
-        });
-    }
+        ) : (),
+        $args{emojis} ? (
+            emojis => $args{emojis},
+        ):(),
+    });
 
     $self;
 }
 
 sub add_image {
     my($self, %args) = @_;
-    if (my $sender = $args{sender}) {
-        $self->add(+{
-            type               => 'image',
-            sender             => $args{sender},
-            originalContentUrl => $args{image_url},
-            previewImageUrl    => $args{preview_url},
-        });
-    } else {
-        $self->add(+{
-            type               => 'image',
-            originalContentUrl => $args{image_url},
-            previewImageUrl    => $args{preview_url},
-        });
-    }
+    $self->add(+{
+        $args{sender} ? (
+            sender => $args{sender},
+        ) : (),
+        type               => 'image',
+        originalContentUrl => $args{image_url},
+        previewImageUrl    => $args{preview_url},
+    });
 
     $self;
 }
 
 sub add_video {
     my($self, %args) = @_;
-    if (my $sender = $args{sender}) {
-        $self->add(+{
-            type               => 'video',
-            sender             => $args{sender},
-            originalContentUrl => $args{video_url},
-            previewImageUrl    => $args{preview_url},
-        });
-    } else {
-        $self->add(+{
-            type               => 'video',
-            originalContentUrl => $args{video_url},
-            previewImageUrl    => $args{preview_url},
-        });
-    }
+    $self->add(+{
+        $args{sender} ? (
+            sender => $args{sender},
+        ) : (),
+        type               => 'video',
+        originalContentUrl => $args{video_url},
+        previewImageUrl    => $args{preview_url},
+    });
 
     $self;
 }
 
 sub add_audio {
     my($self, %args) = @_;
-    if (my $sender = $args{sender}) {
-        $self->add(+{
-            type               => 'audio',
-            sender             => $args{sender},
-            originalContentUrl => $args{audio_url},
-            duration           => $args{duration},
-        });
-    } else {
-        $self->add(+{
-            type               => 'audio',
-            originalContentUrl => $args{audio_url},
-            duration           => $args{duration},
-        });
-    }
+    $self->add(+{
+        $args{sender} ? (
+            sender => $args{sender},
+        ) : (),
+        type               => 'audio',
+        originalContentUrl => $args{audio_url},
+        duration           => $args{duration},
+    });
 
     $self;
 }
 
 sub add_location {
     my($self, %args) = @_;
-    if (my $sender = $args{sender}) {
-        $self->add(+{
-            type      => 'location',
-            sender    => $args{sender},
-            title     => $args{title},
-            address   => $args{address},
-            latitude  => $args{latitude},
-            longitude => $args{longitude},
-        });
-    } else {
-        $self->add(+{
-            type      => 'location',
-            title     => $args{title},
-            address   => $args{address},
-            latitude  => $args{latitude},
-            longitude => $args{longitude},
-        });
-    }
+    $self->add(+{
+        $args{sender} ? (
+            sender => $args{sender},
+        ) : (),
+        type      => 'location',
+        title     => $args{title},
+        address   => $args{address},
+        latitude  => $args{latitude},
+        longitude => $args{longitude},
+    });
 
     $self;
 }
 
 sub add_sticker {
     my($self, %args) = @_;
-    if (my $sender = $args{sender}) {
-        $self->add(+{
-            type      => 'sticker',
-            sender    => $args{sender},
-            packageId => $args{package_id},
-            stickerId => $args{sticker_id},
-        });
-    } else {
-        $self->add(+{
-            type      => 'sticker',
-            packageId => $args{package_id},
-            stickerId => $args{sticker_id},
-        });
-    }
+    $self->add(+{
+        $args{sender} ? (
+            sender => $args{sender},
+        ) : (),
+        type      => 'sticker',
+        packageId => $args{package_id},
+        stickerId => $args{sticker_id},
+    });
 
     $self;
 }
