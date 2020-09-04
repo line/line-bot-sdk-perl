@@ -7,7 +7,7 @@ Revision history for Perl extension LINE::Bot::API
         - Add method: get_group_summary, get_member_in_group_count, get_member_in_room_count (Issue#141, PR#142)
         - Add method: issue_channel_access_token_v2_1, get_valid_channel_access_token_v2_1 (Issue#118, PR#147)
         - Add support for retrying with "X-Line-Retry-Key" HTTP header for push messages, broadcast, multicast, and narrowcast. (PR #146). See https://developers.line.biz/en/reference/messaging-api/#retry-api-request
-        - Add support unsend-event and videoPlayComplete-event (PR #154)
+        - Add support unsend-event and video_viewing_complete-event (PR #154)
 
 1.17  2020-06-30 14:00:34 JST
         - Add 'language' accessor to Profile response.
