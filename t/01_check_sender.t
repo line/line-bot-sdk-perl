@@ -1,6 +1,5 @@
-use strict;
-use warnings;
-use Test::More;
+use Test2::V0;
+
 use lib 't/lib';
 use t::Util;
 
@@ -464,4 +463,5 @@ subtest '#add_sticker' => sub {
         };
     };
 };
+
 done_testing;

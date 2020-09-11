@@ -9,7 +9,7 @@ perl:
   - 5.18
 
 script:
-  prove -lrv t/
+  yath test --qvf t/
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone git://github.com/travis-perl/helpers ~/travis-perl-helpers; source ~/travis-perl-helpers/init; build-perl; fi
