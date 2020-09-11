@@ -11,5 +11,7 @@ requires 'URI';
 requires 'URI::QueryParam';
 
 on test => sub {
+    requires 'App::Yath';
+    requires 'Test2::V0';
     requires 'Test::More';
 };

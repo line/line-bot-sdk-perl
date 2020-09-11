@@ -1,6 +1,4 @@
-use strict;
-use warnings;
-use Test::More;
+use Test2::V0;
 use lib 't/lib';
 use t::Util;
 
@@ -32,10 +30,14 @@ subtest 'fail' => sub {
         my $res = $bot->push_message('DUMMY_ID', $builder->build);
         isa_ok $res, 'LINE::Bot::API::Response::Error';
         ok !$res->is_success;
-        is $res->http_status, 500;
-
-        is $res->message, 'ISE';
-        is_deeply $res->details, [ +{ message => 'detail message' } ];
+        is $res->http_status(), 500;
+        is $res->message(), 'ISE';
+        is $res->details(), array {
+            item hash {
+                field message => 'detail message';
+            };
+            end();
+        };
     } receive_request {
         +{
             http_status => 500,
