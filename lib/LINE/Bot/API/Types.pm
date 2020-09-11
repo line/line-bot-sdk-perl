@@ -212,4 +212,23 @@ declare DeviceUnlinkEvent => as Dict[
     @__common__,
 ];
 
+# https://developers.line.biz/en/reference/messaging-api/#unsend-event
+declare UnsendEvent => as Dict[
+    type       => Enum["unsend"],
+    unsend     => Dict [
+        messageId => Str,
+    ],
+    @__common__,
+];
+
+# https://developers.line.biz/en/reference/messaging-api/#video-viewing-complete
+declare VideoViewingCompleteEvent => as Dict[
+    type    => Enum["videoPlayComplete"],
+    replyToken  => Str,
+    videoPlayComplete   => Dict [
+        trackingId  => Str,
+    ],
+    @__common__,
+];
+
 1;
