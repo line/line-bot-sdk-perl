@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Update test case for creating audience data with uploading user id (PR #157)
 
 1.18  2020-10-12 12:40:31 JST
         - Changed accepting parameter "sender" at SendMessage.pm (Issue #113 PR#140)
