@@ -2,6 +2,8 @@ Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
         - Update examples of Flex Messages. See eg/push-flex-message-showcases.pl (PR #155)
+
+1.18  2020-10-12 12:40:31 JST
         - Changed accepting parameter "sender" at SendMessage.pm (Issue #113 PR#140)
         - Update Type constraint for the new puper limit of characters in a TextMessage (PR #144)
         - Add accessor for emoji information in TextMessage (PR #145)
