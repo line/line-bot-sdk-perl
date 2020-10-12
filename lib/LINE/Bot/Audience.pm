@@ -141,10 +141,6 @@ Renames an existing audience.
 
 See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-description-audience-group>
 
-=head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audience => [...], audiences_id => "..." }) >>
-
-Creates an audience for uploading user IDs.
-
 =head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audiences => [{ id => "..." }, ... ] }) >>
 
 Creates an audience for uploading user IDs. 'audiences' is a part of this method argument, and this argument need to be ArrayRef like below.

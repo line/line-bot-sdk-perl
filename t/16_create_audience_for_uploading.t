@@ -19,11 +19,6 @@ subtest '#create_audience_for_uploading' => sub {
             my $res = $bot->create_audience_for_uploading({
                 description => 'sample text',
                 isIfaAudience => JSON::XS::false,
-                audiences => [
-                    {
-                        id => 123,
-                    },
-                ],
             });
             ok $res->is_success;
             is $res->http_status, 200;
@@ -38,8 +33,6 @@ subtest '#create_audience_for_uploading' => sub {
             my $content = decode_json($args{content} // '');
             is $content->{description}, 'sample text';
             ok !$content->{isIfaAudience};
-            is @{ $content->{audiences} }, 1;
-            is $content->{audiences}->[0]->{id}, 123;
 
             +{}
         };
