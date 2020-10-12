@@ -85,7 +85,7 @@ See the documentation for the `parse_events_from_json($json)` method.
 
 See also the API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-reply-message](https://developers.line.biz/en/reference/messaging-api/#send-reply-message)
 
-## `push_message($user_id|$room_id|$group_id, [ $message, ... ])`
+## `push_message( $user_id|$room_id|$group_id, $message, $options)`
 
 Send push messages to a user, room or group.
 
@@ -96,9 +96,15 @@ Send push messages to a user, room or group.
 You can get a `user_id`, `room_id` or `group_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects)
 See the documentation for the `parse_events_from_json($json)` method.
 
-See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-push-message](https://developers.line.biz/en/reference/messaging-api/#send-push-message)
+The last parameter `$options` is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is `"retry_key"`, which requires an
+UUID string for its value. See the section ["Handling Retries"](#handling-retries) for
+the meaning of this particular option.
 
-## `multicast([$user_id, ... ], [ $message, ... ])`
+For mor detail, read the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-push-message](https://developers.line.biz/en/reference/messaging-api/#send-push-message)
+
+## `multicast( $user_id, $message, $options )`
 
 Send push messages to multiple users.
 
@@ -109,15 +115,27 @@ Send push messages to multiple users.
 You can get a `user_id` from a [webhook event object](https://developers.line.biz/en/reference/messaging-api/#webhook-event-objects).
 See the documentation for the `parse_events_from_json($json)` method.
 
+The last parameter `$options` is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is `"retry_key"`, which requires an
+UUID string for its value. See the section ["Handling Retries"](#handling-retries) for
+the meaning of this particular option.
+
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages](https://developers.line.biz/en/reference/messaging-api/#send-multicast-messages)
 
-## `broadcast([ $message, ... ])`
+## `broadcast($message, $options)`
 
 Sends push messages to multiple users at any time.
 
     my $messages = LINE::Bot::API::Builder::SendMessage->new;
     $messages->add_text( text => 'Example push text' );
     $bot->broadcast($messages->build);
+
+The last parameter `$options` is an HashRef with a list of key-values
+pairs to fine-tune the behaviour of this message. At the moment, the
+only defined configurable option is `"retry_key"`, which requires an
+UUID string for its value. See the section ["Handling Retries"](#handling-retries) for
+the meaning of this particular option.
 
 See also the LINE Developers API reference of thi smethod: [https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#send-broadcast-message)
 
@@ -212,7 +230,7 @@ Get the number of messages sent from LINE official account on a specified day.
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages](https://developers.line.biz/en/reference/messaging-api/#get-number-of-delivery-messages)
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
@@ -262,6 +280,41 @@ Get group user profile information.
     }
 
 See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile](https://developers.line.biz/en/reference/messaging-api/#get-group-member-profile)
+
+## `get_member_in_room_count($room_id)`
+
+Gets the count of members in a room. You can get the member in room count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.
+
+    my $ret = $bot->get_member_in_room_count($room_id);
+    if ($ret->is_success) {
+        say $ret->count;
+    }
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-members-room-count](https://developers.line.biz/en/reference/messaging-api/#get-members-room-count)
+
+## `get_member_in_group_count($group_id)`
+
+Gets the count of members in a group. You can get the member in group count even if the user hasn't added the LINE Official Account as a friend or has blocked the LINE Official Account.
+
+    my $ret = $bot->get_member_in_group_count($group_id);
+    if ($ret->is_success) {
+        say $ret->count;
+    }
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-members-group-count](https://developers.line.biz/en/reference/messaging-api/#get-members-group-count)
+
+## `get_group_summary($group_id)`
+
+Gets the group ID, group name, and group icon URL of a group where the LINE Official Account is a member.
+
+    my $ret = $bot->get_group_summary($group_id);
+    if ($ret->is_success) {
+        say $ret->group_id;
+        say $ret->group_name;
+        say $ret->picture_url;
+    }
+
+See also the LINE Developers API reference of this method:  [https://developers.line.biz/en/reference/messaging-api/#get-group-summary](https://developers.line.biz/en/reference/messaging-api/#get-group-summary)
 
 ## `get_room_member_profile($room_id, $user_id)`
 
@@ -405,7 +458,7 @@ The mandatory argument `$user_ids` is an ArrayRef of user ids. The return value 
 
 This method corresponds to the API of: [Issue Channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token)
 
-The argument is a HashRef with two pairs of mandatary key-values:
+The argument is a HashRef with two pairs of mandatory key-values:
 
     {
         client_id => "...",
@@ -418,11 +471,43 @@ When a 200 OK HTTP response is returned, a new token is issued. In this case, yo
 
 Otherwise, you my examine the "error" attribute and "error\_description" attribute for more information about the error.
 
+## `issue_channel_access_token_v2_1({ jwt => '...' })`
+
+This method corresponds to the API of: [Issue Channel access token v2.1](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token-v2-1)
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method lets you use JWT assertion for authentication.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "access\_token", "expires\_in", "token\_type" and "key\_id" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error\_description" attribute for more information about the error.
+
+## `get_valid_channel_access_token_v2_1({ jwt => '...' })`
+
+This method corresponds to the API of: [Get all valid channel access token key IDs v2.1](https://developers.line.biz/en/reference/messaging-api/#get-all-valid-channel-access-token-key-ids-v2-1)
+
+The argument is a HashRef with a pair of mandatory key-values:
+
+    {
+        jwt => "...",
+    }
+
+This method is for getting all valid channel access token key IDs.
+
+When a 200 OK HTTP response is returned, a new token is issued. In this case, you may want to store the values in "key\_ids" attributes of the response object for future use.
+
+Otherwise, you may examine the "error" attribute and "error\_description" attribute for more information about the error.
+
 ## `revoke_channel_access_token({ access_token => "..." })`
 
 This method corresponds to the API of: [Revoke channel access token](https://developers.line.biz/en/reference/messaging-api/#revoke-channel-access-token)
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { access_token => "..." }
 
@@ -432,7 +517,7 @@ Upon successful revocation, a 200 OK HTTP response is returned. Otherwise, you m
 
 This method corresponds to the API of: [Get number of followers](https://developers.line.biz/en/reference/messaging-api/#get-number-of-followers)
 
-The argument is a HashRef with one pair of mandatary key-values;
+The argument is a HashRef with one pair of mandatory key-values;
 
     { date => "20191231" }
 
@@ -726,6 +811,42 @@ You can use a helper module for the template type.
     my $messages = LINE::Bot::API::Builder::SendMessage->new(
     )->add_template($carousel->build);
     $bot->reply_message($reply_token, $messages->build);
+
+## Handling Retries
+
+For many methods that sends outgoing messages, the last parameter
+`$options` is a HashRef with certain key-value pairs.
+
+At the moment, the key 'retry\_key' is recognized. It shall be provided
+to retry without causing duplicates.
+
+For example, here's a short snippet to attemp to retry a push\_message
+without resending duplicate messages:
+
+    my $k = create_UUID_as_string();
+    my $res = $bot->push_message(
+        $user_id,
+        $message,
+        { 'retry_key' => $k }
+    );
+
+    unless ($res->is_success) {
+        while ($res->http_status ne '409') {
+            sleep(60);
+
+            $res = $bot->push_message(
+                $user_id,
+                $message,
+                { 'retry_key' => $k }
+            );
+        }
+    }
+
+The value of 'retry\_key' must be an UUID string. The example above
+uses the `create_UUID_as_string()` function provided by [UUID::Tiny](https://metacpan.org/pod/UUID%3A%3ATiny)
+and should just work.
+
+The value of 'retry\_key' is essentially value of an HTTP header name 'X-Line-Retry-Key'. Read more about retrying a failed push\_message at: [https://developers.line.biz/en/reference/messaging-api/#retry-api-request](https://developers.line.biz/en/reference/messaging-api/#retry-api-request)
 
 # AUTHORS
 
