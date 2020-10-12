@@ -28,9 +28,11 @@ my %WriteMakefileArgs = (
     "parent" => 0
   },
   "TEST_REQUIRES" => {
+    "App::Yath" => 0,
+    "Test2::V0" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "1.17",
+  "VERSION" => "1.18",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -38,11 +40,13 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "App::Yath" => 0,
   "Digest::SHA" => 0,
   "Furl" => 0,
   "IO::Socket::SSL" => 0,
   "JSON::XS" => 0,
   "MIME::Base64" => 0,
+  "Test2::V0" => 0,
   "Test::More" => 0,
   "Type::Tiny" => "1.004000",
   "URI" => 0,
