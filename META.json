@@ -52,6 +52,8 @@
       },
       "test" : {
          "requires" : {
+            "App::Yath" : "0",
+            "Test2::V0" : "0",
             "Test::More" : "0"
          }
       }
@@ -68,7 +70,7 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.17",
+   "version" : "1.18",
    "x_contributors" : [
       "7kashin <4nji.7ka6ra@gmail.com>",
       "Bedoshi(Ester) <bedoshidiary.ester.freesia@gmail.com>",
@@ -82,13 +84,14 @@
       "kenneth-lau <kenneth.lau@linecorp.com>",
       "LAU KENNETH <JP20405@w022341503a59m.local>",
       "moznion <moznion@gmail.com>",
+      "Ned Hoy <ned@linecorp.com>",
       "Seo-yeon Lee <seo-yeon.lee@linecorp.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
-   "x_generated_by_perl" : "v5.18.2",
-   "x_serialization_backend" : "Cpanel::JSON::XS version 4.19",
+   "x_generated_by_perl" : "v5.16.3",
+   "x_serialization_backend" : "Cpanel::JSON::XS version 4.24",
    "x_spdx_expression" : "Artistic-2.0",
    "x_static_install" : 1
 }
