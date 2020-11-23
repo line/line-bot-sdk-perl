@@ -76,4 +76,48 @@ subtest '#create_audience_for_uploading' => sub {
     };
 };
 
+subtest '#create_audience_for_uploading_by_file' => sub {
+    my $file_path = 't/examples/create_audience_for_uploading_by_file';
+    
+    subtest 'only required paraemter' => sub {
+        send_request {
+            my $res = $bot->create_audience_for_uploading_by_file({
+                description => 'sample text',
+                file => $file_path,
+            });
+            ok $res->is_success;
+            is $res->http_status, 200;
+        } receive_request {
+            my %args = @_;
+            is $args{method}, 'POST';
+            is $args{url}, 'https://api-data.line.me/v2/bot/audienceGroup/upload/byFile';
+
+            my %headers = @{ $args{headers} };
+
+            +{}
+        };
+    };
+
+    subtest 'full parameter' => sub {
+        send_request {
+            my $res = $bot->create_audience_for_uploading_by_file({
+                description => 'sample text',
+                isIfaAudience => JSON::XS::true,
+                uploadDescription => 'sample text',
+                file => $file_path,
+            });
+            ok $res->is_success;
+            is $res->http_status, 200;
+        } receive_request {
+            my %args = @_;
+            is $args{method}, 'POST';
+            is $args{url}, 'https://api-data.line.me/v2/bot/audienceGroup/upload/byFile';
+
+            my %headers = @{ $args{headers} };
+
+            +{}
+        };
+    };
+};
+
 done_testing();
