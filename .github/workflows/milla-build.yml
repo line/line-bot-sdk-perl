@@ -1,0 +1,17 @@
+name: Milla
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Build desti with milla
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.32
+      - run: cpanm Dist::Milla LWP::Protocol::https Dist::Zilla::Plugin::Test::Perl::Critic Test::Pod JSON::XS Furl::HTTP Test2::V0
+      - run: cpanm --installdeps .
+      - run: milla build
