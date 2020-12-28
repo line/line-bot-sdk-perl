@@ -15,3 +15,5 @@ jobs:
       - run: cpanm Dist::Milla LWP::Protocol::https Dist::Zilla::Plugin::Test::Perl::Critic Test::Pod JSON::XS Furl::HTTP Test2::V0
       - run: cpanm --installdeps .
       - run: milla build
+      - run: ls -l LINE-Bot-API*.tar.gz
+      - run: tar tvzf LINE-Bot-API*.tar.gz
