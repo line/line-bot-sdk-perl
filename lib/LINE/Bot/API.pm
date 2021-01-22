@@ -1334,7 +1334,7 @@ LINE Corporation.
 
 =head1 COPYRIGHT
 
-Copyright 2016-2020
+Copyright 2016-2021
 
 =head1 LICENSE
 
