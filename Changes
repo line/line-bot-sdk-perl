@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Update examples of Flex Messages. See eg/push-flex-message-showcases.pl (PR #155)
         - Update test case for creating audience data with uploading user id (PR #157)
 
 1.18  2020-10-12 12:40:31 JST

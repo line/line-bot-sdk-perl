@@ -143,7 +143,7 @@ See also the API reference of this method: L<https://developers.line.biz/en/refe
 
 =head1 C<< create_audience_for_uploading({ description => "...", isIfaAudience => "...", audiences => [{ id => "..." }, ... ] }) >>
 
-Creates an audience for uploading user IDs. 'audiences' is a part of this method argument, and this argument need to be ArrayRef like below.
+Creates an audience for uploading user IDs. `description` is required parameter. the others are optional. 'audiences' is a part of this method argument, and this argument need to be ArrayRef like below.
 
     [
         {

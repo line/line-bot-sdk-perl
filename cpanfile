@@ -4,7 +4,7 @@ requires 'parent';
 requires 'Digest::SHA';
 requires 'Furl';
 requires 'JSON::XS';
-requires 'IO::Socket::SSL';
+requires 'IO::Socket::SSL', '2.060';
 requires 'MIME::Base64';
 requires 'Type::Tiny', '1.004000';
 requires 'URI';
