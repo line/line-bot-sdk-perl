@@ -1,6 +1,11 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.19  2021-01-22 17:01:55 JST
+        - requires IO::Socket::SSL at least 2.060 for the support of TLS 1.3 (PR #165)
+          - See also: https://developers.line.biz/ja/news/2020/10/06/update-webhook-client-and-root-certificate/
+        - Minor documentation updates and warning fixes.
         - Update examples of Flex Messages. See eg/push-flex-message-showcases.pl (PR #155)
         - Update test case for creating audience data with uploading user id (PR #157)
 
