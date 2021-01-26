@@ -24,6 +24,7 @@ use LINE::Bot::API::Response::TotalUsage;
 use LINE::Bot::API::Response::Token;
 use LINE::Bot::API::Response::NumberOfFollowers;
 use LINE::Bot::API::Response::UserInteractionStatistics;
+use LINE::Bot::API::Response::BotInfo;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -462,7 +463,14 @@ sub get_user_interaction_statistics {
     LINE::Bot::API::Response::UserInteractionStatistics->new(%{ $res });
 }
 
+sub get_bot_info {
+    my ($self) = @_;
+    my $res = $self->request(get => "info");
+    LINE::Bot::API::Response::BotInfo->new(%{ $res });
+}
+
 1;
+
 __END__
 
 =head1 NAME
