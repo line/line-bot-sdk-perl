@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.18';
+our $VERSION = '1.19';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
@@ -1334,7 +1334,7 @@ LINE Corporation.
 
 =head1 COPYRIGHT
 
-Copyright 2016-2020
+Copyright 2016-2021
 
 =head1 LICENSE
 
