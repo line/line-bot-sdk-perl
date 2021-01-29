@@ -76,15 +76,33 @@ LINE::Bot::Message::Narrowcast
 =head3 C<< send_message($messages, $recipient, $demographic, $limit, $options) >>
 
 Sends a push message to multiple users.
-You can specify recipients using attributes (such as age, gender, OS, and region) or by retargeting (audiences).
+
+C<$message> is a HashRef with key/values for as specified in API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message>.  nested keys are represented in the dotted notations.
+
+C<$recipient> should be an HashRef with keys/values as specified in the documentation of L<Recipient objects|https://developers.line.biz/en/reference/messaging-api/#narrowcast-recipient>. It can be either audience object or redelivery object. You can specify up to 10 recipients per request based on a combination of criteria using logical operator objects.
+
+C<$demographic> should be an HashRef with key/values as specified in the documentation of L<Demagraphic filter object|https://developers.line.biz/en/reference/messaging-api/#narrowcast-demographic-filter>. It represent criteria (e.g. age, gender, OS, region, and friendship duration) on which to filter the list of recipients. You can filter recipients based on a combination of different criteria using logical operator objects.
+
+C<$limit> should be an HashRef with these optional key-value pairs:
+
+    max: Number
+    upToRemainingQuota: Boolean
+
+For example:
+
+    {
+        "max" => 42,
+        "upToRemainingQuota": JSON::true,
+    }
+
+Noted here that the value for "upToRemainingQuotae" must be one of the boolean values recognizied by L<JSON::XS>. See also L<JSON::XS/"other references">.
+
 Messages cannot be sent to groups or rooms.
 
 The last parameter C<$options> is an HashRef with a list of key-values
 pairs to fine-tune the behaviour of this message. At the moment, the
 only defined configurable option is C<"retry_key">, which requires an
 UUID string for its value. See the section L<LINE::Bot::API/"Handling Retries"> for the meaning of this particular option.
-
-See also the API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#send-narrowcast-message>
 
 =head3 C<< get_narrowcast_message_status($request_id) >>
 
