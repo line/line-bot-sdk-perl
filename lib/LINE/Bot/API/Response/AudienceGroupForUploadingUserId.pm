@@ -11,6 +11,8 @@ LINE::Bot::API::Response::AudienceGroupForUploadingUserId
 
 This class correspond to the "Create audiece for uploading user IDs" response as described in
 this page : L<https://developers.line.biz/en/reference/messaging-api/#response-16>
+Also this class correspond to the "Create audience for uploading user IDs (by file)" response as descrived in
+this page : L<https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group-by-file-response>
 
 =cut
 
