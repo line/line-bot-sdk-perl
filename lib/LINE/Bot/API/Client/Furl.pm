@@ -159,6 +159,31 @@ sub post_image {
     $ret;
 }
 
+sub post_file {
+    my ($self, $url, $body, $file_path) = @_;
+
+    open my $fh, '<', $file_path
+        or croak 'Failed to open file.';
+
+    my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
+        $url,
+        [
+            $self->credentials,
+            'Content-Type' => 'multipart/form-data',
+        ],
+        [
+            @$body,
+            'file' => $fh,
+        ],
+    );
+
+    close $fh;
+
+    my $ret = __decode_response_body($res_content);
+    $ret->{http_status} = $res_status;
+    $ret;
+}
+
 sub put {
     my($self, $url, $data) = @_;
 
