@@ -13,6 +13,7 @@ use LINE::Bot::API::Response::AudienceAuthorityLevel;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
+    DEFAULT_CONTENT_API_ENDPOINT   => 'https://api-data.line.me/v2/bot/',
 };
 use Furl;
 use Carp 'croak';
@@ -28,6 +29,7 @@ sub new {
         channel_secret       => $args{channel_secret},
         channel_access_token => $args{channel_access_token},
         messaging_api_endpoint => $args{messaging_api_endpoint} // DEFAULT_MESSAGING_API_ENDPOINT,
+        content_api_endpoint => $args{content_api_endpoint} // DEFAULT_CONTENT_API_ENDPOINT,
     }, $class;
 }
 
@@ -59,6 +61,29 @@ sub create_audience_for_uploading {
         'uploadDescription' => $opts->{uploadDescription},
         'audiences' => $opts->{audiences},
     });
+    LINE::Bot::API::Response::AudienceGroupForUploadingUserId->new(%{ $res });
+}
+
+sub create_audience_for_uploading_by_file {
+    my ($self, $opts) = @_;
+
+    if (!$opts->{description}) {
+        croak 'Need description in parameter';
+    }
+    if (!$opts->{file}) {
+        croak 'Need file in parameter';
+    }
+
+    my $res = $self->{client}->post_file(
+        $self->{content_api_endpoint} . 'audienceGroup/upload/byFile',
+        [
+            'description' => $opts->{description},
+            'isIfaAudience' => $opts->{isIfaAudience},
+            'uploadDescription' => $opts->{uploadDescription},
+        ],
+        $opts->{file},
+    );
+
     LINE::Bot::API::Response::AudienceGroupForUploadingUserId->new(%{ $res });
 }
 

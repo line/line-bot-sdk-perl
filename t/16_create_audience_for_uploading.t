@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More;
+use Test2::V0;
 use lib 't/lib';
 use t::Util;
 
@@ -37,7 +37,7 @@ subtest '#create_audience_for_uploading' => sub {
             +{}
         };
     };
-    
+
     subtest 'full parameter' => sub {
         send_request {
             my $res = $bot->create_audience_for_uploading({
@@ -78,7 +78,7 @@ subtest '#create_audience_for_uploading' => sub {
 
 subtest '#create_audience_for_uploading_by_file' => sub {
     my $file_path = 't/examples/create_audience_for_uploading_by_file';
-    
+
     subtest 'only required paraemter' => sub {
         send_request {
             my $res = $bot->create_audience_for_uploading_by_file({
@@ -87,14 +87,31 @@ subtest '#create_audience_for_uploading_by_file' => sub {
             });
             ok $res->is_success;
             is $res->http_status, 200;
+
+            is $res->audienceGroupId, 4389303728991;
+            is $res->audience_group_id, 4389303728991, 'alias check';
+            is $res->type, 'UPLOAD';
+            is $res->description, 'test';
+            is $res->created, 1500351844;
         } receive_request {
             my %args = @_;
             is $args{method}, 'POST';
             is $args{url}, 'https://api-data.line.me/v2/bot/audienceGroup/upload/byFile';
 
             my %headers = @{ $args{headers} };
+            is $headers{'Content-Type'}, 'multipart/form-data';
 
-            +{}
+            my %content = @{ $args{content} };
+            is $content{description}, 'sample text';
+            ok $content{file};
+
+            # this example response is from 'https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group-by-file-response'
+            +{
+                audienceGroupId => 4389303728991,
+                type => 'UPLOAD',
+                description => 'test',
+                created => 1500351844,
+            }
         };
     };
 
@@ -108,14 +125,33 @@ subtest '#create_audience_for_uploading_by_file' => sub {
             });
             ok $res->is_success;
             is $res->http_status, 200;
+
+            is $res->audienceGroupId, 4389303728991;
+            is $res->audience_group_id, 4389303728991, 'alias check';
+            is $res->type, 'UPLOAD';
+            is $res->description, 'test';
+            is $res->created, 1500351844;
         } receive_request {
             my %args = @_;
             is $args{method}, 'POST';
             is $args{url}, 'https://api-data.line.me/v2/bot/audienceGroup/upload/byFile';
 
             my %headers = @{ $args{headers} };
+            is $headers{'Content-Type'}, 'multipart/form-data';
 
-            +{}
+            my %content = @{ $args{content} };
+            is $content{description}, 'sample text';
+            ok $content{isIfaAudience};
+            is $content{uploadDescription}, 'sample text';
+            ok $content{file};
+
+            # this example response is from 'https://developers.line.biz/en/reference/messaging-api/#create-upload-audience-group-by-file-response'
+            +{
+                audienceGroupId => 4389303728991,
+                type => 'UPLOAD',
+                description => 'test',
+                created => 1500351844,
+            }
         };
     };
 };
