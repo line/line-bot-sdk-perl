@@ -13,7 +13,7 @@ jobs:
       - name: perlcritic
         uses: gugod/actions-perlcritic@fun
         with:
-          directory: "lib script t dev-bin"
+          directory: "lib eg t"
 
   test:
     runs-on: ${{ matrix.os }}
