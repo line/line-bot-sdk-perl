@@ -46,7 +46,7 @@ subtest '#add_text' => sub {
             +{};
         };
     };
-    
+
     subtest 'give sender' => sub {
         my $builder = LINE::Bot::API::Builder::SendMessage->new;
         $builder->add_text( text => 'hello!', sender => 'dummy_sender');
