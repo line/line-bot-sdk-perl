@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: perlcritic
+        uses: gugod/actions-perlcritic@fun
+        with:
+          directory: "lib script t dev-bin"
+
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-20.04']
+        perl: [ '5.32', '5.30', '5.28', '5.18' ]
+    name: Test Perl ${{ matrix.perl }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+      - run: perl -V
+      - run: cpanm --installdeps .
+      - run: yath test --qvf t/
+
+  milla-build:
+    name: Build tarball with milla
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: 5.32
+      - run: cpanm --notest Dist::Milla LWP::Protocol::https Dist::Zilla::Plugin::Test::Perl::Critic Test::Pod JSON::XS Furl::HTTP Test2::V0
+      - run: cpanm --notest --installdeps .
+      - run: milla build
+      - run: ls -l LINE-Bot-API*.tar.gz
+      - run: tar tvzf LINE-Bot-API*.tar.gz
+      - run: cpanm --verbose LINE-Bot-API*.tar.gz
