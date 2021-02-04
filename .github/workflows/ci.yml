@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: perlcritic
-        uses: gugod/actions-perlcritic@fun
+        uses: gugod/actions-perlcritic@v1.0
         with:
           paths: "lib eg t"
 
