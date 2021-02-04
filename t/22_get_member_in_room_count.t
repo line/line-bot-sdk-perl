@@ -6,7 +6,6 @@ use t::Util;
 
 use LINE::Bot::API;
 use Furl;
-use JSON::XS;
 
 my $bot = LINE::Bot::API->new(
     channel_secret       => 'testsecret',

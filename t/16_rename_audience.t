@@ -30,7 +30,7 @@ subtest '#rename_audience' => sub {
 
         my %headers = @{ $args{headers} };
         is $headers{'Content-Type'}, 'application/json';
-        
+
         my $content = decode_json($args{content});
         eq_hash $content, {
             description => 'audienceGroupName',

@@ -6,7 +6,6 @@ use t::Util;
 
 use LINE::Bot::Message::Narrowcast;
 use Furl;
-use JSON::XS;
 
 my $bot = LINE::Bot::Message::Narrowcast->new(
     channel_secret       => 'testsecret',

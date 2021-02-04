@@ -41,7 +41,6 @@ for my $file (bsd_glob($Bin . '/flex-message-showcases/*.json')) {
     my $messages = $builder->build;
 
     print $json->encode($messages);
-    next;
 
     my $res = $bot->push_message($to_id, $messages);
     unless ($res->is_success) {

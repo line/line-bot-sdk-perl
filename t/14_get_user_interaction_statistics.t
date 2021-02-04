@@ -7,7 +7,6 @@ use t::Util;
 
 use LINE::Bot::API;
 use LINE::Bot::API::Builder::SendMessage;
-use JSON::XS;
 use Carp ();
 
 $SIG{__DIE__} = \&Carp::confess;
