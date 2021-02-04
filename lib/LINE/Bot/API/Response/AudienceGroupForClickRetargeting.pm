@@ -25,7 +25,7 @@ sub clickUrl            { $_[0]->{clickUrl} }
 
 #Aliases
 sub audience_group_id   { $_[0]->{audienceGroupId} }
-sub request_id          { $_[0]->{requestId} } 
+sub request_id          { $_[0]->{requestId} }
 sub click_url           { $_[0]->{clickUrl} }
 
 1;

@@ -4,10 +4,8 @@ use Test::More;
 use lib 't/lib';
 use t::Util;
 
-use JSON::XS qw(decode_json);
 use LINE::Bot::API;
 use Furl;
-
 
 my $bot = LINE::Bot::API->new(
     channel_secret       => 'testsecret',
