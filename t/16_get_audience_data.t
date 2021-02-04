@@ -22,7 +22,7 @@ subtest '#create_audience_for_uploading' => sub {
         });
         ok $res->is_success;
         is $res->http_status, 200;
-        
+
         is $res->audience_group_id, '12345678';
         is $res->audienceGroupId, '12345678';
         is $res->type, 'UPLOAD';
