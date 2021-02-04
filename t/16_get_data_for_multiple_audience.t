@@ -96,7 +96,7 @@ subtest '#get_data_for_multiple_audience' => sub {
             ok $groups[0]->{isIfaAudience};
             is $groups[0]->{permission}, 'READ';
             is $groups[0]->{createRoute}, 'MESSAGING_API';
-  
+
             is $res->totalCount, 1;
             is $res->readWriteAudienceGroupTotalCount, 0;
             is $res->page, 1;

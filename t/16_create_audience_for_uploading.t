@@ -37,7 +37,7 @@ subtest '#create_audience_for_uploading' => sub {
             +{}
         };
     };
-    
+
     subtest 'full parameter' => sub {
         send_request {
             my $res = $bot->create_audience_for_uploading({
