@@ -163,7 +163,7 @@ sub post_file {
     my ($self, $url, $body, $file_path) = @_;
 
     open my $fh, '<', $file_path
-        or croak 'Failed to open file.';
+        or croak "Failed to open file. : ${file_path}";
 
     my($res_minor_version, $res_status, $res_msg, $res_headers, $res_content) = $self->{furl}->post(
         $url,
