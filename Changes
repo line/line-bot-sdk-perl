@@ -1,6 +1,7 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Add acceptedTime and completedTime field to narrowcast progress status (PR #179)
         - add an accessor to property named 'keywords' to LINE::Bot::API::Event::Message::Sticker (issue #163)
 
 1.19  2021-01-22 17:01:55 JST
