@@ -50,6 +50,7 @@ package LINE::Bot::API::Event::Message::Text {
 
     sub text { $_[0]->{message}{text} }
     sub emojis { $_[0]->{message}{emojis} }
+    sub mention { $_[0]->{mention} }
 }
 
 package LINE::Bot::API::Event::Message::Image {
