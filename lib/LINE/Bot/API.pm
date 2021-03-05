@@ -470,6 +470,23 @@ sub get_bot_info {
     LINE::Bot::API::Response::BotInfo->new(%{ $res });
 }
 
+sub set_webhook_url {
+    my ($self, $opts) = @_;
+    defined($opts->{endpoint}) or croak "set_webhook_url: Missing a mandatory parameter: `endpoint`";
+
+    my $res = $self->request(
+        'put' => "channel/webhook/endpoint",
+        [],
+        +{ endpoint => $opts->{endpoint} },
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Common->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
 sub get_webhook_endpoint_information {
     my ($self) = @_;
     my $res = $self->request(get => "channel/webhook/endpoint");
@@ -1038,6 +1055,12 @@ HTTP status, invoke C<$res->http_status()>.
 Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-message-event>
+
+=head2 C<< set_webhook_url({ 'endpoint' => "https://example.com/webhook" }) >>
+
+Sets the webhook endpoint to te given C<endpoint>, which should be an URL string.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-urlj
 
 =head2 C<< get_webhook_endpoint_information() >>
 
