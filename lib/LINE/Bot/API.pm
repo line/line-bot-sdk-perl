@@ -26,6 +26,7 @@ use LINE::Bot::API::Response::NumberOfFollowers;
 use LINE::Bot::API::Response::UserInteractionStatistics;
 use LINE::Bot::API::Response::BotInfo;
 use LINE::Bot::API::Response::WebhookInformation;
+use LINE::Bot::API::Response::WebhookTest;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -491,6 +492,23 @@ sub get_webhook_endpoint_information {
     my ($self) = @_;
     my $res = $self->request(get => "channel/webhook/endpoint");
     LINE::Bot::API::Response::WebhookInformation->new(%{ $res });
+}
+
+sub test_webhook_endpoint {
+    my ($self, $opts) = @_;
+
+    my $req_body = {};
+    if ($opts->{'endpoint'}) {
+        $req_body->{'endpoint'} = $opts->{'endpoint'};
+    }
+
+    my $res = $self->request(
+        'post' => "channel/webhook/endpoint",
+        [],
+        $req_body,
+    );
+
+    LINE::Bot::API::Response::WebhookTest->new(%{ $res });
 }
 
 1;
@@ -1070,6 +1088,12 @@ Return the information about webhook endpoint as an response object with followi
 
     $res->endpoint(); # URL as a string
     $res->active();   # true or false
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
+
+=head2 C<< test_webhook_endpoint({ 'endpoint' => "https://example.com/webhook" }) >>
+
+Checks if the configured webhook endpoint can receive a test webhook event.
 
 See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
 
