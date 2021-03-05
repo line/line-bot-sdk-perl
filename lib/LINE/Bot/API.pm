@@ -472,7 +472,7 @@ sub get_bot_info {
 
 sub get_webhook_endpoint_information {
     my ($self) = @_;
-    my $res = $self->request(get => "channel/webhgook/endpoint");
+    my $res = $self->request(get => "channel/webhook/endpoint");
     LINE::Bot::API::Response::WebhookInformation->new(%{ $res });
 }
 
