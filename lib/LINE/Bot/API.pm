@@ -25,6 +25,7 @@ use LINE::Bot::API::Response::Token;
 use LINE::Bot::API::Response::NumberOfFollowers;
 use LINE::Bot::API::Response::UserInteractionStatistics;
 use LINE::Bot::API::Response::BotInfo;
+use LINE::Bot::API::Response::WebhookInformation;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -467,6 +468,12 @@ sub get_bot_info {
     my ($self) = @_;
     my $res = $self->request(get => "info");
     LINE::Bot::API::Response::BotInfo->new(%{ $res });
+}
+
+sub get_webhook_endpoint_information {
+    my ($self) = @_;
+    my $res = $self->request(get => "channel/webhgook/endpoint");
+    LINE::Bot::API::Response::WebhookInformation->new(%{ $res });
 }
 
 1;
@@ -1031,6 +1038,17 @@ HTTP status, invoke C<$res->http_status()>.
 Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-message-event>
+
+=head2 C<< get_webhook_endpoint_information() >>
+
+Return the information about webhook endpoint as an response object with following accessors:
+
+    $res = $api->get_webhook_endpoint_information();
+
+    $res->endpoint(); # URL as a string
+    $res->active();   # true or false
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
 
 =head1 How to build a send message object
 
