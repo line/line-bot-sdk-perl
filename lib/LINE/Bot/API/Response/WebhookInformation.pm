@@ -12,11 +12,11 @@ __END__
 
 =head1 NAME
 
-LINE::Bot::API::Response::BotInfo
+LINE::Bot::API::Response::WebhookInformation
 
 =head1 DESCRIPTION
 
-This cllass corresponds to the response object of "Bot Info" API as described in this page: L<https://developers.line.biz/en/reference/messaging-api/#get-bot-info>
+This cllass corresponds to the response object of "Get Webhook Endpoint Information" API as described in this page: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>.
 
 For each top-level properties, there is a corresponding method with the same name which provides access to the value of the property.
 
@@ -24,18 +24,8 @@ For each top-level properties, there is a corresponding method with the same nam
 
 =over 4
 
-=item userId
+=item endpoint
 
-=item basicId
-
-=item premiumId
-
-=item displayName
-
-=item pictureUrl
-
-=item chatMode
-
-=item markAsReadMode
+=item active
 
 =back
