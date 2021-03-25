@@ -50,6 +50,7 @@ package LINE::Bot::API::Event::Message::Text {
 
     sub text { $_[0]->{message}{text} }
     sub emojis { $_[0]->{message}{emojis} }
+    sub mention { $_[0]->{mention} }
 }
 
 package LINE::Bot::API::Event::Message::Image {
@@ -95,6 +96,7 @@ package LINE::Bot::API::Event::Message::Sticker {
     sub package_id { $_[0]->{message}{packageId} }
     sub sticker_id { $_[0]->{message}{stickerId} }
     sub stickerResourceType { $_[0]->{message}{stickerResourceType} }
+    sub keywords { $_[0]->{message}{keywords} }
 }
 
 package LINE::Bot::API::Event::Message::File {
