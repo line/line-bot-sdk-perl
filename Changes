@@ -4,6 +4,9 @@ Revision history for Perl extension LINE::Bot::API
         - Add acceptedTime and completedTime field to narrowcast progress status (PR #179)
         - add an accessor to property named 'keywords' to LINE::Bot::API::Event::Message::Sticker (issue #163)
         - add an accessor to property named 'mention' to LINE::Bot::API::Event::Message::Text (issue #171)
+        - add a new API for setting webhook endpoint (issue #159)
+        - add a new API for getting webhook endpoint information (issue #159)
+        - add a new API for testing webhook endpoint (issue #159)
 
 1.19  2021-01-22 17:01:55 JST
         - requires IO::Socket::SSL at least 2.060 for the support of TLS 1.3 (PR #165)

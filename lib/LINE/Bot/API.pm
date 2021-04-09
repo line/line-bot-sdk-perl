@@ -25,6 +25,8 @@ use LINE::Bot::API::Response::Token;
 use LINE::Bot::API::Response::NumberOfFollowers;
 use LINE::Bot::API::Response::UserInteractionStatistics;
 use LINE::Bot::API::Response::BotInfo;
+use LINE::Bot::API::Response::WebhookInformation;
+use LINE::Bot::API::Response::WebhookTest;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -467,6 +469,46 @@ sub get_bot_info {
     my ($self) = @_;
     my $res = $self->request(get => "info");
     LINE::Bot::API::Response::BotInfo->new(%{ $res });
+}
+
+sub set_webhook_url {
+    my ($self, $opts) = @_;
+    defined($opts->{endpoint}) or croak "set_webhook_url: Missing a mandatory parameter: `endpoint`";
+
+    my $res = $self->request(
+        'put' => "channel/webhook/endpoint",
+        [],
+        +{ endpoint => $opts->{endpoint} },
+    );
+
+    if ($res->{http_status} eq '200') {
+        return LINE::Bot::API::Response::Common->new(%{ $res });
+    } else {
+        return LINE::Bot::API::Response::Error->new(%{ $res });
+    }
+}
+
+sub get_webhook_endpoint_information {
+    my ($self) = @_;
+    my $res = $self->request(get => "channel/webhook/endpoint");
+    LINE::Bot::API::Response::WebhookInformation->new(%{ $res });
+}
+
+sub test_webhook_endpoint {
+    my ($self, $opts) = @_;
+
+    my $req_body = {};
+    if ($opts->{'endpoint'}) {
+        $req_body->{'endpoint'} = $opts->{'endpoint'};
+    }
+
+    my $res = $self->request(
+        'post' => "channel/webhook/endpoint",
+        [],
+        $req_body,
+    );
+
+    LINE::Bot::API::Response::WebhookTest->new(%{ $res });
 }
 
 1;
@@ -1031,6 +1073,29 @@ HTTP status, invoke C<$res->http_status()>.
 Returns statistics about how users interact with narrowcast messages or broadcast messages sent from your LINE Official Account.
 
 See also the LINE Developers API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-message-event>
+
+=head2 C<< set_webhook_url({ 'endpoint' => "https://example.com/webhook" }) >>
+
+Sets the webhook endpoint to te given C<endpoint>, which should be an URL string.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-urlj
+
+=head2 C<< get_webhook_endpoint_information() >>
+
+Return the information about webhook endpoint as an response object with following accessors:
+
+    $res = $api->get_webhook_endpoint_information();
+
+    $res->endpoint(); # URL as a string
+    $res->active();   # true or false
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
+
+=head2 C<< test_webhook_endpoint({ 'endpoint' => "https://example.com/webhook" }) >>
+
+Checks if the configured webhook endpoint can receive a test webhook event.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
 
 =head1 How to build a send message object
 
