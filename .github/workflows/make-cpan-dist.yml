@@ -18,5 +18,5 @@ jobs:
       - run: cpanm --verbose LINE-Bot-API*.tar.gz
       - uses: actions/upload-artifact@v2
         with:
-          name:
+          name: Tarball
           path: LINE-Bot-API*.tar.gz
