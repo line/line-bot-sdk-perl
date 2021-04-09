@@ -70,11 +70,13 @@
          "web" : "https://github.com/line/line-bot-sdk-perl"
       }
    },
-   "version" : "1.19",
+   "version" : "1.20",
    "x_contributors" : [
       "7kashin <4nji.7ka6ra@gmail.com>",
       "bedoshi <bedoshidiary.ester.freesia@gmail.com>",
       "Hirofumi Kataoka <hirofumi.kataoka@gmail.com>",
+      "Hiroki Nishino <7100187+tawAsh1@users.noreply.github.com>",
+      "Hiroki Nishino <hirokijhiroki@gmail.com>",
       "Hiroyuki Akabane <hirobanex@gmail.com>",
       "Jose Luis <GuitarSucks@users.noreply.github.com>",
       "Kang-min Liu <gugod@gugod.org>",
@@ -91,7 +93,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Yuki Yoshida <worthmine@users.noreply.github.com>"
    ],
-   "x_generated_by_perl" : "v5.32.0",
+   "x_generated_by_perl" : "v5.28.2",
    "x_serialization_backend" : "Cpanel::JSON::XS version 4.25",
    "x_spdx_expression" : "Artistic-2.0",
    "x_static_install" : 1
