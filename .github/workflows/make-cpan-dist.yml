@@ -1,0 +1,22 @@
+name: Make CPAN Dist
+
+on:
+  push:
+
+jobs:
+  milla:
+    runs-on: ubuntu-20.04
+    container:
+      image: perl:5.32
+    steps:
+      - uses: actions/checkout@v2
+      - run: cpanm -q --notest Dist::Milla LWP::Protocol::https Dist::Zilla::Plugin::Test::Perl::Critic Test::Pod JSON::XS Furl::HTTP Test2::V0
+      - run: cpanm -q --notest --installdeps .
+      - run: milla build
+      - run: ls -l LINE-Bot-API*.tar.gz
+      - run: tar tvzf LINE-Bot-API*.tar.gz
+      - run: cpanm --verbose LINE-Bot-API*.tar.gz
+      - uses: actions/upload-artifact@v2
+        with:
+          name:
+          path: LINE-Bot-API*.tar.gz
