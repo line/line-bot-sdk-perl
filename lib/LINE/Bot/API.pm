@@ -1,7 +1,7 @@
 package LINE::Bot::API;
 use strict;
 use warnings;
-our $VERSION = '1.19';
+our $VERSION = '1.20';
 
 use LINE::Bot::API::Builder::SendMessage;
 use LINE::Bot::API::Client;
@@ -1078,7 +1078,7 @@ See also the LINE Developers API reference of this method: L<https://developers.
 
 Sets the webhook endpoint to te given C<endpoint>, which should be an URL string.
 
-See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-urlj
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-url>
 
 =head2 C<< get_webhook_endpoint_information() >>
 

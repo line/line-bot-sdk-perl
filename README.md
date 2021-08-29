@@ -545,6 +545,29 @@ Returns statistics about how users interact with narrowcast messages or broadcas
 
 See also the LINE Developers API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-message-event](https://developers.line.biz/en/reference/messaging-api/#get-message-event)
 
+## `set_webhook_url({ 'endpoint' => "https://example.com/webhook" })`
+
+Sets the webhook endpoint to te given `endpoint`, which should be an URL string.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-url](https://developers.line.biz/en/reference/messaging-api/#set-webhook-endpoint-url)
+
+## `get_webhook_endpoint_information()`
+
+Return the information about webhook endpoint as an response object with following accessors:
+
+    $res = $api->get_webhook_endpoint_information();
+
+    $res->endpoint(); # URL as a string
+    $res->active();   # true or false
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information](https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information)
+
+## `test_webhook_endpoint({ 'endpoint' => "https://example.com/webhook" })`
+
+Checks if the configured webhook endpoint can receive a test webhook event.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information](https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information)
+
 # How to build a send message object
 
 See the LINE Developers API reference about [Message objects](https://developers.line.biz/en/reference/messaging-api/#message-objects)
