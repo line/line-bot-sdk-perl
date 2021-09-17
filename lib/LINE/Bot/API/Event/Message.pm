@@ -59,6 +59,8 @@ package LINE::Bot::API::Event::Message::Image {
     sub is_image_message { 1 }
 
     sub content_provider { $_[0]->{message}{contentProvider} }
+
+    sub image_set { $_[0]->{message}{imageSet} }
 }
 
 package LINE::Bot::API::Event::Message::Video {
