@@ -13,7 +13,7 @@ my $bot = LINE::Bot::Audience->new(
     channel_access_token => 'ACCESS_TOKEN',
 );
 
-subtest '#create_audience_for_uploading' => sub {
+subtest '#get_audience_data' => sub {
     my $content_type = 'application/json';
 
     send_request {
