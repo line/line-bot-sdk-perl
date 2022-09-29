@@ -22,6 +22,10 @@ my $json = <<JSON;
     "type":"user",
     "userId":"userid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken",
    "message":{
     "id":"contentid",
@@ -37,6 +41,10 @@ my $json = <<JSON;
     "type":"group",
     "groupId":"groupid",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "message":{
@@ -54,6 +62,10 @@ my $json = <<JSON;
     "roomId":"roomid",
     "userId":"userid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken",
    "message":{
     "id":"contentid",
@@ -69,6 +81,10 @@ my $json = <<JSON;
     "type":"group",
     "groupId":"groupid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken",
    "message":{
     "id":"contentid",
@@ -82,6 +98,10 @@ my $json = <<JSON;
    "source":{
     "type":"room",
     "roomId":"roomid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "message":{
@@ -97,6 +117,10 @@ my $json = <<JSON;
     "type":"room",
     "roomId":"roomid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken",
    "message":{
     "id":"contentid",
@@ -110,6 +134,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "message":{
@@ -129,6 +157,10 @@ my $json = <<JSON;
     "type":"user",
     "userId":"userid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken",
    "message":{
     "id":"contentid",
@@ -145,6 +177,10 @@ my $json = <<JSON;
     "type":"user",
     "userId":"userid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken"
   },
   {
@@ -154,6 +190,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    }
   },
   {
@@ -164,6 +204,10 @@ my $json = <<JSON;
     "type":"user",
     "userId":"userid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken"
   },
   {
@@ -173,6 +217,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    }
   },
   {
@@ -182,6 +230,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "postback":{
@@ -195,6 +247,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "beacon":{
@@ -210,6 +266,10 @@ my $json = <<JSON;
    "source":{
     "type":"user",
     "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    },
    "replyToken":"replytoken",
    "message":{
@@ -227,6 +287,10 @@ my $json = <<JSON;
     "type":"group",
     "groupId":"groupid"
    },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
    "replyToken":"replytoken"
   },
   {
@@ -236,124 +300,156 @@ my $json = <<JSON;
    "source":{
     "type":"group",
     "groupId":"groupid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
    }
   },
   {
-    "type": "things",
-    "replyToken": "replytoken",
-    "timestamp": 12345678901234,
-    "source": {
-      "type": "user",
-      "userId": "userid"
-    },
-    "things": {
-      "deviceId": "deviceid",
-      "type": "link"
-    }
+   "type": "things",
+   "replyToken": "replytoken",
+   "timestamp": 12345678901234,
+   "source": {
+    "type": "user",
+    "userId": "userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "things": {
+    "deviceId": "deviceid",
+    "type": "link"
+   }
   },
   {
-    "type": "things",
-    "replyToken": "replytoken",
-    "timestamp": 12345678901234,
-    "source": {
-      "type": "user",
-      "userId": "userid"
-    },
-    "things": {
-      "deviceId": "deviceid",
-      "type": "unlink"
-    }
+   "type": "things",
+   "replyToken": "replytoken",
+   "timestamp": 12345678901234,
+   "source": {
+    "type": "user",
+    "userId": "userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "things": {
+    "deviceId": "deviceid",
+    "type": "unlink"
+   }
   },
   {
-    "type": "accountLink",
-    "replyToken": "replytoken",
-    "timestamp": 12345678901234,
-    "source": {
-      "userId": "U91eeaf62d...",
-      "type": "user"
-    },
-    "link": {
-      "result": "ok",
-      "nonce": "xxxxxxxxxxxxxxx"
-    }
+   "type": "accountLink",
+   "replyToken": "replytoken",
+   "timestamp": 12345678901234,
+   "source": {
+    "userId": "U91eeaf62d...",
+    "type": "user"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "link": {
+    "result": "ok",
+    "nonce": "xxxxxxxxxxxxxxx"
+   }
   },
   {
-    "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
-    "type": "message",
-    "mode": "active",
-    "timestamp": 1462629479859,
-    "source": {
-      "type": "user",
-      "userId": "U4af4980629..."
-    },
-    "message": {
-      "id": "325708",
-      "type": "video",
-      "duration": 60000,
-      "contentProvider": {
-        "type": "external",
-        "originalContentUrl": "https://example.com/original.mp4",
-        "previewImageUrl": "https://example.com/preview.jpg"
-      }
+   "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
+   "type": "message",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "U4af4980629..."
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "message": {
+    "id": "325708",
+    "type": "video",
+    "duration": 60000,
+    "contentProvider": {
+     "type": "external",
+     "originalContentUrl": "https://example.com/original.mp4",
+     "previewImageUrl": "https://example.com/preview.jpg"
     }
+   }
   },
   {
-    "type": "message",
-    "mode": "active",
-    "timestamp": 1462629479859,
-    "source": {
-      "type": "user",
-      "userId": "xxxxxxxxx"
-    },
-    "message": {
-      "id": "325708",
-      "type": "image",
-      "contentProvider": {
-        "type": "external",
-        "originalContentUrl": "https://example.com/original.jpg",
-        "previewImageUrl": "https://example.com/preview.jpg"
-      }
+   "type": "message",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "xxxxxxxxx"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "message": {
+    "id": "325708",
+    "type": "image",
+    "contentProvider": {
+     "type": "external",
+     "originalContentUrl": "https://example.com/original.jpg",
+     "previewImageUrl": "https://example.com/preview.jpg"
     }
+   }
   },
   {
-    "type": "message",
-    "mode": "active",
-    "timestamp": 1462629479859,
-    "source": {
-      "type": "user",
-      "userId": "xxxxxxxxx"
-    },
-    "message": {
-      "id": "325708",
-      "type": "audio",
-      "duration": 60000,
-      "contentProvider": {
-        "type": "external",
-        "originalContentUrl": "https://example.com/original.mp3"
-      }
+   "type": "message",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "xxxxxxxxx"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "message": {
+    "id": "325708",
+    "type": "audio",
+    "duration": 60000,
+    "contentProvider": {
+     "type": "external",
+     "originalContentUrl": "https://example.com/original.mp3"
     }
+   }
   },
   {
-    "type": "message",
-    "mode": "active",
-    "timestamp": 1593766110999,
-    "source": {
-      "type": "user",
-      "userId": "xxxxxxxxx"
-    },
-    "message": {
-      "id": "325709",
-      "type": "text",
-      "text": "Hello, world! (love)",
-      "emojis": [
-        {
-          "index": 14,
-          "length": 6,
-          "productId": "5ac1bfd5040ab15980c9b435",
-          "emojiId": "001"
-        }
-      ]
-    }
+   "type": "message",
+   "mode": "active",
+   "timestamp": 1593766110999,
+   "source": {
+    "type": "user",
+    "userId": "xxxxxxxxx"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "message": {
+    "id": "325709",
+    "type": "text",
+    "text": "Hello, world! (love)",
+    "emojis": [
+     {
+      "index": 14,
+      "length": 6,
+      "productId": "5ac1bfd5040ab15980c9b435",
+      "emojiId": "001"
+     }
+    ]
+   }
   }
  ]
 }
@@ -365,7 +461,7 @@ subtest 'validate_signature' => sub {
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, 'ylzDvnZ1aUManDkIrQ5KirQK2cscyPRW1LMQABaWtsA='));
+        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, '0REB4EeDl5OSjl9/SghEnkBqsr598L18DqoQKEiLkGg='));
     };
 };
 
@@ -381,6 +477,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->timestamp, 12345678901234;
             ok $event->is_user_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->user_id, 'userid';
             ok $event->is_message_event;
             ok $event->is_text_message;
@@ -392,6 +490,8 @@ subtest 'parse_events_json' => sub {
             my $event = $events->[1];
             is $event->mode, 'active';
             ok $event->is_group_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->group_id, 'groupid';
             is $event->user_id, 'userid';
         };
@@ -399,6 +499,8 @@ subtest 'parse_events_json' => sub {
             my $event = $events->[2];
             is $event->mode, 'active';
             ok $event->is_room_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->room_id, 'roomid';
             is $event->user_id, 'userid';
         };
@@ -407,6 +509,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->message_type, 'image';
             ok $event->is_group_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->group_id, 'groupid';
             ok $event->is_image_message;
             is $event->reply_token, 'replytoken';
@@ -417,6 +521,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->message_type, 'video';
             ok $event->is_room_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->room_id, 'roomid';
             ok $event->is_video_message;
             is $event->reply_token, 'replytoken';
@@ -428,6 +534,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->message_type, 'audio';
             ok $event->is_audio_message;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->reply_token, 'replytoken';
 
             ok ! $event->content_provider;
@@ -437,6 +545,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->message_type, 'location';
             ok $event->is_location_message;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->reply_token, 'replytoken';
             is $event->title, 'label';
             is $event->address, 'tokyo';
@@ -448,6 +558,8 @@ subtest 'parse_events_json' => sub {
             is $event->mode, 'active';
             is $event->message_type, 'sticker';
             ok $event->is_sticker_message;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             is $event->reply_token, 'replytoken';
             is $event->package_id, '1';
             is $event->sticker_id, '2';
@@ -458,6 +570,8 @@ subtest 'parse_events_json' => sub {
         my $event = $events->[8];
         is $event->mode, 'active';
         ok $event->is_follow_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
     };
 
@@ -465,6 +579,8 @@ subtest 'parse_events_json' => sub {
         my $event = $events->[9];
         is $event->mode, 'active';
         ok $event->is_unfollow_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, undef;
     };
 
@@ -472,6 +588,8 @@ subtest 'parse_events_json' => sub {
         my $event = $events->[10];
         is $event->mode, 'active';
         ok $event->is_join_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
     };
 
@@ -479,12 +597,16 @@ subtest 'parse_events_json' => sub {
         my $event = $events->[11];
         is $event->mode, 'active';
         ok $event->is_leave_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, undef;
     };
 
     subtest 'postback' => sub {
         my $event = $events->[12];
         ok $event->is_postback_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
         is $event->postback_data, 'postback';
     };
@@ -492,6 +614,8 @@ subtest 'parse_events_json' => sub {
     subtest 'beacon' => sub {
         my $event = $events->[13];
         ok $event->is_beacon_detection_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
         is $event->beacon_hwid, 'bid';
         is $event->beacon_type, 'enter';
@@ -502,6 +626,8 @@ subtest 'parse_events_json' => sub {
         my $event = $events->[14];
         is $event->message_type, 'file';
         ok $event->is_file_message;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
         is $event->file_size, 2138;
         is $event->file_name, 'file.txt';
@@ -510,12 +636,16 @@ subtest 'parse_events_json' => sub {
     subtest 'memberJoined' => sub {
         my $event = $events->[15];
         ok $event->is_member_join_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, 'replytoken';
     };
 
     subtest 'memberLeft' => sub {
         my $event = $events->[16];
         ok $event->is_member_leave_event;
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
         is $event->reply_token, undef;
     };
 
@@ -523,6 +653,8 @@ subtest 'parse_events_json' => sub {
         subtest 'link' => sub {
             my $event = $events->[17];
             ok $event->is_things_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             ok $event->is_device_link;
             is $event->reply_token, 'replytoken';
             is $event->things_device_id, 'deviceid';
@@ -531,6 +663,8 @@ subtest 'parse_events_json' => sub {
         subtest 'unlink' => sub {
             my $event = $events->[18];
             ok $event->is_things_event;
+            is $event->webhook_event_id, 'webhookeventid';
+            ok not $event->is_redelivery;
             ok $event->is_device_unlink;
             is $event->reply_token, 'replytoken';
             is $event->things_device_id, 'deviceid';
@@ -548,6 +682,8 @@ subtest 'parse_events_json' => sub {
         ok defined($event->replyToken);
         ok defined($event->timestamp);
         ok defined($event->source);
+        is $event->webhook_event_id, 'webhookeventid';
+        ok not $event->is_redelivery;
     };
 
     subtest 'video with contentProvider' => sub {

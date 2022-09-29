@@ -13,6 +13,11 @@ sub new {
 sub type      { $_[0]->{type}      }
 sub mode      { $_[0]->{mode}      }
 sub timestamp { $_[0]->{timestamp} }
+sub webhook_event_id { $_[0]->{webhookEventId} }
+
+# Whether the webhook event is a redelivered one or not. 
+# https://developers.line.biz/en/docs/messaging-api/receiving-messages/#redelivered-webhooks
+sub is_redelivery { $_[0]->{deliveryContext}{isRedelivery} }
 
 # Unfollow and Leave events don't have this
 sub reply_token { $_[0]->{replyToken} }
