@@ -500,30 +500,51 @@ my $parse_event_json = <<JSON;
    }
   },
   {
-    "type": "unsend",
-    "mode": "active",
-    "timestamp": 1462629479859,
-    "source": {
-      "type": "user",
-      "userId": "userid"
-    },
-    "unsend": {
-      "messageId": "messageid"
-    }
+   "type": "unsend",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "unsend": {
+    "messageId": "messageid"
+   }
   },
   {
-    "type": "videoPlayComplete",
-    "mode": "active",
-    "timestamp": 1462629479859,
-    "source": {
-      "type": "user",
-      "userId": "userid"
-    },
-    "replyToken": "replytoken",
-    "videoPlayComplete": {
-      "trackingId": "trackingid"
-    }
-  }
+   "type": "videoPlayComplete",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "replyToken": "replytoken",
+   "videoPlayComplete": {
+    "trackingId": "trackingid"
+   }
+  },
+  {
+   "type": "foobarunknown",
+   "mode": "active",
+   "timestamp": 1462629479859,
+   "source": {
+    "type": "user",
+    "userId": "userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   }
+  }  
  ]
 }
 JSON
@@ -541,7 +562,7 @@ subtest 'validate_signature' => sub {
 subtest 'parse_events_json' => sub {
     my $events = LINE::Bot::API::Event->parse_events_json($parse_event_json);
 
-    is scalar(@{ $events }), 26;
+    is scalar(@{ $events }), 27;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -828,7 +849,14 @@ subtest 'parse_events_json' => sub {
         ok $event->is_video_viewing_complete_event;
         is $event->reply_token, 'replytoken';
         is $event->tracking_id, 'trackingid';
-    }
+    };
+
+    subtest 'unknown' => sub {
+        my $event = $events->[26];
+
+        is $event->mode, 'active';
+        ok $event->is_unknown_event;
+    };
 };
 
 done_testing;

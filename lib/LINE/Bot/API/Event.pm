@@ -22,6 +22,7 @@ use LINE::Bot::API::Event::Things;
 use LINE::Bot::API::Event::AccountLink;
 use LINE::Bot::API::Event::Unsend;
 use LINE::Bot::API::Event::VideoViewingComplete;
+use LINE::Bot::API::Event::Unknown;
 
 my %TYPE2CLASS = (
     message      => 'LINE::Bot::API::Event::Message',
@@ -36,6 +37,7 @@ my %TYPE2CLASS = (
     things       => 'LINE::Bot::API::Event::Things',
     accountLink  => 'LINE::Bot::API::Event::AccountLink',
     unsend       => 'LINE::Bot::API::Event::Unsend',
+    unknown      => 'LINE::Bot::API::Event::Unknown',
     videoPlayComplete => 'LINE::Bot::API::Event::VideoViewingComplete',
 );
 
@@ -48,7 +50,8 @@ sub parse_events_json {
         my $type = $event_data->{type};
         my $event_class = $TYPE2CLASS{$type};
         unless ($event_class) {
-            carp 'Unsupported event type: ' . $type;
+            carp 'Unsupported event type: ' . $type . ", parse as unknown event";
+            $event_class = $TYPE2CLASS{'unknown'};
         }
 
         my $event = $event_class->new(%{ $event_data });
