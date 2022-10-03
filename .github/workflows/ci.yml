@@ -7,7 +7,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: perlcritic
@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-20.04', 'ubuntu-18.04']
+        os: ['ubuntu-22.04', 'ubuntu-20.04']
         perl: [ '5.32', '5.30' ]
     name: Test Perl ${{ matrix.perl }} on ${{ matrix.os }}
     steps:
@@ -34,7 +34,7 @@ jobs:
 
   milla-build:
     name: Build tarball with milla
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up perl
