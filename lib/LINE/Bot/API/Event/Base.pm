@@ -35,6 +35,8 @@ sub is_beacon_detection_event { 0 }
 sub is_device_link_event      { 0 }
 sub is_device_unlink_event    { 0 }
 sub is_account_link_event     { 0 }
+sub is_unsend_event { 0 }
+sub is_video_viewing_complete_event { 0 }
 
 # source field
 sub is_user_event  { $_[0]->{source}{type} eq 'user' }

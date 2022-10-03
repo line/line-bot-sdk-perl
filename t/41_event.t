@@ -11,7 +11,55 @@ my $config = +{
     channel_access_token => 'ACCESS_TOKEN',
 };
 
-my $json = <<JSON;
+my $signature_json = <<JSON;
+{
+ "events":[
+  {
+   "type":"message",
+   "mode":"active",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"text",
+    "text":"message"
+   }
+  }
+ ]
+}
+JSON
+
+my $parse_event_json = <<JSON;
+{
+ "events":[
+  {
+   "type":"message",
+   "mode":"active",
+   "timestamp":12345678901234,
+   "source":{
+    "type":"user",
+    "userId":"userid"
+   },
+   "webhookEventId": "webhookeventid",
+   "deliveryContext": {
+    "isRedelivery": false
+   },
+   "replyToken":"replytoken",
+   "message":{
+    "id":"contentid",
+    "type":"text",
+    "text":"message"
+   }
+  }
+ ]
+}
+JSON
+
+my $parse_event_json = <<JSON;
 {
  "events":[
   {
@@ -450,6 +498,31 @@ my $json = <<JSON;
      }
     ]
    }
+  },
+  {
+    "type": "unsend",
+    "mode": "active",
+    "timestamp": 1462629479859,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "unsend": {
+      "messageId": "messageid"
+    }
+  },
+  {
+    "type": "videoPlayComplete",
+    "mode": "active",
+    "timestamp": 1462629479859,
+    "source": {
+      "type": "user",
+      "userId": "userid"
+    },
+    "replyToken": "replytoken",
+    "videoPlayComplete": {
+      "trackingId": "trackingid"
+    }
   }
  ]
 }
@@ -457,18 +530,18 @@ JSON
 
 subtest 'validate_signature' => sub {
     subtest 'failed' => sub {
-        ok(! LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, ''));
+        ok(! LINE::Bot::API::Event->validate_signature($signature_json, $config->{channel_secret}, ''));
     };
 
     subtest 'successful' => sub {
-        ok(LINE::Bot::API::Event->validate_signature($json, $config->{channel_secret}, '0REB4EeDl5OSjl9/SghEnkBqsr598L18DqoQKEiLkGg='));
+        ok(LINE::Bot::API::Event->validate_signature($signature_json, $config->{channel_secret}, 'XUSRvjxbQOH0lxpaszkhydx+LhekldkImhAHxPJ+x8g='));
     };
 };
 
 subtest 'parse_events_json' => sub {
-    my $events = LINE::Bot::API::Event->parse_events_json($json);
+    my $events = LINE::Bot::API::Event->parse_events_json($parse_event_json);
 
-    is scalar(@{ $events }), 24;
+    is scalar(@{ $events }), 26;
 
     subtest 'message' => sub {
         subtest 'text' => sub {
@@ -739,6 +812,23 @@ subtest 'parse_events_json' => sub {
             }
         ];
     };
+
+    subtest 'unsend' => sub {
+        my $event = $events->[24];
+
+        is $event->mode, 'active';
+        ok $event->is_unsend_event;
+        is $event->message_id, 'messageid';
+    };
+
+    subtest 'videoViewingComplete' => sub {
+        my $event = $events->[25];
+
+        is $event->mode, 'active';
+        ok $event->is_video_viewing_complete_event;
+        is $event->reply_token, 'replytoken';
+        is $event->tracking_id, 'trackingid';
+    }
 };
 
 done_testing;
