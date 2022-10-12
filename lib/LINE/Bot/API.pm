@@ -27,6 +27,7 @@ use LINE::Bot::API::Response::UserInteractionStatistics;
 use LINE::Bot::API::Response::BotInfo;
 use LINE::Bot::API::Response::WebhookInformation;
 use LINE::Bot::API::Response::WebhookTest;
+use LINE::Bot::API::Response::Followers;
 
 use constant {
     DEFAULT_MESSAGING_API_ENDPOINT => 'https://api.line.me/v2/bot/',
@@ -509,6 +510,25 @@ sub test_webhook_endpoint {
     );
 
     LINE::Bot::API::Response::WebhookTest->new(%{ $res });
+}
+
+sub get_followers {
+    my ($self, $opts) = @_;
+    my $req_url = "followers/ids";
+
+    if ($opts->{'limit'} && $opts->{'start'}) {
+        $req_url .= '?limit=' . $opts->{'limit'} . "&start=" . $opts->{start};
+    } elsif ($opts->{'limit'}) {
+        $req_url .= '?limit=' . $opts->{'limit'};
+    } elsif ($opts->{'start'}) {
+        $req_url .= '?start=' . $opts->{'start'};
+    }
+
+    my $res = $self->request(
+        'get' => $req_url
+    );
+
+    LINE::Bot::API::Response::Followers->new(%{ $res });
 }
 
 1;
@@ -1096,6 +1116,12 @@ See also the LINE Developer API reference of this method: L<https://developers.l
 Checks if the configured webhook endpoint can receive a test webhook event.
 
 See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
+
+=head2 C<< get_followers({ 'limit' => 100, 'start' => "..." }) >>
+
+Gets the list of User IDs of users who have added LINE Official Account as a friend.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-follower-ids>
 
 =head1 How to build a send message object
 
