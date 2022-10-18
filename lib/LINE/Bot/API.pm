@@ -376,6 +376,12 @@ sub download_rich_menu_image {
     );
 }
 
+sub validate_rich_menu_object {
+    my ($self, $rich_menu) = @_;
+    my $res = $self->request(post => "richmenu/validate", $rich_menu);
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 sub issue_channel_access_token {
     my ($self, $opts) = @_;
 
@@ -982,6 +988,12 @@ The argument C<$user_id> is mandatory. The return value is an empty object.
 This method corresponds to the API of L<Unlink rich menu from multiple users|https://developers.line.biz/en/reference/messaging-api/#unlink-rich-menu-from-users>
 
 The mandatory argument C<$user_ids> is an ArrayRef of user ids. The return value is an empty object.
+
+=head2 C<< validate_rich_menu_object( $rich_menu_object ) >>
+
+This method corresponds to the API of L<Validate rich menu object|https://developers.line.biz/en/reference/messaging-api/#validate-rich-menu-object>
+
+One argument is needed: C<$rich_menu_object>, which is a plain HashRef representing L<rich menu object|https://developers.line.biz/en/reference/messaging-api/#rich-menu-object>
 
 =head2 C<< issue_channel_access_token({ client_id => '...', client_secret => '...' }) >>
 
