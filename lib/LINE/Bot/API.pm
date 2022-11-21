@@ -517,6 +517,71 @@ sub test_webhook_endpoint {
     LINE::Bot::API::Response::WebhookTest->new(%{ $res });
 }
 
+sub validate_reply_message_objects {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/validate/reply',
+        +{
+            messages   => $messages,
+        }
+    );
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub validate_push_message_objects {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/validate/push',
+        +{
+            messages   => $messages,
+        }
+    );
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub validate_multicast_message_objects {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/validate/multicast',
+        +{
+            messages   => $messages,
+        }
+    );
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub validate_narrowcast_message_objects {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/validate/narrowcast',
+        +{
+            messages   => $messages,
+        }
+    );
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
+sub validate_broadcast_message_objects {
+    my($self, $messages) = @_;
+
+    my $res = $self->request(
+        post => 'message/validate/broadcast',
+        +{
+            messages   => $messages,
+        }
+    );
+
+    LINE::Bot::API::Response::Common->new(%{ $res });
+}
+
 1;
 
 __END__
@@ -1108,6 +1173,36 @@ See also the LINE Developer API reference of this method: L<https://developers.l
 Checks if the configured webhook endpoint can receive a test webhook event.
 
 See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information>
+
+=head2 C<< validate_reply_message_objects([ $message, ... ] ) >>
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send reply message endpoint.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-reply-message>
+
+=head2 C<< validate_push_message_objects([ $message, ... ] ) >>
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send push message endpoint.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-push-message>
+
+=head2 C<< validate_multicast_message_objects([ $message, ... ] ) >>
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send multicast message endpoint.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-multicast-message>
+
+=head2 C<< validate_narrowcast_message_objects([ $message, ... ] ) >>
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send narrowcast message endpoint.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-narrowcast-message>
+
+=head2 C<< validate_broadcast_message_objects([ $message, ... ] ) >>
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send broadcast message endpoint.
+
+See also the LINE Developer API reference of this method: L<https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-broadcast-message>
 
 =head1 How to build a send message object
 
