@@ -37,7 +37,9 @@ use constant {
 };
 use Furl;
 use Carp 'croak';
+use URI;
 use URI::Escape;
+use URI::QueryParam;
 
 sub new {
     my($class, %args) = @_;
@@ -514,19 +516,12 @@ sub test_webhook_endpoint {
 
 sub get_followers {
     my ($self, $opts) = @_;
-    my $req_url = "followers/ids";
+    my $uri = URI->new('followers/ids');
 
-    if ($opts->{'limit'} && $opts->{'start'}) {
-        $req_url .= '?limit=' . $opts->{'limit'} . "&start=" . $opts->{start};
-    } elsif ($opts->{'limit'}) {
-        $req_url .= '?limit=' . $opts->{'limit'};
-    } elsif ($opts->{'start'}) {
-        $req_url .= '?start=' . $opts->{'start'};
-    }
+    exists $opts->{'limit'} and $uri->query_param(limit => $opts->{'limit'});
+    exists $opts->{'start'} and $uri->query_param(start => $opts->{'start'});
 
-    my $res = $self->request(
-        'get' => $req_url
-    );
+    my $res = $self->request(get => $uri->as_string);
 
     LINE::Bot::API::Response::Followers->new(%{ $res });
 }
