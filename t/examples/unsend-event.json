@@ -1,0 +1,11 @@
+{
+  "type": "unsend",
+  "timestamp": 1462629479859,
+  "source": {
+    "type": "group",
+    "groupId": "C4af4980629..."
+  },
+  "unsend": {
+    "messageId": "325708"
+  }
+}

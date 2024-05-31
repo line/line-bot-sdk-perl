@@ -1,14 +1,12 @@
 #!/usr/bin/env perl
 use strict;
 
-
-
 use FindBin '$Bin';
 use File::Spec;
 use JSON::XS qw(decode_json);
 use Test::More;
 
-use LINE::Bot::API::Types qw<MessageEvent ErrorResponse FollowEvent UnfollowEvent JoinEvent LeaveEvent MemberJoinedEvent MemberLeftEvent PostbackEvent BeaconEvent AccountLinkEvent DeviceLinkEvent DeviceUnlinkEvent>;
+use LINE::Bot::API::Types qw<MessageEvent ErrorResponse FollowEvent UnfollowEvent JoinEvent LeaveEvent MemberJoinedEvent MemberLeftEvent PostbackEvent BeaconEvent AccountLinkEvent DeviceLinkEvent DeviceUnlinkEvent UnsendEvent VideoViewingCompleteEvent>;
 
 sub verify {
     my ($type, $file) = @_;
@@ -54,6 +52,8 @@ my @tests = (
     [ MessageEvent, 'image-message-1.json'],
     [ MessageEvent, 'video-message-1.json'],
     [ MessageEvent, 'audio-message-1.json'],
+    [ UnsendEvent, 'unsend-event.json'],
+    [ VideoViewingCompleteEvent, 'video-viewing-complete-event.json'],
 );
 
 for (@tests){

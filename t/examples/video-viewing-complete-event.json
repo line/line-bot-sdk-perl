@@ -1,0 +1,12 @@
+{
+  "replyToken": "nHuyWiB7yP5Zw52FIkcQobQuGDXCTA",
+  "type": "videoPlayComplete",
+  "timestamp": 1462629479859,
+  "source": {
+    "type": "group",
+    "groupId": "C4af4980629..."
+  },
+  "videoPlayComplete": {
+    "trackingId": "track-id"
+  }
+}
