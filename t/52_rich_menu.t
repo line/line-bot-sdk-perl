@@ -261,4 +261,42 @@ subtest unlink_rich_menu_from_multiple_users => sub {
     };
 };
 
+subtest validate_rich_menu_object => sub {
+    my $rich_menu = decode_json('{
+        "size": {
+          "width": 2500,
+          "height": 1686
+        },
+        "selected": false,
+        "name": "Nice richmenu",
+        "chatBarText": "Tap here",
+        "areas": [
+          {
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 2500,
+              "height": 1686
+            },
+            "action": {
+              "type": "postback",
+              "data": "action=buy&itemid=123"
+            }
+          }
+       ]
+    }');
+
+    send_request {
+        my $res = $bot->validate_rich_menu_object( $rich_menu );
+        ok $res->is_success;
+        is $res->http_status, 200;
+    } receive_request {
+        my %args = @_;
+        is $args{method}, 'POST';
+        is $args{url},    'https://api.line.me/v2/bot/richmenu/validate';
+
+        return +{};
+    };
+};
+
 done_testing;
