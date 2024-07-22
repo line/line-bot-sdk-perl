@@ -2,9 +2,16 @@
 
 LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
-<div>
-    <a href="https://travis-ci.org/line/line-bot-sdk-perl"><img src="https://travis-ci.org/line/line-bot-sdk-perl.svg?branch=master"></a>
-</div>
+## Maintenance Mode and Repository Archiving Notice
+
+### Entering Maintenance Mode
+As of May 13, 2024, the `line/line-bot-sdk-perl` project will enter maintenance mode. During this period, we will continue to provide critical bug fixes and security updates; however, new features will not be added. We encourage the community to submit patches and improvements, which we will gladly review and merge as appropriate.
+
+### Repository Archiving
+On December 2, 2024, the `line/line-bot-sdk-perl` repository will be archived. This means the codebase will become read-only. While the repository will still be available for cloning and viewing, no further contributions or changes will be accepted. We recommend users and developers fork the repository if they wish to continue development independently.
+
+We appreciate the support and contributions from our community throughout the project's lifecycle. Thank you for being a part of our journey.
+
 
 # SYNOPSIS
 
