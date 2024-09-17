@@ -2,16 +2,19 @@
 
 LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
-## Maintenance Mode and Repository Archiving Notice
+<div>
+    <a href="https://travis-ci.org/line/line-bot-sdk-perl"><img src="https://travis-ci.org/line/line-bot-sdk-perl.svg?branch=master"></a>
+</div>
 
-### Entering Maintenance Mode
-As of May 13, 2024, the `line/line-bot-sdk-perl` project will enter maintenance mode. During this period, we will continue to provide critical bug fixes and security updates; however, new features will not be added. We encourage the community to submit patches and improvements, which we will gladly review and merge as appropriate.
+# Maintenance Mode
 
-### Repository Archiving
-On December 2, 2024, the `line/line-bot-sdk-perl` repository will be archived. This means the codebase will become read-only. While the repository will still be available for cloning and viewing, no further contributions or changes will be accepted. We recommend users and developers fork the repository if they wish to continue development independently.
+As of May 13, 2024, the project [https://github.com/line/line-bot-sdk-perl/|line/line-bot-sdk-perl](https://github.com/line/line-bot-sdk-perl/|line/line-bot-sdk-perl) project will enter maintenance mode. During this period, we will continue to provide critical bug fixes and security updates; however, new features will not be added. We encourage the community to submit patches and improvements, which we will gladly review and merge as appropriate.
+
+# Archiving
+
+On December 2, 2024, the repository [https://github.com/line/line-bot-sdk-perl/|line/line-bot-sdk-perl](https://github.com/line/line-bot-sdk-perl/|line/line-bot-sdk-perl) will be archived. This means the codebase will become read-only. While the repository will still be available for cloning and viewing, no further contributions or changes will be accepted. We recommend users and developers fork the repository if they wish to continue development independently.
 
 We appreciate the support and contributions from our community throughout the project's lifecycle. Thank you for being a part of our journey.
-
 
 # SYNOPSIS
 
@@ -461,6 +464,12 @@ This method corresponds to the API of [Unlink rich menu from multiple users](htt
 
 The mandatory argument `$user_ids` is an ArrayRef of user ids. The return value is an empty object.
 
+## `validate_rich_menu_object( $rich_menu_object )`
+
+This method corresponds to the API of [Validate rich menu object](https://developers.line.biz/en/reference/messaging-api/#validate-rich-menu-object)
+
+One argument is needed: `$rich_menu_object`, which is a plain HashRef representing [rich menu object](https://developers.line.biz/en/reference/messaging-api/#rich-menu-object)
+
 ## `issue_channel_access_token({ client_id => '...', client_secret => '...' })`
 
 This method corresponds to the API of: [Issue Channel access token](https://developers.line.biz/en/reference/messaging-api/#issue-channel-access-token)
@@ -574,6 +583,42 @@ See also the LINE Developer API reference of this method: [https://developers.li
 Checks if the configured webhook endpoint can receive a test webhook event.
 
 See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information](https://developers.line.biz/en/reference/messaging-api/#get-webhook-endpoint-information)
+
+## `validate_reply_message_objects([ $message, ... ] )`
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send reply message endpoint.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-reply-message](https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-reply-message)
+
+## `validate_push_message_objects([ $message, ... ] )`
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send push message endpoint.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-push-message](https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-push-message)
+
+## `validate_multicast_message_objects([ $message, ... ] )`
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send multicast message endpoint.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-multicast-message](https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-multicast-message)
+
+## `validate_narrowcast_message_objects([ $message, ... ] )`
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send narrowcast message endpoint.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-narrowcast-message](https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-narrowcast-message)
+
+## `validate_broadcast_message_objects([ $message, ... ] )`
+
+Validates that an array of message objects is valid as a value for the messages property of the request body for the Send broadcast message endpoint.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-broadcast-message](https://developers.line.biz/en/reference/messaging-api/#validate-message-objects-of-broadcast-message)
+
+## `get_followers({ 'limit' => 100, 'start' => "..." })`
+
+Gets the list of User IDs of users who have added LINE Official Account as a friend.
+
+See also the LINE Developer API reference of this method: [https://developers.line.biz/en/reference/messaging-api/#get-follower-ids](https://developers.line.biz/en/reference/messaging-api/#get-follower-ids)
 
 # How to build a send message object
 
