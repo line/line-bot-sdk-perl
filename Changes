@@ -1,6 +1,8 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+
+1.21  2024-09-17 10:03:03 JST
         - Note about the archival of this project (PR #211 and PR #210)
         - Add validating message objects API (PR #204)
         - Add get follower ids api (PR #202)
