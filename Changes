@@ -1,7 +1,15 @@
 Revision history for Perl extension LINE::Bot::API
 
 {{$NEXT}}
+        - Note about the archival of this project (PR #211 and PR #210)
+        - Add validating message objects API (PR #204)
+        - Add get follower ids api (PR #202)
+        - Add Unsend and VideoViewingComplete Event (PR #201)
+        - Add webhook redelivery field (PR #199)
+        - Add validate richmenu object (PR #198)
+        - Add accessor for the imageSet field (PR #192)
         - Fixed test case name (PR #190)
+
 
 1.20  2021-04-09 18:28:50 JST
         - Add acceptedTime and completedTime field to narrowcast progress status (PR #179)
