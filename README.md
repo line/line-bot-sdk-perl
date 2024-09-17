@@ -2,10 +2,6 @@
 
 LINE::Bot::API - SDK of the LINE Messaging API for Perl
 
-<div>
-    <a href="https://travis-ci.org/line/line-bot-sdk-perl"><img src="https://travis-ci.org/line/line-bot-sdk-perl.svg?branch=master"></a>
-</div>
-
 # Maintenance Mode
 
 As of May 13, 2024, the project [line-bot-sdk-perl](https://github.com/line/line-bot-sdk-perl/) project will enter maintenance mode. During this period, we will continue to provide critical bug fixes and security updates; however, new features will not be added. We encourage the community to submit patches and improvements, which we will gladly review and merge as appropriate.
